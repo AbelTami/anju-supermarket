@@ -1,0 +1,30 @@
+# Dependencies
+dashboard/node_modules/
+backend/**/__pycache__/
+backend/**/*.pyc
+*.pyo
+
+# Build
+dashboard/.nuxt/
+dashboard/.output/
+dashboard/dist/
+
+# IDE
+.vscode/
+.idea/
+
+# Env
+.env
+backend/.env
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Django
+backend/static/
+backend/media/
+*.sqlite3
+
+# Lock
+pnpm-lock.yaml
