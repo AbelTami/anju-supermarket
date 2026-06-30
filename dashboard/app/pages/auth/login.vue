@@ -29,7 +29,7 @@ async function onSubmit(e: Event) {
 
 <template>
   <div class="flex min-h-dvh items-center justify-center">
-    <UCard class="w-full max-w-sm">
+    <UCard class="w-full max-w-lg">
       <template #header>
         <div class="text-center">
           <UIcon name="i-lucide-store" class="size-10 text-primary mx-auto mb-3" />
@@ -48,11 +48,11 @@ async function onSubmit(e: Event) {
         />
 
         <UFormField label="用户名">
-          <UInput v-model="username" placeholder="请输入用户名" autofocus />
+          <UInput size="lg" v-model="username" placeholder="请输入用户名" autofocus />
         </UFormField>
 
         <UFormField label="密码">
-          <UInput v-model="password" type="password" placeholder="请输入密码" />
+          <UInput size="lg" v-model="password" type="password" placeholder="请输入密码" />
         </UFormField>
 
         <UButton type="submit" label="登录" block :loading="loading" />
