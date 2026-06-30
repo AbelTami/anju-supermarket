@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
-\restrict qhVakwVz75DuC3h0x3gdTrgOvYvvavoukazUMYVohB1PXlg7y5X1mjiOSHDbVXG
+\restrict 579KTeCzwjpAdISysfpC6wgWN9hh27a0ZOZIEFx9LCdHlW1pmTDoaoWWbmgadd1
 
 -- Dumped from database version 18.4
 -- Dumped by pg_dump version 18.4
@@ -218,6 +218,15 @@ INSERT INTO public.tenant VALUES (1, '安居生活超市', 'tpugxdr', '', '', '0
 INSERT INTO public.product_category VALUES (1, '2026-06-30 17:44:06.155517+08', '2026-06-30 17:44:06.155526+08', '饮料', 0, NULL, 1);
 INSERT INTO public.product_category VALUES (2, '2026-06-30 17:44:06.157752+08', '2026-06-30 17:44:06.157757+08', '食品', 0, NULL, 1);
 INSERT INTO public.product_category VALUES (3, '2026-06-30 17:44:06.158352+08', '2026-06-30 17:44:06.158356+08', '乳制品', 0, NULL, 1);
+INSERT INTO public.product_category VALUES (4, '2026-06-30 20:45:02.964117+08', '2026-06-30 20:45:02.964127+08', '零食', 0, NULL, 1);
+INSERT INTO public.product_category VALUES (5, '2026-06-30 20:45:02.968426+08', '2026-06-30 20:45:02.968432+08', '酒类', 0, NULL, 1);
+INSERT INTO public.product_category VALUES (6, '2026-06-30 20:45:02.969425+08', '2026-06-30 20:45:02.969429+08', '调味品', 0, NULL, 1);
+INSERT INTO public.product_category VALUES (7, '2026-06-30 20:45:02.970293+08', '2026-06-30 20:45:02.970297+08', '日用品', 0, NULL, 1);
+INSERT INTO public.product_category VALUES (8, '2026-06-30 20:45:02.971161+08', '2026-06-30 20:45:02.971165+08', '冷冻食品', 0, NULL, 1);
+INSERT INTO public.product_category VALUES (9, '2026-06-30 20:45:02.972+08', '2026-06-30 20:45:02.972004+08', '粮油米面', 0, NULL, 1);
+INSERT INTO public.product_category VALUES (10, '2026-06-30 20:45:02.972674+08', '2026-06-30 20:45:02.972678+08', '个人护理', 0, NULL, 1);
+INSERT INTO public.product_category VALUES (11, '2026-06-30 20:45:02.9733+08', '2026-06-30 20:45:02.973303+08', '家居清洁', 0, NULL, 1);
+INSERT INTO public.product_category VALUES (12, '2026-06-30 20:45:02.974137+08', '2026-06-30 20:45:02.97414+08', '文具玩具', 0, NULL, 1);
 
 
 --
@@ -508,7 +517,7 @@ SELECT pg_catalog.setval('public.pos_order_item_id_seq', 77, true);
 -- Name: product_category_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.product_category_id_seq', 3, true);
+SELECT pg_catalog.setval('public.product_category_id_seq', 12, true);
 
 
 --
@@ -578,5 +587,5 @@ SELECT pg_catalog.setval('public.user_user_permissions_id_seq', 1, false);
 -- PostgreSQL database dump complete
 --
 
-\unrestrict qhVakwVz75DuC3h0x3gdTrgOvYvvavoukazUMYVohB1PXlg7y5X1mjiOSHDbVXG
+\unrestrict 579KTeCzwjpAdISysfpC6wgWN9hh27a0ZOZIEFx9LCdHlW1pmTDoaoWWbmgadd1
 

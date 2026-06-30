@@ -37,7 +37,9 @@ const { data: productData } = useFetch(productApiUrl, {
 // Category → icon mapping
 const iconMap: Record<string, string> = {
   '饮料': 'i-lucide-coffee', '食品': 'i-lucide-beef', '乳制品': 'i-lucide-milk',
-  '零食': 'i-lucide-cookie', '酒类': 'i-lucide-beer',
+  '零食': 'i-lucide-cookie', '酒类': 'i-lucide-beer', '调味品': 'i-lucide-salt',
+  '日用品': 'i-lucide-spray-can', '冷冻': 'i-lucide-snowflake', '粮油': 'i-lucide-wheat',
+  '个人护理': 'i-lucide-smile', '清洁': 'i-lucide-sparkles', '文具': 'i-lucide-pencil',
 }
 function getIcon(name: string, category: string): string {
   for (const [k, v] of Object.entries(iconMap)) { if (category?.includes(k) || name.includes(k)) return v }
