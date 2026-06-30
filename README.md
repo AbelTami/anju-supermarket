@@ -78,36 +78,43 @@ anju-supermarket/
 
 ### 环境要求
 
-- Python 3.12+
-- Node.js 22+
-- pnpm 11+
-- PostgreSQL 16+
+| 依赖 | 版本 |
+|---|---|
+| Python | 3.12+ |
+| Node.js | 22+ |
+| pnpm | 11+ |
+| PostgreSQL | 16+ |
 
-### 1. 数据库
-
-```bash
-# 创建 PostgreSQL 数据库
-psql -U postgres -c "CREATE DATABASE anju_db;"
-```
-
-### 2. 后端
+### 4 步启动
 
 ```bash
+# 1. 克隆项目
+git clone <your-repo-url>
+cd anju-supermarket
+
+# 2. 启动后端
 cd backend
 pip install -r requirements/base.txt
-cp .env.example .env  # 编辑数据库配置
+cp .env.example .env          # 按需修改数据库密码
+psql -U postgres -c "CREATE DATABASE anju_db;"
 python manage.py migrate
 python manage.py runserver 8000
-```
 
-### 3. 前端
-
-```bash
+# 3. 启动前端 (新终端)
 cd dashboard
 pnpm install
 pnpm dev
-# → http://localhost:3000
+# → 打开 http://localhost:3000
 ```
+
+### 导入测试数据（可选）
+
+```bash
+cd backend
+psql -U postgres anju_db < seed.sql
+```
+
+导入后包含：1 个超市 + 6 个商品（含 SKU）+ 2 个会员 + 2 个供应商 + 37 笔订单（跨 14 天）。
 
 ## 测试账号
 
