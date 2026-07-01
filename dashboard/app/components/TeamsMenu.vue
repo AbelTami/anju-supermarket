@@ -21,7 +21,7 @@ const tenantItems = computed<DropdownMenuItem[][]>(() => {
     [{
       label: '注册新超市',
       icon: 'i-lucide-circle-plus',
-      to: '/auth/register'
+      to: '/admin/auth/register'
     }]
   ]
 })

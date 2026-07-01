@@ -26,7 +26,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
   loading.value = true
   try {
     const ok = await auth.login(event.data.username, event.data.password)
-    if (ok) await router.push('/')
+    if (ok) await router.push('/admin')
   } catch {
     errorMsg.value = '账号或密码不正确，请重试'
   } finally {
@@ -51,7 +51,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
           <UAlert v-if="errorMsg" icon="i-lucide-triangle-alert" color="error" variant="soft" :title="errorMsg" class="mb-4" />
         </template>
         <template #footer>
-          还没有账号？<ULink to="/auth/register" class="text-primary font-medium">注册超市</ULink>
+          还没有账号？<ULink to="/admin/auth/register" class="text-primary font-medium">注册超市</ULink>
         </template>
       </UAuthForm>
     </UPageCard>

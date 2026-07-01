@@ -1,14 +1,15 @@
 """Member views — full CRUD."""
-from common.permissions import TenantAccessPermission
+from common.permissions import IsTenantUser
 from rest_framework import viewsets
 from rest_framework.filters import OrderingFilter, SearchFilter
+from rest_framework.permissions import IsAuthenticated
 
 from .models import Member
 from .serializers import MemberSerializer
 
 
 class MemberViewSet(viewsets.ModelViewSet):
-    permission_classes = [TenantAccessPermission]
+    permission_classes = [IsAuthenticated, IsTenantUser]
     serializer_class = MemberSerializer
     filter_backends = [SearchFilter, OrderingFilter]
     search_fields = ['name', 'phone', 'card_no']

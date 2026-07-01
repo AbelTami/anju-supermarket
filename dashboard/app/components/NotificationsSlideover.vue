@@ -29,7 +29,7 @@ const notifications = computed(() => {
       <NuxtLink
         v-for="n in notifications"
         :key="n.id"
-        :to="`/finance`"
+        :to="`/admin/finance`"
         class="px-3 py-2.5 rounded-md hover:bg-elevated/50 flex items-center gap-3 relative -mx-3 first:-mt-3 last:-mb-3"
       >
         <UChip color="primary" inset>

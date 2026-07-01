@@ -30,7 +30,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
   loading.value = true
   try {
     await auth.register(event.data.tenant_name, event.data.username, event.data.password, event.data.phone || '')
-    await router.push('/')
+    await router.push('/admin')
   } catch (e: any) {
     errorMsg.value = e?.data?.message || '注册失败，请重试'
   } finally {
@@ -55,7 +55,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
           <UAlert v-if="errorMsg" icon="i-lucide-triangle-alert" color="error" variant="soft" :title="errorMsg" class="mb-4" />
         </template>
         <template #footer>
-          已有账号？<ULink to="/auth/login" class="text-primary font-medium">返回登录</ULink>
+          已有账号？<ULink to="/admin/auth/login" class="text-primary font-medium">返回登录</ULink>
         </template>
       </UAuthForm>
     </UPageCard>

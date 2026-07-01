@@ -1,8 +1,9 @@
 """Inventory views — stock mutation on record creation."""
-from common.permissions import TenantAccessPermission
+from common.permissions import IsTenantUser
 from django.db import transaction
 from rest_framework import serializers, status, viewsets
 from rest_framework.filters import OrderingFilter, SearchFilter
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from apps.products.models import ProductSKU
@@ -17,7 +18,7 @@ class InventoryRecordWriteSerializer(serializers.ModelSerializer):
 
 
 class InventoryRecordViewSet(viewsets.ModelViewSet):
-    permission_classes = [TenantAccessPermission]
+    permission_classes = [IsAuthenticated, IsTenantUser]
     filter_backends = [SearchFilter, OrderingFilter]
     search_fields = ['sku__product__name', 'sku__barcode']
     ordering_fields = ['created_at', 'quantity']
@@ -55,7 +56,7 @@ class InventoryRecordViewSet(viewsets.ModelViewSet):
 
 
 class StockCheckViewSet(viewsets.ModelViewSet):
-    permission_classes = [TenantAccessPermission]
+    permission_classes = [IsAuthenticated, IsTenantUser]
     serializer_class = StockCheckSerializer
     ordering_fields = ['created_at', 'status']
 

@@ -20,8 +20,9 @@ class OrderCreateSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         items_data = validated_data.pop('items')
         validated_data['tenant'] = self.context['request'].tenant
-        validated_data['cashier'] = self.context['request'].user
-        # ponytail: generate order_no with timestamp + random
+        # Use passed cashier or fall back to request user
+        if 'cashier' not in validated_data:
+            validated_data['cashier'] = self.context['request'].user
         import time, random
         validated_data['order_no'] = f'POS{int(time.time())}{random.randint(100, 999)}'
         order = Order.objects.create(**validated_data)
@@ -32,12 +33,13 @@ class OrderCreateSerializer(serializers.ModelSerializer):
 
 
 class OrderListSerializer(serializers.ModelSerializer):
+    items = OrderItemSerializer(many=True, read_only=True)
     items_count = serializers.IntegerField(source='items.count', read_only=True)
     cashier_name = serializers.CharField(source='cashier.username', read_only=True)
 
     class Meta:
         model = Order
-        fields = ['id', 'order_no', 'total_amount', 'payment_method', 'items_count', 'cashier_name', 'paid_at']
+        fields = ['id', 'order_no', 'total_amount', 'discount_amount', 'payment_method', 'status', 'items', 'items_count', 'cashier_name', 'paid_at']
 
 
 class OrderDetailSerializer(serializers.ModelSerializer):

@@ -21,14 +21,12 @@ const _useAuth = () => {
   const currentTenant = ref<TenantInfo | null>(null)
   const isLoading = ref(false)
 
-  /** Fetch current user profile from the BFF. */
+  /** Fetch current user profile from the BFF. Uses $fetch to avoid Nuxt useFetch cache. */
   async function fetchProfile() {
     try {
-      const { data } = await useFetch('/api/auth/profile')
-      if (data.value) {
-        user.value = data.value as UserInfo
-        // profile endpoint returns tenants list
-        const profile = data.value as any
+      const profile = await $fetch('/api/auth/profile') as any
+      if (profile) {
+        user.value = { id: profile.id, username: profile.username, phone: profile.phone, email: profile.email, first_name: profile.first_name }
         if (profile.tenants) {
           tenants.value = profile.tenants
           if (!currentTenant.value && profile.tenants.length > 0) {
@@ -45,18 +43,18 @@ const _useAuth = () => {
   async function login(username: string, password: string) {
     isLoading.value = true
     try {
-      const { data, error } = await useFetch('/api/auth/login', {
+      const result = await $fetch('/api/auth/login', {
         method: 'POST',
         body: { username, password },
-      })
-      if (error.value) throw new Error('Login failed')
-      const result = data.value as any
+      }) as any
       user.value = result.user
       tenants.value = result.tenants || []
       if (tenants.value.length > 0) {
         currentTenant.value = tenants.value[0]
       }
       return true
+    } catch {
+      return false
     } finally {
       isLoading.value = false
     }
@@ -65,29 +63,29 @@ const _useAuth = () => {
   async function register(tenantName: string, username: string, password: string, phone: string) {
     isLoading.value = true
     try {
-      const { data, error } = await useFetch('/api/auth/register', {
+      const result = await $fetch('/api/auth/register', {
         method: 'POST',
         body: { tenant_name: tenantName, username, password, phone },
-      })
-      if (error.value) throw new Error('Register failed')
-      const result = data.value as any
+      }) as any
       user.value = result.user
       if (result.tenant) {
         tenants.value = [result.tenant]
         currentTenant.value = result.tenant
       }
       return true
+    } catch {
+      return false
     } finally {
       isLoading.value = false
     }
   }
 
   async function logout() {
-    await useFetch('/api/auth/logout', { method: 'POST' })
+    await $fetch('/api/auth/logout', { method: 'POST' }).catch(() => {})
     user.value = null
     tenants.value = []
     currentTenant.value = null
-    await navigateTo('/auth/login')
+    await navigateTo('/admin/auth/login')
   }
 
   function switchTenant(tenant: TenantInfo) {

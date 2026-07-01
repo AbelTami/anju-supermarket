@@ -6,6 +6,7 @@ import { useAuth } from '~/composables/useAuth'
 
 const UButton = resolveComponent('UButton')
 const UBadge = resolveComponent('UBadge')
+const MembersEditModal = resolveComponent('MembersEditModal')
 const auth = useAuth()
 const toast = useToast()
 
@@ -36,7 +37,7 @@ const columns: TableColumn<any>[] = [
     accessorKey: 'actions', header: '',
     cell: ({ row }: any) =>
       h('div', { class: 'flex gap-1' }, [
-        h(UButton, { icon: 'i-lucide-pencil', size: 'xs', color: 'neutral', variant: 'ghost' }),
+        h(MembersEditModal, { member: row.original, onUpdated: () => refresh() }),
         h(UButton, {
           icon: 'i-lucide-trash', size: 'xs', color: 'error', variant: 'ghost',
           onClick: () => deleteMember(row.original.id, row.original.name),

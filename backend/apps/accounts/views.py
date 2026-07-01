@@ -1,7 +1,8 @@
 """Auth views — login, register, token refresh."""
 from rest_framework import status
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.throttling import ScopedRateThrottle
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
@@ -14,6 +15,8 @@ class LoginView(TokenObtainPairView):
     """POST /api/auth/login/ — JWT login with tenant info."""
     serializer_class = CustomTokenObtainPairSerializer
     permission_classes = [AllowAny]
+    throttle_classes = [ScopedRateThrottle]
+    throttle_scope = 'login'
 
 
 class RefreshView(TokenRefreshView):
@@ -24,6 +27,8 @@ class RefreshView(TokenRefreshView):
 class RegisterView(APIView):
     """POST /api/auth/register/ — 自助注册超市+管理员."""
     permission_classes = [AllowAny]
+    throttle_classes = [ScopedRateThrottle]
+    throttle_scope = 'login'
 
     def post(self, request):
         serializer = RegisterSerializer(data=request.data)
@@ -51,6 +56,7 @@ class RegisterView(APIView):
 
 class ProfileView(APIView):
     """GET /api/auth/profile/ — current user profile."""
+    permission_classes = [IsAuthenticated]
 
     def get(self, request):
         return Response({
@@ -67,6 +73,9 @@ class ProfileView(APIView):
 
 class ChangePasswordView(APIView):
     """POST /api/auth/change-password/ — change current user's password."""
+    permission_classes = [IsAuthenticated]
+    throttle_classes = [ScopedRateThrottle]
+    throttle_scope = 'login'
 
     def post(self, request):
         current = request.data.get('current_password', '')

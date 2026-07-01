@@ -27,6 +27,7 @@ const schema = z.object({
 type Schema = z.output<typeof schema>
 
 const state = reactive<Partial<Schema>>({ name: '', unit: '个', is_weighted: false, is_active: true })
+const imageUrl = ref('')
 
 // SKU management — ponytail: simple inline editing
 interface SkuForm { barcode: string; spec_name: string; purchase_price: number; selling_price: number; stock_quantity: number; stock_alert: number }
@@ -35,10 +36,31 @@ const skus = ref<SkuForm[]>([{ barcode: '', spec_name: '默认', purchase_price:
 function addSku() { skus.value.push({ barcode: '', spec_name: '', purchase_price: 0, selling_price: 0, stock_quantity: 0, stock_alert: 10 }) }
 function removeSku(i: number) { if (skus.value.length > 1) skus.value.splice(i, 1) }
 
+const lookupLoading = ref(false)
+async function barcodeLookup(barcode: string) {
+  if (!barcode) return
+  lookupLoading.value = true
+  try {
+    const data = await $fetch(`/api/tenant/${tenantSlug.value}/products/barcode-lookup/?barcode=${barcode}`) as any
+    if (data.found) {
+      if (!state.name) state.name = data.name || ''
+      if (data.image_url) imageUrl.value = data.image_url
+      toast.add({ title: `已识别：${data.name || data.brands || '未知商品'}`, color: 'success', duration: 3000 })
+    } else {
+      toast.add({ title: '未找到该条码的商品信息', color: 'warning' })
+    }
+  } catch {
+    toast.add({ title: '条码查询失败', color: 'error' })
+  } finally {
+    lookupLoading.value = false
+  }
+}
+
 async function onSubmit(event: FormSubmitEvent<Schema>) {
   try {
     const body = {
       ...event.data,
+      image_url: imageUrl.value,
       skus: skus.value.map(s => ({
         ...s,
         spec_attrs: {},
@@ -54,6 +76,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
     emit('created')
     // Reset
     state.name = ''
+    imageUrl.value = ''
     skus.value = [{ barcode: '', spec_name: '默认', purchase_price: 0, selling_price: 0, stock_quantity: 0, stock_alert: 10 }]
   } catch (e: any) {
     toast.add({ title: '添加失败', description: e?.message || '请重试', color: 'error' })
@@ -89,12 +112,16 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
             <span class="text-sm font-medium">SKU 规格</span>
             <UButton icon="i-lucide-plus" size="xs" variant="outline" @click="addSku">添加规格</UButton>
           </div>
-          <div v-for="(sku, i) in skus" :key="i" class="grid grid-cols-6 gap-2 mb-2 p-3 bg-elevated/50 rounded">
+          <div v-for="(sku, i) in skus" :key="i" class="grid grid-cols-8 gap-2 mb-2 p-3 bg-elevated/50 rounded">
             <UInput v-model="sku.spec_name" placeholder="规格名" class="col-span-1" size="xs" />
-            <UInput v-model="sku.barcode" placeholder="条码" class="col-span-1" size="xs" />
+            <div class="col-span-2 flex gap-1">
+              <UInput v-model="sku.barcode" placeholder="条码" class="flex-1" size="xs" />
+              <UButton icon="i-lucide-scan" size="xs" color="primary" variant="soft" :loading="lookupLoading" @click="barcodeLookup(sku.barcode)" />
+            </div>
             <UInput v-model.number="sku.purchase_price" placeholder="进价" class="col-span-1" size="xs" type="number" />
             <UInput v-model.number="sku.selling_price" placeholder="售价" class="col-span-1" size="xs" type="number" />
             <UInput v-model.number="sku.stock_quantity" placeholder="库存" class="col-span-1" size="xs" type="number" />
+            <UInput v-model.number="sku.stock_alert" placeholder="预警" class="col-span-1" size="xs" type="number" />
             <UButton v-if="skus.length > 1" icon="i-lucide-x" size="xs" color="neutral" variant="ghost" class="col-span-1" @click="removeSku(i)" />
           </div>
         </div>

@@ -13,8 +13,13 @@ const neutrals = ['slate', 'gray', 'zinc', 'neutral', 'stone']
 
 const auth = useAuth()
 const user = computed(() => {
-  const name = (auth.user.value as any)?.username || '用户'
-  return { name, avatar: { text: name.charAt(0).toUpperCase() } }
+  const u = auth.user.value as any
+  const name = u?.username || '用户'
+  const seed = u?.id || name
+  return {
+    name,
+    avatar: { src: `https://api.dicebear.com/9.x/lorelei/svg?seed=${seed}` }
+  }
 })
 
 const items = computed<DropdownMenuItem[][]>(() => ([[{
@@ -24,11 +29,11 @@ const items = computed<DropdownMenuItem[][]>(() => ([[{
 }], [{
   label: '个人资料',
   icon: 'i-lucide-user',
-  to: '/settings'
+  to: '/admin/settings'
 }, {
   label: '系统设置',
   icon: 'i-lucide-settings',
-  to: '/settings'
+  to: '/admin/settings'
 }], [{
   label: '主题',
   icon: 'i-lucide-palette',
@@ -108,16 +113,15 @@ const items = computed<DropdownMenuItem[][]>(() => ([[{
 
 <template>
   <UDropdownMenu
+    :key="(auth.user.value as any)?.id"
     :items="items"
     :content="{ align: 'center', collisionPadding: 12 }"
     :ui="{ content: collapsed ? 'w-48' : 'w-(--reka-dropdown-menu-trigger-width)' }"
   >
     <UButton
-      v-bind="{
-        ...user,
-        label: collapsed ? undefined : user?.name,
-        trailingIcon: collapsed ? undefined : 'i-lucide-chevrons-up-down'
-      }"
+      :label="collapsed ? undefined : user.name"
+      :avatar="user.avatar"
+      :trailing-icon="collapsed ? undefined : 'i-lucide-chevrons-up-down'"
       color="neutral"
       variant="ghost"
       block

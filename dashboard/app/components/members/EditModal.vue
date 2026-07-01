@@ -3,7 +3,8 @@ import * as z from 'zod'
 import type { FormSubmitEvent } from '@nuxt/ui'
 import { useAuth } from '~/composables/useAuth'
 
-const emit = defineEmits<{ created: [] }>()
+const props = defineProps<{ member: any }>()
+const emit = defineEmits<{ updated: [] }>()
 const auth = useAuth()
 const toast = useToast()
 const open = ref(false)
@@ -18,24 +19,31 @@ const schema = z.object({
 })
 
 type Schema = z.output<typeof schema>
-const state = reactive<Partial<Schema>>({ name: '', phone: '', card_no: '', remark: '' })
+const state = reactive<Partial<Schema>>({
+  name: props.member.name || '',
+  phone: props.member.phone || '',
+  card_no: props.member.card_no || '',
+  remark: props.member.remark || '',
+})
 
 async function onSubmit(event: FormSubmitEvent<Schema>) {
   try {
-    await $fetch(`/api/tenant/${tenantSlug.value}/members/`, { method: 'POST', body: event.data })
-    toast.add({ title: `会员「${event.data.name}」添加成功`, color: 'success' })
+    await $fetch(`/api/tenant/${tenantSlug.value}/members/${props.member.id}/`, {
+      method: 'PATCH',
+      body: event.data,
+    })
+    toast.add({ title: `会员「${event.data.name}」已更新`, color: 'success' })
     open.value = false
-    emit('created')
-    state.name = ''; state.phone = ''; state.card_no = ''; state.remark = ''
-  } catch (e: any) {
-    toast.add({ title: '添加失败', color: 'error' })
+    emit('updated')
+  } catch {
+    toast.add({ title: '更新失败', color: 'error' })
   }
 }
 </script>
 
 <template>
-  <UModal v-model:open="open" title="新增会员" :ui="{ body: 'flex flex-col items-center gap-4', content: '!max-w-sm' }">
-    <UButton label="新增会员" icon="i-lucide-user-plus" color="primary" />
+  <UModal v-model:open="open" title="编辑会员" :ui="{ body: 'flex flex-col items-center gap-4', content: '!max-w-sm' }">
+    <UButton icon="i-lucide-pencil" size="xs" color="neutral" variant="ghost" />
 
     <template #body>
       <UForm :schema="schema" :state="state" class="space-y-4 w-56" @submit="onSubmit">
@@ -53,7 +61,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
         </UFormField>
         <div class="flex justify-center gap-2 pt-2">
           <UButton label="取消" color="neutral" variant="ghost" @click="open = false" />
-          <UButton label="创建" color="primary" type="submit" />
+          <UButton label="保存" color="primary" type="submit" />
         </div>
       </UForm>
     </template>

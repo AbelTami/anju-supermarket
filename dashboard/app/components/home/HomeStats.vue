@@ -49,7 +49,7 @@ watch([() => (auth.currentTenant.value as any)?.slug, () => props.period, () => 
       :key="index"
       :icon="stat.icon"
       :title="stat.title"
-      to="/customers"
+      :to="['/admin/finance', '/admin/inbox', '/admin/pos', '/admin/customers'][index]"
       variant="subtle"
       :ui="{
         container: 'gap-y-1.5',

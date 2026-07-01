@@ -8,7 +8,7 @@ export default defineEventHandler(async (event) => {
     refresh: string
     user: Record<string, unknown>
     tenants: Record<string, unknown>[]
-  }>(`http://localhost:8000/api/auth/login/`, {
+  }>(`${config.apiBase}/api/auth/login/`, {
     method: 'POST',
     body,
     headers: { 'Content-Type': 'application/json' },
@@ -17,12 +17,14 @@ export default defineEventHandler(async (event) => {
   // Set JWT as httpOnly cookies
   setCookie(event, 'access_token', resp.access, {
     httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
     sameSite: 'lax',
     path: '/',
     maxAge: 60 * 120, // 2 hours
   })
   setCookie(event, 'refresh_token', resp.refresh, {
     httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
     sameSite: 'lax',
     path: '/',
     maxAge: 60 * 60 * 24 * 7, // 7 days

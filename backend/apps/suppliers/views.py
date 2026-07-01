@@ -1,13 +1,14 @@
-from common.permissions import TenantAccessPermission
+from common.permissions import IsTenantUser
 from rest_framework import viewsets
 from rest_framework.filters import OrderingFilter, SearchFilter
+from rest_framework.permissions import IsAuthenticated
 
 from .models import Supplier
 from .serializers import SupplierSerializer
 
 
 class SupplierViewSet(viewsets.ModelViewSet):
-    permission_classes = [TenantAccessPermission]
+    permission_classes = [IsAuthenticated, IsTenantUser]
     serializer_class = SupplierSerializer
     filter_backends = [SearchFilter, OrderingFilter]
     search_fields = ['name', 'contact', 'phone']

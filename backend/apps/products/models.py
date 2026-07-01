@@ -24,6 +24,7 @@ class Product(TenantAwareModel):
     name = models.CharField(max_length=200, verbose_name='商品名称')
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True, related_name='products', verbose_name='分类')
     image = models.ImageField(upload_to='products/', null=True, blank=True, verbose_name='商品图片')
+    image_url = models.URLField(max_length=500, blank=True, default='', verbose_name='远程图片地址')
     unit = models.CharField(max_length=20, default='个', verbose_name='单位')
     is_weighted = models.BooleanField(default=False, verbose_name='称重商品')
     is_active = models.BooleanField(default=True, verbose_name='上架')
@@ -43,7 +44,7 @@ class ProductSKU(TenantAwareModel):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='skus', verbose_name='所属商品')
     barcode = models.CharField(max_length=100, unique=True, verbose_name='条码')
     spec_name = models.CharField(max_length=200, default='默认', verbose_name='规格名称')
-    spec_attrs = models.JSONField(default=dict, verbose_name='规格属性')
+    spec_attrs = models.JSONField(default=dict, verbose_name='规格属性')  # flat dict of str→str; validate at serializer level
     purchase_price = models.DecimalField(max_digits=10, decimal_places=2, default=0, verbose_name='进货价')
     selling_price = models.DecimalField(max_digits=10, decimal_places=2, default=0, verbose_name='零售价')
     stock_quantity = models.DecimalField(max_digits=12, decimal_places=3, default=0, verbose_name='当前库存')

@@ -1,12 +1,10 @@
-/** Catch-all proxy for tenant-scoped Django API calls. Auth routes have their own handlers and take precedence. */
+/** Catch-all proxy for customer-facing shop API calls.
+ *  Does NOT require admin JWT — passes through customer member tokens as-is.
+ *  SSRF protection, request size limits, and path sanitization included.
+ */
 export default defineEventHandler(async (event) => {
-  const accessToken = getCookie(event, 'access_token')
   const slug = getRouterParam(event, 'slug')
   const rest = getRouterParam(event, '_')
-
-  if (!accessToken) {
-    throw createError({ statusCode: 401, message: 'Not authenticated' })
-  }
 
   // SSRF protection: validate slug format (alphanumeric + hyphen + underscore only)
   if (!slug || !/^[a-z0-9_-]+$/i.test(slug)) {
@@ -20,7 +18,12 @@ export default defineEventHandler(async (event) => {
   const djangoUrl = `${backendUrl}/api/${slug}/${pathSuffix}`
   const method = event.method
 
-  // Handle multipart file uploads
+  // Request size limit: 2 MB
+  const contentLength = parseInt(getHeader(event, 'content-length') || '0', 10)
+  if (contentLength > 2 * 1024 * 1024) {
+    throw createError({ statusCode: 413, message: 'Request too large' })
+  }
+
   const contentType = getHeader(event, 'content-type') || ''
   const isMultipart = contentType.includes('multipart/form-data')
 
@@ -35,9 +38,14 @@ export default defineEventHandler(async (event) => {
   }
 
   try {
-    const headers: Record<string, string> = {
-      'Authorization': `Bearer ${accessToken}`,
+    const headers: Record<string, string> = {}
+
+    // Pass through customer member token if present (Authorization: Token xxx)
+    const memberAuth = getHeader(event, 'authorization')
+    if (memberAuth && memberAuth.startsWith('Token ')) {
+      headers['Authorization'] = memberAuth
     }
+
     if (isMultipart) {
       headers['Content-Type'] = contentType
     } else {
@@ -53,7 +61,6 @@ export default defineEventHandler(async (event) => {
     return resp
   } catch (err: any) {
     const statusCode = err.statusCode || 500
-    // Forward Django validation errors to the frontend
     const errBody = err.data || err.message
     throw createError({
       statusCode,

@@ -5,13 +5,25 @@ import { getPaginationRowModel } from '@tanstack/table-core'
 import { useAuth } from '~/composables/useAuth'
 
 const UButton = resolveComponent('UButton')
+const UDropdownMenu = resolveComponent('UDropdownMenu')
 const auth = useAuth()
+const toast = useToast()
 
 const search = ref('')
 const tenantSlug = computed(() => (auth.currentTenant.value as any)?.slug || '')
 const apiUrl = () => tenantSlug.value ? `/api/tenant/${tenantSlug.value}/suppliers` : ''
 
 const { data, status, refresh } = useFetch(apiUrl, { lazy: true, server: false, watch: [tenantSlug] })
+
+async function deleteSupplier(id: number, name: string) {
+  try {
+    await $fetch(`/api/tenant/${tenantSlug.value}/suppliers/${id}/`, { method: 'DELETE' })
+    toast.add({ title: `供应商「${name}」已删除`, color: 'success' })
+    refresh()
+  } catch {
+    toast.add({ title: '删除失败', color: 'error' })
+  }
+}
 
 const columns: TableColumn<any>[] = [
   { accessorKey: 'name', header: '供应商名称' },
@@ -21,7 +33,9 @@ const columns: TableColumn<any>[] = [
   { accessorKey: 'remark', header: '备注' },
   {
     accessorKey: 'actions', header: '',
-    cell: () => h(UButton, { icon: 'i-lucide-ellipsis-vertical', color: 'neutral', variant: 'ghost', size: 'xs' }),
+    cell: ({ row }: any) => h(UDropdownMenu, {
+      items: [[{ label: '删除', icon: 'i-lucide-trash', color: 'error', onSelect: () => deleteSupplier(row.original.id, row.original.name) }]],
+    }, () => h(UButton, { icon: 'i-lucide-ellipsis-vertical', color: 'neutral', variant: 'ghost', size: 'xs' })),
   },
 ]
 </script>

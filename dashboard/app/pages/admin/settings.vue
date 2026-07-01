@@ -4,20 +4,20 @@ import type { NavigationMenuItem } from '@nuxt/ui'
 const links = [[{
   label: '超市信息',
   icon: 'i-lucide-store',
-  to: '/settings',
+  to: '/admin/settings',
   exact: true
 }, {
   label: '员工账号',
   icon: 'i-lucide-users',
-  to: '/settings/members'
+  to: '/admin/settings/members'
 }, {
   label: '角色权限',
   icon: 'i-lucide-shield',
-  to: '/settings/notifications'
+  to: '/admin/settings/notifications'
 }, {
   label: '打印模板',
   icon: 'i-lucide-printer',
-  to: '/settings/security'
+  to: '/admin/settings/security'
 }]] satisfies NavigationMenuItem[][]
 </script>
 

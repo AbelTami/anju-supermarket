@@ -4,8 +4,9 @@ export default defineEventHandler(async (event) => {
   if (!accessToken) {
     throw createError({ statusCode: 401, message: 'Not authenticated' })
   }
+  const config = useRuntimeConfig()
 
-  return $fetch(`http://localhost:8000/api/auth/profile/`, {
+  return $fetch(`${config.apiBase}/api/auth/profile/`, {
     headers: {
       Authorization: `Bearer ${accessToken}`,
     },

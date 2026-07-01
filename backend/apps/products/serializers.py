@@ -29,22 +29,33 @@ class ProductSKUSerializer(serializers.ModelSerializer):
 
 
 class ProductListSerializer(serializers.ModelSerializer):
-    """Product list — flat with category name."""
+    """Product list — flat with category name and min price from SKUs."""
     category_name = serializers.CharField(source='category.name', read_only=True, default='')
     sku_count = serializers.IntegerField(source='skus.count', read_only=True, default=0)
+    price = serializers.SerializerMethodField()
 
     class Meta:
         model = Product
-        fields = ['id', 'name', 'category_name', 'unit', 'image', 'is_weighted', 'is_active', 'sku_count', 'created_at']
+        fields = ['id', 'name', 'category', 'category_name', 'price', 'unit', 'image', 'image_url', 'is_weighted', 'is_active', 'sku_count', 'created_at']
+
+    def get_price(self, obj):
+        # Return the lowest selling price among SKUs
+        prices = [s.selling_price for s in obj.skus.all() if s.selling_price > 0]
+        return min(prices) if prices else 0
 
 
 class ProductDetailSerializer(serializers.ModelSerializer):
     category = CategorySerializer(read_only=True)
     skus = ProductSKUSerializer(many=True, read_only=True)
+    price = serializers.SerializerMethodField()
 
     class Meta:
         model = Product
-        fields = ['id', 'name', 'category', 'unit', 'image', 'is_weighted', 'is_active', 'skus', 'created_at', 'updated_at']
+        fields = ['id', 'name', 'category', 'price', 'unit', 'image', 'image_url', 'is_weighted', 'is_active', 'skus', 'created_at', 'updated_at']
+
+    def get_price(self, obj):
+        prices = [s.selling_price for s in obj.skus.all() if s.selling_price > 0]
+        return min(prices) if prices else 0
 
 
 class ProductWriteSerializer(serializers.ModelSerializer):
@@ -52,7 +63,7 @@ class ProductWriteSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Product
-        fields = ['name', 'category', 'unit', 'image', 'is_weighted', 'is_active', 'skus']
+        fields = ['name', 'category', 'unit', 'image', 'image_url', 'is_weighted', 'is_active', 'skus']
 
     def create(self, validated_data):
         skus_data = validated_data.pop('skus', [])

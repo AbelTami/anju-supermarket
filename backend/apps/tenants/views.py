@@ -1,5 +1,6 @@
-from common.permissions import TenantAccessPermission
+from common.permissions import IsTenantUser
 from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -9,7 +10,7 @@ from .serializers import TenantSerializer
 
 class TenantDetailView(APIView):
     """GET/PATCH /api/{slug}/ — current tenant info."""
-    permission_classes = [TenantAccessPermission]
+    permission_classes = [IsAuthenticated, IsTenantUser]
 
     def get(self, request, **kwargs):
         return Response(TenantSerializer(request.tenant).data)

@@ -96,7 +96,7 @@ async function settle(method: string) {
         subtotal: (item.price * item.quantity).toFixed(2),
       })),
     }
-    await useFetch(orderApiUrl.value, { method: 'POST', body })
+    await $fetch(orderApiUrl.value, { method: 'POST', body })
     toast.add({ title: `${method === 'cash' ? '现金' : method === 'wechat' ? '微信' : method === 'alipay' ? '支付宝' : '会员卡'}收款 ¥${totalAmount.value.toFixed(2)}`, color: 'success' })
     clearCart()
   } catch {

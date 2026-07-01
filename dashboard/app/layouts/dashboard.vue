@@ -10,71 +10,72 @@ const open = ref(false)
 const links = [[{
   label: '首页仪表盘',
   icon: 'i-lucide-house',
-  to: '/',
+  to: '/admin',
+  exact: true,
   onSelect: () => { open.value = false }
 }, {
   label: '收银/POS',
   icon: 'i-lucide-shopping-cart',
-  to: '/pos',
+  to: '/admin/pos',
   onSelect: () => { open.value = false }
 }, {
   label: '商品管理',
   icon: 'i-lucide-package',
-  to: '/products',
+  to: '/admin/products',
   onSelect: () => { open.value = false }
 }, {
   label: '库存管理',
   icon: 'i-lucide-warehouse',
-  to: '/inventory',
+  to: '/admin/inventory',
   onSelect: () => { open.value = false }
 }, {
   label: '会员管理',
   icon: 'i-lucide-users',
-  to: '/customers',
+  to: '/admin/customers',
   onSelect: () => { open.value = false }
 }, {
   label: '供应商管理',
   icon: 'i-lucide-truck',
-  to: '/suppliers',
+  to: '/admin/suppliers',
   onSelect: () => { open.value = false }
 }, {
   label: '员工管理',
   icon: 'i-lucide-user-round-check',
-  to: '/employees',
+  to: '/admin/employees',
   onSelect: () => { open.value = false }
 }, {
   label: '财务/报表',
   icon: 'i-lucide-chart-pie',
-  to: '/finance',
+  to: '/admin/finance',
   onSelect: () => { open.value = false }
 }, {
-  label: '消息通知',
+  label: '订单记录',
   icon: 'i-lucide-bell',
-  to: '/inbox',
+  to: '/admin/inbox',
   badge: '0',
   onSelect: () => { open.value = false }
 }], [{
   label: '系统设置',
   icon: 'i-lucide-settings',
-  to: '/settings',
+  to: '/admin/settings',
   defaultOpen: false,
   type: 'trigger',
   children: [{
     label: '超市信息',
-    to: '/settings',
+    to: '/admin/settings',
     exact: true,
     onSelect: () => { open.value = false }
   }, {
     label: '员工账号',
-    to: '/settings/members',
+    to: '/admin/settings/members',
     onSelect: () => { open.value = false }
   }, {
     label: '角色权限',
-    to: '/settings/notifications',
+    to: '/admin/settings/notifications',
     onSelect: () => { open.value = false }
   }, {
     label: '打印模板',
-    to: '/settings/security',
+    to: '/admin/settings/security',
     onSelect: () => { open.value = false }
   }]
 }]] satisfies NavigationMenuItem[][]
