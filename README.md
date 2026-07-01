@@ -1,78 +1,106 @@
-# 安居超市管理系统 (Anju Supermarket Management System)
+# 安居超市管理系统 (Anju Supermarket)
 
-SAAS 多租户前后端分离超市管理系统。基于 **Nuxt 4 + Vue 3 + Nuxt UI v4** 前端，**Django + Django REST Framework** 后端，**PostgreSQL** 数据库。
+SAAS 多租户前后端分离超市管理系统。**Nuxt 4 + Nuxt UI v4** 前端，**Django REST Framework** 后端，**PostgreSQL** 数据库。
 
 ## 技术栈
 
-| 层 | 技术 | 版本 |
-|---|---|---|
-| 前端框架 | Nuxt | 4.4.x |
-| UI 组件 | Nuxt UI (Tailwind CSS v4) | 4.x |
-| 前端语言 | TypeScript / Vue 3 | 3.5.x |
-| 图表 | Unovis | — |
-| 后端框架 | Django | 5.x |
-| API | Django REST Framework | — |
-| 认证 | JWT (simplejwt) | — |
-| 数据库 | PostgreSQL | 18 |
-| 包管理 | pnpm | 11.x |
+| 层 | 技术 |
+|---|---|
+| 前端框架 | Nuxt 4.4 + Vue 3.5 + TypeScript |
+| UI | Nuxt UI v4 + Tailwind CSS v4 |
+| 后端 | Django 5/6 + DRF |
+| 认证 | JWT (simplejwt) 管理端 + Token 会员端 |
+| 数据库 | PostgreSQL 18 |
+| 安全 | nuxt-security (CSP/限速/请求限制) |
 
 ## 项目结构
 
 ```
 anju-supermarket/
-├── dashboard/          # 前端 Nuxt 4 项目
-│   ├── app/            # 页面、组件、composables
-│   │   ├── pages/      # 路由页面
-│   │   ├── components/ # Vue 组件
-│   │   ├── composables/# useAuth, useDashboard
-│   │   ├── layouts/    # default.vue, auth.vue
-│   │   └── middleware/ # auth.global.ts
-│   ├── server/         # BFF 代理层
-│   │   └── api/
-│   │       ├── auth/   # 登录/注册/刷新
-│   │       └── tenant/ # 租户 API 代理
-│   └── nuxt.config.ts
-├── backend/            # 后端 Django 项目
-│   ├── config/         # Django 配置
-│   ├── apps/           # 业务模块
-│   │   ├── tenants/    # 租户管理
-│   │   ├── accounts/   # 用户与认证
-│   │   ├── products/   # 商品管理 (SPU+SKU)
-│   │   ├── inventory/  # 库存管理
-│   │   ├── pos/        # 收银/POS
-│   │   ├── members/    # 会员管理
-│   │   ├── suppliers/  # 供应商管理
-│   │   ├── employees/  # 员工管理
-│   │   └── finance/    # 财务/报表
-│   ├── common/         # 多租户中间件、权限
-│   └── manage.py
+├── dashboard/              # Nuxt 4 前端
+│   ├── app/
+│   │   ├── pages/
+│   │   │   ├── [slug]/     # 🆕 顾客前台 (门店)
+│   │   │   │   ├── index.vue           # 商品列表
+│   │   │   │   ├── product/[id].vue    # 商品详情
+│   │   │   │   ├── cart.vue            # 购物车
+│   │   │   │   ├── checkout.vue        # 结算
+│   │   │   │   ├── orders.vue          # 我的订单
+│   │   │   │   ├── member.vue          # 会员中心
+│   │   │   │   └── login.vue           # 顾客登录
+│   │   │   └── admin/      # 管理后台
+│   │   │       ├── index.vue           # 仪表盘
+│   │   │       ├── pos.vue             # 收银台
+│   │   │       ├── products.vue        # 商品管理
+│   │   │       ├── inventory.vue       # 库存管理
+│   │   │       ├── customers.vue       # 会员管理
+│   │   │       ├── suppliers.vue       # 供应商管理
+│   │   │       ├── employees.vue       # 员工管理
+│   │   │       ├── finance.vue         # 财务/报表
+│   │   │       └── settings/           # 系统设置
+│   │   ├── components/     # Vue 组件
+│   │   ├── composables/    # useAuth, useShopApi, useDashboard
+│   │   └── layouts/        # dashboard.vue, shop.vue, auth.vue
+│   └── server/api/
+│       ├── auth/           # 管理端 BFF 代理 (JWT Cookie)
+│       ├── tenant/         # 管理端租户 API 代理
+│       └── shop/           # 🆕 顾客端 BFF 代理 (Token 透传)
+├── backend/                # Django 后端
+│   ├── apps/
+│   │   ├── tenants/        # 租户管理
+│   │   ├── accounts/       # 用户与认证
+│   │   ├── products/       # 商品管理 (SPU+SKU + 条码查询)
+│   │   ├── inventory/      # 库存管理
+│   │   ├── pos/            # 收银/订单
+│   │   ├── members/        # 会员管理 (含顾客登录)
+│   │   ├── suppliers/      # 供应商管理
+│   │   ├── employees/      # 员工管理
+│   │   └── finance/        # 财务/报表
+│   └── common/             # 多租户中间件、权限
 └── README.md
 ```
 
+## 路由架构
+
+| 路由 | 用途 | Layout | 认证 |
+|---|---|---|---|
+| `/` | 默认跳转到门店前台 | — | 公开 |
+| `/{slug}` | 门店首页 (商品浏览) | `shop` | 公开 |
+| `/{slug}/product/{id}` | 商品详情 | `shop` | 公开 |
+| `/{slug}/cart` | 购物车 | `shop` | 公开 |
+| `/{slug}/checkout` | 结算 | `shop` | 公开 |
+| `/{slug}/login` | 顾客登录 | `shop` | 公开 |
+| `/{slug}/orders` | 订单历史 | `shop` | 会员 |
+| `/{slug}/member` | 会员中心 | `shop` | 会员 |
+| `/admin` | 仪表盘 | `dashboard` | 管理员 |
+| `/admin/pos` | 收银台 | `dashboard` | 管理员 |
+| `/admin/products` | 商品管理 | `dashboard` | 管理员 |
+| `/admin/*` | 其他管理页面 | `dashboard` | 管理员 |
+
 ## 功能模块
 
-| 模块 | 功能 | API 端点 |
-|---|---|---|
-| 🏠 首页仪表盘 | 实时营业额/订单统计、趋势图、近期订单 | `/api/{slug}/daily-summaries/` |
-| 💰 收银/POS | 商品搜索、购物车、现金/微信/支付宝/会员结算 | `/api/{slug}/orders/` |
-| 📦 商品管理 | 分类管理、SPU/SKU、条码、多规格 | `/api/{slug}/products/` |
-| 📋 库存管理 | 入库/出库、库存流水、实时库存更新 | `/api/{slug}/inventory-records/` |
-| 👥 会员管理 | 会员注册、积分、储值余额 | `/api/{slug}/members/` |
-| 🚚 供应商管理 | 供应商信息、联系人 | `/api/{slug}/suppliers/` |
-| 👤 员工管理 | 添加员工、角色分配 | `/api/{slug}/employees/` |
-| 📊 财务/报表 | 日/周/月聚合、营业额/订单统计 | `/api/{slug}/daily-summaries/overview/` |
-| ⚙️ 系统设置 | 超市信息、员工账号、角色权限、打印模板 | `/api/{slug}/` |
-| 🔐 认证 | JWT 登录/注册、密码修改 | `/api/auth/` |
+### 🏪 顾客前台
+| 功能 | 说明 |
+|---|---|
+| 商品浏览 | 分类筛选、关键词搜索 |
+| 商品详情 | 图片、规格选择、加购 |
+| 购物车 | 加减商品、实时计价 |
+| 结算 | 到店支付 |
+| 订单追踪 | 订单列表、展开明细 |
+| 会员中心 | 积分、余额、消费记录 |
+| 会员登录 | 手机号 + 密码 |
 
-### 角色权限
-
-| 角色 | 商品 | 库存 | POS | 会员 | 供应商 | 员工 | 财务 | 设置 |
-|---|---|---|---|---|---|---|---|---|
-| 超级管理员 | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
-| 店长 | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ |
-| 收银员 | ❌ | ❌ | ✅ | ✅ | ❌ | ❌ | ❌ | ❌ |
-| 库管 | ✅ | ✅ | ❌ | ❌ | ✅ | ❌ | ❌ | ❌ |
-| 财务 | ❌ | ❌ | ❌ | ❌ | ✅ | ❌ | ✅ | ❌ |
+### 🖥️ 管理后台
+| 模块 | 功能 |
+|---|---|
+| 收银/POS | 扫码/搜索商品、购物车、四种支付方式 |
+| 商品管理 | 分类、SPU/SKU、条码、图片上传、扫码录入 |
+| 库存管理 | 入库/出库流水、库存预警 |
+| 会员管理 | 会员 CRUD、积分、储值 |
+| 供应商管理 | 供应商信息 |
+| 员工管理 | 员工账号、角色 |
+| 财务/报表 | 日/周/月营业额统计 |
+| 系统设置 | 超市信息、账号管理 |
 
 ## 快速启动
 
@@ -85,59 +113,75 @@ anju-supermarket/
 | pnpm | 11+ |
 | PostgreSQL | 16+ |
 
-### 4 步启动
+### 启动步骤
 
 ```bash
 # 1. 克隆项目
-git clone <your-repo-url>
+git clone https://github.com/AbelTami/anju-supermarket.git
 cd anju-supermarket
 
-# 2. 启动后端
+# 2. 配置环境变量
+cp backend/.env.example backend/.env
+# 编辑 backend/.env 填入数据库密码和密钥
+
+# 3. 创建数据库 & 导入数据
+createdb -U postgres anju_db
 cd backend
-pip install -r requirements/base.txt
-cp .env.example .env          # 按需修改数据库密码
-psql -U postgres -c "CREATE DATABASE anju_db;"
+python -m pip install -r requirements/base.txt
 python manage.py migrate
+psql -U postgres anju_db < seed.sql    # 可选：导入测试数据
+
+# 4. 启动后端
 python manage.py runserver 8000
 
-# 3. 启动前端 (新终端)
+# 5. 启动前端 (新终端)
 cd dashboard
 pnpm install
 pnpm dev
 # → 打开 http://localhost:3000
 ```
 
-### 导入测试数据（可选）
+### 导入测试数据
 
 ```bash
 cd backend
 psql -U postgres anju_db < seed.sql
 ```
 
-导入后包含：1 个超市 + 6 个商品（含 SKU）+ 2 个会员 + 2 个供应商 + 37 笔订单（跨 14 天）。
+导入后包含：1 个超市 + 14 件商品 + 2 个会员 + 2 个供应商 + 44 笔订单。
 
 ## 测试账号
 
-| 角色 | 账号 | 密码 | 超市 |
+| 对象 | 账号 | 密码 | 说明 |
 |---|---|---|---|
-| 超级管理员 | anjuadmin | 123456789 | 安居生活超市 |
-| 超级管理员 | admin | admin123 | — |
-
-> 注册页面 `http://localhost:3000/auth/register` 可自助创建新超市。
+| 管理员 | `boss` | `210414` | 超级管理员 |
+| 测试会员 | `13800001001` | `123456` | 张三，100积分，¥50余额 |
 
 ## API 架构
 
 ```
-浏览器 → Nuxt BFF (:3000) → Django REST (:8000) → PostgreSQL
-         │                       │
-    登录/注册/token刷新      业务 API (租户隔离)
-    Cookie: access_token      Authorization: Bearer
-    Cookie: refresh_token     租户通过 URL: /api/{slug}/...
+浏览器 ──→ Nuxt BFF (:3000) ──→ Django REST (:8000) ──→ PostgreSQL
+  │              │                        │
+  │    /api/auth/*  (管理端JWT)     /api/{slug}/*  (业务API)
+  │    /api/tenant/* (管理端代理)    租户隔离: TenantMiddleware
+  │    /api/shop/*   (🆕 顾客端代理)
+  │
+  └── 直连 Django (仅图片加载, CORS 白名单)
 ```
 
-- **BFF 代理:** `dashboard/server/api/tenant/[slug]/[...].ts` 自动转发所有租户 API
-- **认证:** Nuxt middleware 全局守卫，未登录自动跳转 `/auth/login`
-- **多租户:** Django TenantMiddleware 从 URL 提取 slug，所有查询自动过滤
+- **管理端认证:** JWT httpOnly Cookie，Nuxt BFF 代理转发
+- **顾客端认证:** Member Token + Cookie，新 BFF `/api/shop/` 代理
+- **多租户:** Django TenantMiddleware 从 URL slug 提取租户，自动过滤
+- **条码录入:** Open Food Facts API 自动拉取商品名称和图片
+
+## 安全
+
+- CSP、XSS、请求大小限制（nuxt-security）
+- API 限流（DRF Throttling）
+- Cookie `httpOnly` / `sameSite` / `secure`
+- 密码强度校验（最少 8 位，常见密码黑名单）
+- CORS 仅允许受信来源
+- `SECRET_KEY` / `DB_PASSWORD` 环境变量强制（无硬编码默认值）
 
 ## 环境变量
 
@@ -146,23 +190,12 @@ psql -U postgres anju_db < seed.sql
 ```env
 DB_NAME=anju_db
 DB_USER=postgres
-DB_PASSWORD=your_password
+DB_PASSWORD=your_password_here
 DB_HOST=localhost
 DB_PORT=5432
-DJANGO_SECRET_KEY=your-secret
+DJANGO_SECRET_KEY=change-this-in-production
+DJANGO_DEBUG=True
 ```
-
-### 前端 `nuxt.config.ts`
-
-BFF 代理目标地址硬编码 `http://localhost:8000`，生产环境需修改。
-
-## 开发约定
-
-- 前端全局遵循 [Nuxt UI v4 规范](https://ui.nuxt.com)
-- 图标使用 `i-lucide-*` (Lucide 图标集)
-- 语义色：`text-default`、`bg-elevated`、`text-dimmed` 等
-- 后端遵循 RESTful API 设计
-- 所有模型继承 `TenantAwareModel` 自动多租户隔离
 
 ## License
 
