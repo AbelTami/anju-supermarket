@@ -189,11 +189,24 @@ psql -U postgres anju_db < seed.sql
 
 ## 安全
 
-- API 限流（DRF Throttling）
-- Cookie `httpOnly` / `sameSite` / `secure`
-- 密码强度校验（最少 8 位，常见密码黑名单）
-- CORS 仅允许受信来源
-- `SECRET_KEY` / `DB_PASSWORD` 环境变量强制（无硬编码默认值）
+### 认证与授权
+- **管理端:** JWT httpOnly Cookie（`SameSite=Strict`，生产环境 `Secure`）
+- **会员端:** Member Token，30 天过期，登录刷新
+- **密码:** Django `pbkdf2_sha256` 哈希存储，最少 8 位 + 常见密码黑名单
+- **权限:** 订单创建需会员 Token 或管理员认证；员工管理仅超管/经理可写
+
+### 防护措施
+- DRF 限流（匿名 30/分钟，用户 100/分钟，登录 5/分钟）
+- 请求体 5MB 上限（防止 DoS）
+- CORS 白名单仅允许受信来源
+- 会员手机号自动脱敏（非员工看到 `138****0001`）
+- 外部 API 响应校验（URL scheme 检查 + HTML 转义）
+- 租户 Slug 正则校验，无效请求返回 404
+
+### 安全头（生产环境）
+- `Content-Type: nosniff` / `X-XSS-Protection`
+- `SECRET_KEY` / `DB_PASSWORD` 环境变量强制，无硬编码默认值
+- 所有依赖精确锁定版本
 
 ## 环境变量
 

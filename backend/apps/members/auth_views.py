@@ -2,6 +2,7 @@
 import secrets
 
 from common.permissions import IsTenantUser
+from django.utils import timezone
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.throttling import ScopedRateThrottle
@@ -30,7 +31,8 @@ class MemberLoginView(APIView):
         member = serializer.validated_data['member']
         token = secrets.token_hex(32)
         member.token = token
-        member.save(update_fields=['token'])
+        member.token_created_at = timezone.now()
+        member.save(update_fields=['token', 'token_created_at'])
 
         return Response({
             'token': token,
@@ -56,4 +58,10 @@ class MemberProfileView(APIView):
         except Member.DoesNotExist:
             return Response({'error': '令牌无效或已过期'}, status=status.HTTP_401_UNAUTHORIZED)
 
-        return Response(MemberSerializer(member).data, status=status.HTTP_200_OK)
+        if not member.is_token_valid():
+            return Response({'error': '令牌已过期，请重新登录'}, status=status.HTTP_401_UNAUTHORIZED)
+
+        return Response(
+            MemberSerializer(member, context={'show_full_phone': True}).data,
+            status=status.HTTP_200_OK,
+        )

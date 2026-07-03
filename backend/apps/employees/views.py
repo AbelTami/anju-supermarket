@@ -1,5 +1,5 @@
 """Employee views — users within a tenant."""
-from common.permissions import IsTenantUser
+from common.permissions import IsSuperAdminOrManager, IsTenantUser
 from django.db.models import OuterRef, Subquery
 from rest_framework import status, viewsets
 from rest_framework.filters import OrderingFilter, SearchFilter
@@ -13,10 +13,14 @@ from .serializers import EmployeeAddSerializer, EmployeeSerializer
 class EmployeeViewSet(viewsets.ModelViewSet):
     """List/create/delete tenant employees."""
 
-    permission_classes = [IsAuthenticated, IsTenantUser]
     filter_backends = [SearchFilter, OrderingFilter]
     search_fields = ['username', 'first_name', 'phone']
     ordering_fields = ['username', 'date_joined']
+
+    def get_permissions(self):
+        if self.action in ('create', 'update', 'partial_update', 'destroy'):
+            return [IsAuthenticated(), IsTenantUser(), IsSuperAdminOrManager()]
+        return [IsAuthenticated(), IsTenantUser()]
 
     def get_queryset(self):
         tenant_roles = UserTenant.objects.filter(user=OuterRef('pk'), tenant=self.request.tenant)

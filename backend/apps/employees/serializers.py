@@ -43,7 +43,20 @@ class EmployeeAddSerializer(serializers.Serializer):
 
     def create(self, validated_data):
         tenant = self.context['request'].tenant
+        request_user = self.context['request'].user
         username = validated_data['username']
+        role = validated_data['role']
+
+        # Only super_admin can assign the super_admin role
+        if role == 'super_admin':
+            current_role = (
+                UserTenant.objects
+                .filter(user=request_user, tenant=tenant)
+                .values_list('role', flat=True)
+                .first()
+            )
+            if current_role != 'super_admin':
+                raise serializers.ValidationError({'role': '只有超级管理员才能设置超级管理员角色'})
 
         user = User.objects.filter(username=username).first()
         if not user:
@@ -52,5 +65,5 @@ class EmployeeAddSerializer(serializers.Serializer):
         if UserTenant.objects.filter(user=user, tenant=tenant).exists():
             raise serializers.ValidationError({'username': '该用户已是超市员工'})
 
-        UserTenant.objects.create(user=user, tenant=tenant, role=validated_data['role'])
+        UserTenant.objects.create(user=user, tenant=tenant, role=role)
         return user

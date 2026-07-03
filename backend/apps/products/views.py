@@ -1,5 +1,7 @@
 """Product views — list, detail, create/update/delete."""
+import html
 import re
+from urllib.parse import urlparse
 
 import requests
 
@@ -77,7 +79,7 @@ class ProductViewSet(viewsets.ModelViewSet):
             return Response({'error': '无效条码'}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
-            resp = requests.get(f'{OPEN_FOOD_FACTS_URL}{barcode}.json', timeout=10,
+            resp = requests.get(f'{OPEN_FOOD_FACTS_URL}{barcode}.json', timeout=5,
                                 headers={'User-Agent': 'AnjuSupermarket/1.0'})
             resp.raise_for_status()
             data = resp.json()
@@ -88,10 +90,15 @@ class ProductViewSet(viewsets.ModelViewSet):
             return Response({'found': False, 'message': '未找到该条码的商品信息'})
 
         product = data['product']
+        image_url = product.get('image_url', '')
+        if image_url:
+            parsed = urlparse(image_url)
+            if parsed.scheme not in ('http', 'https'):
+                image_url = ''
         return Response({
             'found': True,
-            'name': product.get('product_name', ''),
-            'image_url': product.get('image_url', ''),
+            'name': html.escape(product.get('product_name', '')),
+            'image_url': image_url,
             'brands': product.get('brands', ''),
             'categories': product.get('categories', ''),
             'quantity': product.get('quantity', ''),

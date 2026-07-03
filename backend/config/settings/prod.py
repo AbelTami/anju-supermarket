@@ -4,8 +4,10 @@ import os
 from .base import *  # noqa: F403
 
 DEBUG = False
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '').split(',')
-SECRET_KEY = os.environ['DJANGO_SECRET_KEY']
+ALLOWED_HOSTS = [host.strip() for host in os.environ.get('ALLOWED_HOSTS', '').split(',') if host.strip()]
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
+if not SECRET_KEY:
+    raise RuntimeError('DJANGO_SECRET_KEY environment variable is required and must not be empty')
 
 # Security hardening
 SECURE_SSL_REDIRECT = True
@@ -18,6 +20,10 @@ SECURE_HSTS_PRELOAD = True
 # CORS — restrict to frontend origin
 CORS_ALLOW_ALL_ORIGINS = False
 CORS_ALLOWED_ORIGINS = os.environ.get('CORS_ORIGINS', '').split(',')
+
+# Additional security headers
+SECURE_CONTENT_TYPE_NOSNIFF = True
+SECURE_BROWSER_XSS_FILTER = True
 
 # JWT cookies — secure in production
 SIMPLE_JWT['AUTH_COOKIE_SECURE'] = True  # type: ignore

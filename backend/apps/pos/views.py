@@ -1,8 +1,8 @@
 """POS views."""
-from common.permissions import IsTenantUser
+from common.permissions import HasMemberToken, IsTenantUser
 from rest_framework import viewsets
 from rest_framework.filters import OrderingFilter
-from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.permissions import IsAuthenticated
 
 from .models import Order
 from .serializers import OrderCreateSerializer, OrderDetailSerializer, OrderListSerializer
@@ -27,7 +27,7 @@ class OrderViewSet(viewsets.ModelViewSet):
 
     def get_permissions(self):
         if self.action == 'create':
-            return [AllowAny()]
+            return [IsTenantUser(), (HasMemberToken | IsAuthenticated)()]
         if self.action == 'list':
             return [IsTenantUser()]
         return [IsAuthenticated(), IsTenantUser()]

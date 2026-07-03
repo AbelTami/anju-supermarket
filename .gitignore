@@ -1,5 +1,7 @@
 # Dependencies
 dashboard/node_modules/
+__pycache__/
+*.pyc
 backend/**/__pycache__/
 backend/**/*.pyc
 *.pyo
@@ -24,7 +26,9 @@ Thumbs.db
 # Django
 backend/static/
 backend/media/
+media/
 *.sqlite3
 
 # Lock
 pnpm-lock.yaml
+nul
