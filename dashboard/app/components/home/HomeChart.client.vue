@@ -58,7 +58,7 @@ const xTicks = (i: number) => {
   return formatDate(data.value[i].date)
 }
 
-const template = (d: DataRecord) => `${formatDate(d.date)}: ${formatNumber(d.amount)}`
+const template = (d: DataRecord) => d ? `${formatDate(d.date)}: ${formatNumber(d.amount)}` : ''
 </script>
 
 <template>
@@ -75,6 +75,7 @@ const template = (d: DataRecord) => `${formatDate(d.date)}: ${formatNumber(d.amo
     </template>
 
     <VisXYContainer
+      v-if="data.length > 0"
       :data="data"
       :padding="{ top: 40 }"
       class="h-96"

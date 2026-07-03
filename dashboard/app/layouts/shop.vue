@@ -1,28 +1,62 @@
 <script setup lang="ts">
 import type { NavigationMenuItem } from '@nuxt/ui'
+import type { PaginatedResponse, CategoryInfo } from '~/types'
 
 const route = useRoute()
 const router = useRouter()
 const slug = computed(() => route.params.slug as string)
 
 const searchQuery = ref('')
+const showMobileSearch = ref(false)
+const showMobileMenu = ref(false)
+const showAnnouncement = ref(true)
+const showBackToTop = ref(false)
+const searchSuggestions = ref<string[]>([])
+const showSuggestions = ref(false)
 
-// Shared cart state — wired up later
-const cart = useState<any[]>('shop-cart', () => [])
+// Dark mode
+const colorMode = useColorMode()
+const isDark = computed(() => colorMode.value === 'dark')
+function toggleDark() {
+  colorMode.preference = isDark.value ? 'light' : 'dark'
+}
+
+// Toast default position for mobile
+const toast = useToast()
+// Set global toast position — handled via UApp default
+
+// Shared cart state
+interface CartItemState { id: string; productId: number; skuId?: number | null; name: string; specName: string; price: number; quantity: number; image?: string }
+const cart = useState<CartItemState[]>('shop-cart', () => [])
 const cartCount = computed(() => cart.value.reduce((sum, item) => sum + (item.quantity || 0), 0))
 
-// Fetch categories for nav — via BFF proxy (no auth needed for read)
+// Fetch categories for nav
 const { data: categories } = useFetch(() => `/api/shop/${slug.value}/categories/`, {
   lazy: true,
   server: false,
 })
 
 const categoryItems = computed<NavigationMenuItem[]>(() => {
-  const cats = (categories.value as any)?.results || (categories.value as any[]) || []
-  return cats.map((c: any) => ({
+  const resp = categories.value as PaginatedResponse<CategoryInfo> | CategoryInfo[] | undefined
+  const cats = Array.isArray(resp) ? resp : (resp?.results || [])
+  return cats.map(c => ({
     label: c.name,
     to: `/${slug.value}?category=${c.id}`,
   }))
+})
+
+// Auth state
+const memberToken = useCookie('member-token')
+const isLoggedIn = computed(() => !!memberToken.value)
+
+// Scroll listener for back-to-top
+onMounted(() => {
+  if (typeof window !== 'undefined') {
+    const onScroll = () => {
+      showBackToTop.value = window.scrollY > 400
+    }
+    window.addEventListener('scroll', onScroll, { passive: true })
+  }
 })
 
 function scrollToTop() {
@@ -34,98 +68,294 @@ function scrollToTop() {
 function handleSearch() {
   if (searchQuery.value.trim()) {
     router.push({ path: `/${slug.value}`, query: { q: searchQuery.value } })
+    showMobileSearch.value = false
+    showMobileMenu.value = false
+    showSuggestions.value = false
   }
 }
 
-// Tenant store name from the slug
+// Search suggestions with debounce
+const debouncedSearch = refDebounced(searchQuery, 300)
+watch(debouncedSearch, async (val) => {
+  if (!val || val.trim().length < 1) {
+    searchSuggestions.value = []
+    showSuggestions.value = false
+    return
+  }
+  try {
+    const { fetchProducts } = useShopApi()
+    const data = await fetchProducts(slug.value, { search: val.trim(), page_size: 5 })
+    const products = Array.isArray(data) ? data : data?.results || []
+    searchSuggestions.value = products.map((p: any) => p.name).filter(Boolean)
+    showSuggestions.value = searchSuggestions.value.length > 0
+  } catch {
+    searchSuggestions.value = []
+    showSuggestions.value = false
+  }
+})
+
+function selectSuggestion(text: string) {
+  searchQuery.value = text
+  showSuggestions.value = false
+  handleSearch()
+}
+
+// Current active category in header
+const activeCategoryId = computed(() => {
+  const q = route.query.category
+  return q ? Number(q) : undefined
+})
+
+// Announcement
+const announcementText = ''
+const announcementLink = `/${slug.value}`
+
 const storeName = computed(() => slug.value)
+
+// Favorite in layout — just need the toggle composable available
+const { isFavorited } = useFavorite()
 </script>
 
 <template>
-  <div class="min-h-screen flex flex-col bg-white dark:bg-zinc-950">
-    <!-- Header -->
-    <UHeader
-      :ui="{ wrapper: 'lg:px-5', body: 'h-16' }"
+  <div class="min-h-screen flex flex-col bg-gradient-to-b from-(--ui-bg) to-(--ui-bg-muted)/20">
+    <!-- Announcement bar -->
+    <div
+      v-if="showAnnouncement && announcementText"
+      class="shop-announcement relative z-50"
     >
-      <template #logo>
+      <NuxtLink :to="announcementLink" class="flex items-center justify-center h-8 px-4 gap-1.5 cursor-pointer hover:opacity-90 transition">
+        <span class="truncate">{{ announcementText }}</span>
+      </NuxtLink>
+      <button
+        class="absolute right-2 top-1/2 -translate-y-1/2 size-5 flex items-center justify-center rounded-full hover:bg-white/10 transition text-white/60 hover:text-white"
+        @click="showAnnouncement = false"
+      >
+        <UIcon name="i-lucide-x" class="size-3" />
+      </button>
+    </div>
+
+    <!-- Header with glass effect -->
+    <header class="shop-header sticky z-40 text-white shadow-lg">
+      <div class="flex items-center justify-between h-14 px-4 lg:px-6 max-w-7xl mx-auto w-full">
+        <!-- Mobile menu toggle -->
+        <button
+          class="lg:hidden size-9 flex items-center justify-center rounded-lg hover:bg-white/10 transition -ml-1"
+          @click="showMobileMenu = !showMobileMenu"
+        >
+          <UIcon :name="showMobileMenu ? 'i-lucide-x' : 'i-lucide-menu'" class="size-5" />
+        </button>
+
+        <!-- Logo -->
         <NuxtLink
           :to="`/${slug}`"
-          class="flex items-center gap-2 font-bold text-lg text-(--ui-primary) hover:opacity-80 transition"
+          class="flex items-center gap-2.5 font-bold text-lg hover:opacity-90 transition shrink-0"
         >
-          <UIcon name="i-lucide-store" class="size-5" />
-          <span class="hidden sm:inline">{{ storeName }}</span>
+          <div class="size-8 rounded-lg bg-white/20 backdrop-blur flex items-center justify-center">
+            <UIcon name="i-lucide-store" class="size-5" />
+          </div>
+          <span class="hidden sm:inline tracking-tight">{{ storeName }}</span>
         </NuxtLink>
-      </template>
 
-      <template #left>
-        <div class="hidden lg:flex items-center gap-1">
-          <UButton
-            v-for="item in categoryItems.slice(0, 6)"
+        <!-- Desktop categories -->
+        <div class="hidden lg:flex items-center gap-1 flex-1 justify-center px-4">
+          <NuxtLink
+            v-for="item in categoryItems.slice(0, 8)"
             :key="item.label"
             :to="item.to"
-            variant="ghost"
-            color="neutral"
-            size="sm"
-            :label="item.label"
-          />
+            class="px-3 py-1.5 rounded-lg text-sm font-medium transition whitespace-nowrap"
+            :class="Number(item.to?.split('=')[1]) === activeCategoryId
+              ? 'text-white bg-white/20'
+              : 'text-white/80 hover:text-white hover:bg-white/10'"
+          >
+            {{ item.label }}
+          </NuxtLink>
         </div>
-      </template>
 
-      <template #right>
-        <div class="flex items-center gap-2">
-          <!-- Search -->
-          <div class="hidden sm:flex items-center gap-2">
-            <UInput
-              v-model="searchQuery"
-              icon="i-lucide-search"
-              placeholder="搜索商品..."
-              size="sm"
-              class="w-48 lg:w-64"
-              @keyup.enter="handleSearch"
-            />
+        <!-- Right section -->
+        <div class="flex items-center gap-1.5">
+          <!-- Desktop search with suggestions -->
+          <div class="hidden sm:flex items-center relative">
+            <div class="relative">
+              <UIcon name="i-lucide-search" class="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-white/50" />
+              <input
+                v-model="searchQuery"
+                placeholder="搜索商品…"
+                class="h-9 w-48 lg:w-56 rounded-lg bg-white/15 border border-white/10 pl-9 pr-3 text-sm text-white placeholder:text-white/40 outline-none focus:bg-white/20 focus:border-white/30 transition"
+                @keyup.enter="handleSearch"
+                @focus="debouncedSearch.length > 0 && (showSuggestions = true)"
+                @blur="setTimeout(() => showSuggestions = false, 200)"
+              />
+            </div>
+            <!-- Search suggestions dropdown -->
+            <div
+              v-if="showSuggestions && searchSuggestions.length > 0"
+              class="absolute top-full left-0 right-0 mt-1 bg-white dark:bg-zinc-800 rounded-xl shadow-lg border border-(--ui-border) overflow-hidden z-50"
+            >
+              <div
+                v-for="suggestion in searchSuggestions"
+                :key="suggestion"
+                class="px-3 py-2.5 text-sm text-(--ui-text) hover:bg-(--ui-bg-muted) cursor-pointer transition flex items-center gap-2"
+                @mousedown.prevent="selectSuggestion(suggestion)"
+              >
+                <UIcon name="i-lucide-search" class="size-3.5 text-(--ui-text-muted)" />
+                {{ suggestion }}
+              </div>
+            </div>
           </div>
 
-          <!-- Mobile search button -->
-          <UButton
-            icon="i-lucide-search"
-            variant="ghost"
-            color="neutral"
-            square
-            class="sm:hidden"
-            @click="handleSearch"
-          />
+          <!-- Mobile search toggle -->
+          <button
+            class="sm:hidden size-9 flex items-center justify-center rounded-lg hover:bg-white/10 transition"
+            @click="showMobileSearch = !showMobileSearch"
+          >
+            <UIcon name="i-lucide-search" class="size-5" />
+          </button>
 
-          <!-- Cart button -->
-          <div class="relative">
-            <UButton
-              icon="i-lucide-shopping-cart"
-              variant="ghost"
-              color="neutral"
-              square
-              :badge="cartCount || undefined"
-              @click="router.push(`/${slug}/cart`)"
-            />
-            <span v-if="cartCount > 0" class="absolute top-0 -right-0.5 min-w-3.5 h-3.5 rounded-full bg-(--ui-primary) text-white text-[10px] flex items-center justify-center leading-none px-0.5 font-bold">{{ cartCount }}</span>
+          <!-- Color mode toggle -->
+          <button
+            class="hidden sm:flex size-9 items-center justify-center rounded-lg hover:bg-white/10 transition"
+            @click="toggleDark"
+          >
+            <UIcon :name="isDark ? 'i-lucide-sun' : 'i-lucide-moon'" class="size-4" />
+          </button>
+
+          <!-- Cart -->
+          <button
+            class="relative size-9 flex items-center justify-center rounded-lg hover:bg-white/10 transition"
+            @click="router.push(`/${slug}/cart`)"
+          >
+            <UIcon name="i-lucide-shopping-cart" class="size-5" />
+            <span v-if="cartCount > 0" :key="cartCount" class="shop-cart-badge shop-cart-bounce">{{ cartCount > 99 ? '99+' : cartCount }}</span>
+          </button>
+
+          <!-- Member / Login -->
+          <NuxtLink
+            v-if="!isLoggedIn"
+            :to="`/${slug}/login`"
+            class="hidden sm:flex items-center gap-1.5 h-9 px-3 rounded-lg text-sm font-medium text-white/80 hover:text-white hover:bg-white/10 transition"
+          >
+            <UIcon name="i-lucide-user" class="size-4" />
+            <span>登录</span>
+          </NuxtLink>
+          <button
+            v-else
+            class="hidden sm:flex size-9 items-center justify-center rounded-lg hover:bg-white/10 transition"
+            @click="router.push(`/${slug}/member`)"
+          >
+            <UIcon name="i-lucide-user" class="size-5" />
+          </button>
+        </div>
+      </div>
+
+      <!-- Mobile search bar (expandable) -->
+      <div
+        v-if="showMobileSearch"
+        class="sm:hidden px-4 pb-3"
+      >
+        <div class="relative">
+          <UIcon name="i-lucide-search" class="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-white/50" />
+          <input
+            v-model="searchQuery"
+            placeholder="搜索商品…"
+            class="w-full h-10 rounded-lg bg-white/15 border border-white/10 pl-9 pr-3 text-sm text-white placeholder:text-white/40 outline-none focus:bg-white/20 focus:border-white/30 transition"
+            @keyup.enter="handleSearch"
+          />
+        </div>
+        <!-- Mobile search suggestions -->
+        <div
+          v-if="showSuggestions && searchSuggestions.length > 0"
+          class="mt-1 bg-white/95 dark:bg-zinc-800/95 backdrop-blur rounded-xl shadow-lg border border-white/10 overflow-hidden"
+        >
+          <div
+            v-for="suggestion in searchSuggestions"
+            :key="suggestion"
+            class="px-3 py-2.5 text-sm text-(--ui-text) hover:bg-(--ui-bg-muted) cursor-pointer transition flex items-center gap-2"
+            @mousedown.prevent="selectSuggestion(suggestion)"
+          >
+            <UIcon name="i-lucide-search" class="size-3.5 text-(--ui-text-muted)" />
+            {{ suggestion }}
           </div>
         </div>
-      </template>
-    </UHeader>
+      </div>
 
-    <!-- Mobile category bar -->
+      <!-- Mobile menu panel -->
+      <div
+        v-if="showMobileMenu"
+        class="lg:hidden border-t border-white/10 bg-(--ui-primary)/95 backdrop-blur-md"
+      >
+        <div class="px-4 py-3 space-y-1">
+          <NuxtLink
+            v-for="item in categoryItems"
+            :key="item.label"
+            :to="item.to"
+            class="block px-3 py-2 rounded-lg text-sm text-white/80 hover:text-white hover:bg-white/10 transition"
+            @click="showMobileMenu = false"
+          >
+            {{ item.label }}
+          </NuxtLink>
+          <div class="border-t border-white/10 my-2" />
+          <NuxtLink
+            :to="`/${slug}/orders`"
+            class="block px-3 py-2 rounded-lg text-sm text-white/80 hover:text-white hover:bg-white/10 transition"
+            @click="showMobileMenu = false"
+          >
+            📋 我的订单
+          </NuxtLink>
+          <NuxtLink
+            :to="`/${slug}/favorites`"
+            class="block px-3 py-2 rounded-lg text-sm text-white/80 hover:text-white hover:bg-white/10 transition"
+            @click="showMobileMenu = false"
+          >
+            ❤️ 我的收藏
+          </NuxtLink>
+          <NuxtLink
+            :to="`/${slug}/coupons`"
+            class="block px-3 py-2 rounded-lg text-sm text-white/80 hover:text-white hover:bg-white/10 transition"
+            @click="showMobileMenu = false"
+          >
+            🎫 优惠券
+          </NuxtLink>
+          <NuxtLink
+            :to="`/${slug}/recharge`"
+            class="block px-3 py-2 rounded-lg text-sm text-white/80 hover:text-white hover:bg-white/10 transition"
+            @click="showMobileMenu = false"
+          >
+            💰 充值中心
+          </NuxtLink>
+          <NuxtLink
+            v-if="!isLoggedIn"
+            :to="`/${slug}/login`"
+            class="block px-3 py-2 rounded-lg text-sm text-white/80 hover:text-white hover:bg-white/10 transition"
+            @click="showMobileMenu = false"
+          >
+            👤 会员登录
+          </NuxtLink>
+          <NuxtLink
+            v-else
+            :to="`/${slug}/member`"
+            class="block px-3 py-2 rounded-lg text-sm text-white/80 hover:text-white hover:bg-white/10 transition"
+            @click="showMobileMenu = false"
+          >
+            👤 会员中心
+          </NuxtLink>
+        </div>
+      </div>
+    </header>
+
+    <!-- Mobile category bar (below header) -->
     <div
       v-if="categoryItems.length"
-      class="lg:hidden flex gap-2 overflow-x-auto px-4 py-2 border-b border-(--ui-border) no-scrollbar"
+      class="lg:hidden flex gap-2 overflow-x-auto px-4 py-2.5 bg-(--ui-bg-muted)/50 border-b border-(--ui-border)/50 no-scrollbar"
     >
-      <UButton
+      <NuxtLink
         v-for="item in categoryItems"
         :key="item.label"
         :to="item.to"
-        variant="outline"
-        color="neutral"
-        size="xs"
-        :label="item.label"
-        class="shrink-0 rounded-full"
-      />
+        class="shrink-0 px-3.5 py-1.5 rounded-full text-xs font-medium transition"
+        :class="route.query.category === item.to?.split('=')[1] ? 'shop-category-pill-active' : 'shop-category-pill-inactive'"
+      >
+        {{ item.label }}
+      </NuxtLink>
     </div>
 
     <!-- Main content -->
@@ -134,30 +364,82 @@ const storeName = computed(() => slug.value)
     </main>
 
     <!-- Footer -->
-    <footer class="border-t border-(--ui-border) py-8 mt-12">
-      <UContainer>
-        <div class="flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-(--ui-text-muted)">
-          <div class="flex items-center gap-2">
-            <UIcon name="i-lucide-store" class="size-4" />
-            <span>{{ storeName }}</span>
+    <footer class="shop-footer py-10 mt-16">
+      <div class="max-w-7xl mx-auto px-4 lg:px-6">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-8 mb-8">
+          <!-- Brand -->
+          <div>
+            <div class="flex items-center gap-2 mb-3">
+              <div class="size-8 rounded-lg bg-(--ui-primary)/10 flex items-center justify-center">
+                <UIcon name="i-lucide-store" class="size-4 text-(--ui-primary)" />
+              </div>
+              <span class="font-bold text-(--ui-text)">{{ storeName }}</span>
+            </div>
+            <p class="text-xs text-(--ui-text-muted)/70 leading-relaxed">在线选购商品，到店取货，便捷省心。</p>
           </div>
-          <div class="flex gap-6">
-            <NuxtLink :to="`/${slug}`" class="hover:text-(--ui-text) transition">首页</NuxtLink>
-            <button class="hover:text-(--ui-text) transition cursor-pointer" @click="router.push(`/${slug}`).then(scrollToTop)">全部商品</button>
+
+          <!-- Quick links -->
+          <div>
+            <p class="text-xs font-semibold text-(--ui-text) uppercase tracking-wider mb-3">快速链接</p>
+            <div class="space-y-2">
+              <NuxtLink :to="`/${slug}`" class="block text-xs text-(--ui-text-muted) hover:text-(--ui-primary) transition">首页</NuxtLink>
+              <NuxtLink :to="`/${slug}/orders`" class="block text-xs text-(--ui-text-muted) hover:text-(--ui-primary) transition">我的订单</NuxtLink>
+              <NuxtLink :to="`/${slug}/favorites`" class="block text-xs text-(--ui-text-muted) hover:text-(--ui-primary) transition">我的收藏</NuxtLink>
+              <NuxtLink :to="`/${slug}/coupons`" class="block text-xs text-(--ui-text-muted) hover:text-(--ui-primary) transition">优惠券</NuxtLink>
+              <NuxtLink :to="`/${slug}/recharge`" class="block text-xs text-(--ui-text-muted) hover:text-(--ui-primary) transition">充值中心</NuxtLink>
+              <NuxtLink :to="`/${slug}/analytics`" class="block text-xs text-(--ui-text-muted) hover:text-(--ui-primary) transition">消费分析</NuxtLink>
+              <NuxtLink :to="`/${slug}/member`" class="block text-xs text-(--ui-text-muted) hover:text-(--ui-primary) transition">会员中心</NuxtLink>
+            </div>
           </div>
-          <span>&copy; {{ new Date().getFullYear() }} {{ storeName }}</span>
+
+          <!-- Contact -->
+          <div>
+            <p class="text-xs font-semibold text-(--ui-text) uppercase tracking-wider mb-3">联系我们</p>
+            <div class="space-y-2 text-xs text-(--ui-text-muted)">
+              <p class="flex items-center gap-1.5">
+                <UIcon name="i-lucide-map-pin" class="size-3.5 shrink-0" />
+                店内咨询
+              </p>
+              <p class="flex items-center gap-1.5">
+                <UIcon name="i-lucide-clock" class="size-3.5 shrink-0" />
+                营业时间: 08:00 - 22:00
+              </p>
+            </div>
+          </div>
         </div>
-      </UContainer>
+
+        <div class="border-t border-(--ui-border)/40 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-(--ui-text-muted)">
+          <span>&copy; {{ new Date().getFullYear() }} {{ storeName }} · 安居超市系统</span>
+          <div class="flex gap-4">
+            <NuxtLink :to="`/${slug}`" class="hover:text-(--ui-primary) transition">首页</NuxtLink>
+            <span>·</span>
+            <NuxtLink :to="`/${slug}/orders`" class="hover:text-(--ui-primary) transition">我的订单</NuxtLink>
+          </div>
+        </div>
+      </div>
     </footer>
+
+    <!-- Back to top button -->
+    <Transition name="scale">
+      <button
+        v-if="showBackToTop"
+        class="fixed bottom-6 right-6 z-40 size-10 rounded-full bg-(--ui-primary) text-white shadow-lg shadow-(--ui-primary)/30 flex items-center justify-center hover:bg-(--ui-primary)/90 transition active:scale-90"
+        @click="scrollToTop"
+      >
+        <UIcon name="i-lucide-arrow-up" class="size-5" />
+      </button>
+    </Transition>
   </div>
 </template>
 
 <style scoped>
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
+.scale-enter-active,
+.scale-leave-active {
+  transition: opacity 0.2s ease, transform 0.2s ease;
 }
-.no-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+.scale-enter-from,
+.scale-leave-to {
+  opacity: 0;
+  transform: scale(0.8);
 }
 </style>

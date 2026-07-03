@@ -1,6 +1,7 @@
 /** Shop API — calls Django REST backend via Nuxt BFF proxy (server/api/shop/[slug]/[...].ts).
  *  Customer auth uses Token header, not the admin JWT cookie.
  */
+import type { PaginatedResponse, ProductInfo, CategoryInfo, OrderInfo, OrderData, OrderItemData } from '~/types'
 
 export function getDjangoBase() {
   return ''
@@ -21,9 +22,9 @@ export function mediaUrl(path: string | null | undefined): string | null {
   return `${getMediaBase()}${path}`
 }
 
-/** Fallback placeholder for products without images. */
+/** Fallback placeholder for products without images — stable per product name. */
 export function productPlaceholder(name: string): string {
-  return `https://placehold.co/400x400/eee/999?text=${encodeURIComponent(name.slice(0, 4))}`
+  return `https://picsum.photos/seed/${encodeURIComponent(name.replace(/\s+/g, '').slice(0, 30))}/400/400`
 }
 
 export interface ProductParams {
@@ -33,23 +34,7 @@ export interface ProductParams {
   page_size?: number
 }
 
-export interface OrderItemData {
-  sku: number
-  product_name: string
-  spec_name: string
-  quantity: number
-  price: number
-  subtotal: number
-}
-
-export interface OrderData {
-  total_amount: number
-  discount_amount: number
-  paid_amount: number
-  payment_method: string
-  member: number | null
-  items: OrderItemData[]
-}
+export type { OrderData, OrderItemData }
 
 export function useShopApi() {
   function buildUrl(slug: string, path: string) {
@@ -59,19 +44,19 @@ export function useShopApi() {
   /** GET /{slug}/products/ */
   async function fetchProducts(slug: string, params?: ProductParams) {
     const url = buildUrl(slug, '/products/')
-    return await $fetch<any>(url, { query: params as Record<string, any> })
+    return await $fetch<PaginatedResponse<ProductInfo> | ProductInfo[]>(url, { query: params as Record<string, any> })
   }
 
   /** GET /{slug}/products/{id}/ */
   async function fetchProduct(slug: string, id: string | number) {
     const url = buildUrl(slug, `/products/${id}/`)
-    return await $fetch<any>(url)
+    return await $fetch<ProductInfo>(url)
   }
 
   /** GET /{slug}/categories/ */
   async function fetchCategories(slug: string) {
     const url = buildUrl(slug, '/categories/')
-    return await $fetch<any>(url)
+    return await $fetch<PaginatedResponse<CategoryInfo> | CategoryInfo[]>(url)
   }
 
   /** POST /{slug}/orders/ — optionally pass member token to link order to member */
@@ -79,25 +64,25 @@ export function useShopApi() {
     const url = buildUrl(slug, '/orders/')
     const headers: Record<string, string> = {}
     if (memberToken) headers.Authorization = `Token ${memberToken}`
-    return await $fetch<any>(url, { method: 'POST', body: orderData, headers })
+    return await $fetch<OrderInfo>(url, { method: 'POST', body: orderData, headers })
   }
 
   /** GET /{slug}/orders/ — requires member token */
   async function fetchOrders(slug: string, memberToken: string) {
     const url = buildUrl(slug, '/orders/')
-    return await $fetch<any>(url, { headers: { Authorization: `Token ${memberToken}` } })
+    return await $fetch<PaginatedResponse<OrderInfo>>(url, { headers: { Authorization: `Token ${memberToken}` } })
   }
 
   /** POST /{slug}/members/login/ */
   async function memberLogin(slug: string, phone: string, password: string) {
     const url = buildUrl(slug, '/members/login/')
-    return await $fetch<any>(url, { method: 'POST', body: { phone, password } })
+    return await $fetch<{ token: string, member: { id: number, name: string, phone: string } }>(url, { method: 'POST', body: { phone, password } })
   }
 
   /** GET /{slug}/members/profile/ */
   async function fetchMemberProfile(slug: string, token: string) {
     const url = buildUrl(slug, '/members/profile/')
-    return await $fetch<any>(url, { headers: { Authorization: `Token ${token}` } })
+    return await $fetch<{ id: number, name: string, phone: string, points: number, balance: string, total_spent: string }>(url, { headers: { Authorization: `Token ${token}` } })
   }
 
   return {
@@ -107,6 +92,6 @@ export function useShopApi() {
     placeOrder,
     fetchOrders,
     memberLogin,
-    fetchMemberProfile,
+    fetchMemberProfile
   }
 }

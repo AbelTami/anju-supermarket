@@ -4,6 +4,10 @@ from datetime import timedelta
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
+
+from dotenv import load_dotenv
+load_dotenv(BASE_DIR / '.env')
+
 SECRET_KEY = os.environ['DJANGO_SECRET_KEY']
 DEBUG = os.environ.get('DJANGO_DEBUG', 'False') == 'True'
 ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')

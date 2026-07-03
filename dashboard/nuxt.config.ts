@@ -4,22 +4,23 @@ export default defineNuxtConfig({
     '@nuxt/eslint',
     '@nuxt/ui',
     '@vueuse/nuxt',
-    'nuxt-security'
   ],
 
   devtools: {
-    enabled: true
+    enabled: true,
   },
 
   css: ['~/assets/css/main.css'],
 
+
   security: {
     headers: {
+      strictTransportSecurity: false,
       contentSecurityPolicy: {
         'default-src': ["'self'"],
-        'script-src': ["'self'", "'unsafe-inline'", 'blob:'],
+        'script-src': ["'self'", "'unsafe-inline'", "'unsafe-eval'", 'blob:'],
         'style-src': ["'self'", "'unsafe-inline'"],
-        'img-src': ["'self'", 'https:', 'data:', 'http://localhost:8000'],
+        'img-src': ["'self'", 'https:', 'data:', 'http://localhost:8000', 'https://picsum.photos'],
         'connect-src': ["'self'", 'http://localhost:8000', 'https://world.openfoodfacts.org'],
         'worker-src': ["'self'", 'blob:'],
       },
@@ -39,8 +40,8 @@ export default defineNuxtConfig({
       cors: true,
       headers: {
         'Cross-Origin-Resource-Policy': 'same-origin',
-      }
-    }
+      },
+    },
   },
 
   runtimeConfig: {
@@ -53,8 +54,8 @@ export default defineNuxtConfig({
     config: {
       stylistic: {
         commaDangle: 'never',
-        braceStyle: '1tbs'
-      }
-    }
-  }
+        braceStyle: '1tbs',
+      },
+    },
+  },
 })

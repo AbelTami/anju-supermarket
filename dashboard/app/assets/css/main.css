@@ -2,7 +2,7 @@
 @import "@nuxt/ui";
 
 @theme static {
-  --font-sans: 'Public Sans', sans-serif;
+  --font-sans: 'Public Sans', 'Noto Sans SC', sans-serif;
 
   --color-green-50: #EFFDF5;
   --color-green-100: #D9FBE8;
@@ -15,4 +15,326 @@
   --color-green-800: #016538;
   --color-green-900: #0A5331;
   --color-green-950: #052E16;
+
+  --color-amber-50: #FFFBEB;
+  --color-amber-500: #F59E0B;
+  --color-rose-500: #F43F5E;
+}
+
+/* ====== Shop Design System ====== */
+
+/* Warm gradient header */
+.shop-header {
+  background: linear-gradient(135deg, var(--ui-primary) 0%, color-mix(in srgb, var(--ui-primary) 75%, black) 100%);
+}
+
+/* Announcement bar */
+.shop-announcement {
+  @apply relative overflow-hidden text-xs text-white/90 bg-(--ui-primary)/20 backdrop-blur-sm;
+  background: linear-gradient(90deg, color-mix(in srgb, var(--ui-primary) 30%, transparent), color-mix(in srgb, var(--ui-primary) 15%, transparent));
+}
+
+/* Product card — elevated card with hover lift */
+.shop-card {
+  @apply bg-white dark:bg-zinc-900 rounded-xl border border-(--ui-border)/50 shadow-sm transition-all duration-200;
+}
+.shop-card:hover {
+  @apply shadow-lg -translate-y-0.5 border-(--ui-primary)/20;
+}
+
+/* Compact card — for lists/cart items */
+.shop-card-compact {
+  @apply bg-white dark:bg-zinc-900 rounded-xl border border-(--ui-border)/40 shadow-sm transition-all duration-150;
+}
+.shop-card-compact:hover {
+  @apply border-(--ui-primary)/15 shadow-md;
+}
+
+/* Price badge */
+.shop-price-badge {
+  background: linear-gradient(135deg, #F43F5E 0%, #E11D48 100%);
+}
+
+/* Tag badges */
+.shop-tag {
+  @apply absolute top-2 left-2 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wide z-10 shadow-sm;
+}
+.shop-tag-new {
+  background: linear-gradient(135deg, var(--ui-primary) 0%, color-mix(in srgb, var(--ui-primary) 80%, black) 100%);
+}
+.shop-tag-hot {
+  background: linear-gradient(135deg, #F97316 0%, #EA580C 100%);
+}
+.shop-tag-discount {
+  background: linear-gradient(135deg, #F43F5E 0%, #E11D48 100%);
+}
+
+/* Smooth image zoom */
+.shop-img-zoom {
+  @apply transition-transform duration-300 group-hover:scale-105;
+}
+
+/* Sticky bottom bar */
+.shop-sticky-bottom {
+  @apply sticky bottom-0 bg-white/90 dark:bg-zinc-900/90 backdrop-blur-lg border-t border-(--ui-border) p-4 shadow-[0_-4px_20px_rgba(0,0,0,0.06)];
+}
+
+/* Quantity selector */
+.shop-qty {
+  @apply flex items-center border border-(--ui-border) rounded-lg overflow-hidden;
+}
+.shop-qty button {
+  @apply px-3 py-1.5 text-(--ui-text-muted) hover:text-(--ui-text) hover:bg-(--ui-bg-muted) transition disabled:opacity-30 disabled:cursor-not-allowed;
+}
+.shop-qty span {
+  @apply w-10 text-center text-sm font-medium tabular-nums;
+}
+
+/* Footer */
+.shop-footer {
+  @apply border-t border-(--ui-border)/50 bg-gradient-to-b from-transparent to-(--ui-bg-muted)/30;
+}
+
+/* Empty state */
+.shop-empty-icon {
+  @apply size-16 text-(--ui-text-muted)/25 mb-4;
+}
+.shop-empty-text {
+  @apply text-lg font-medium text-(--ui-text) mb-1;
+}
+.shop-empty-desc {
+  @apply text-sm text-(--ui-text-muted) mb-6;
+}
+
+/* Category pills */
+.shop-category-pill {
+  @apply shrink-0 rounded-full transition-all duration-200;
+}
+.shop-category-pill-active {
+  @apply bg-(--ui-primary) text-white shadow-md shadow-(--ui-primary)/20;
+}
+.shop-category-pill-inactive {
+  @apply bg-(--ui-bg-muted) text-(--ui-text-muted) hover:bg-(--ui-bg-accented) hover:text-(--ui-text);
+}
+
+/* Spec selector buttons */
+.shop-spec-btn {
+  @apply px-4 py-2 rounded-lg border-2 text-sm font-medium transition-all duration-150 cursor-pointer;
+}
+.shop-spec-btn-active {
+  @apply border-(--ui-primary) bg-(--ui-primary)/10 text-(--ui-primary) shadow-sm;
+}
+.shop-spec-btn-inactive {
+  @apply border-(--ui-border) hover:border-(--ui-border-hover) text-(--ui-text);
+}
+.shop-spec-btn-disabled {
+  @apply border-(--ui-border) text-(--ui-text-muted) opacity-40 cursor-not-allowed;
+}
+
+/* Thumbnail selector */
+.shop-thumb {
+  @apply size-16 lg:size-20 shrink-0 rounded-lg overflow-hidden border-2 transition-all duration-150;
+}
+.shop-thumb-active {
+  @apply border-(--ui-primary) ring-1 ring-(--ui-primary)/30;
+}
+.shop-thumb-inactive {
+  @apply border-transparent hover:border-(--ui-border) opacity-70 hover:opacity-100;
+}
+
+/* Cart badge */
+.shop-cart-badge {
+  @apply absolute -top-1.5 -right-1.5 min-w-4.5 h-4.5 rounded-full bg-rose-500 text-white text-[10px] font-bold flex items-center justify-center leading-none px-1 shadow-md;
+}
+
+/* Star rating */
+.shop-star {
+  @apply size-3.5 inline-block;
+}
+.shop-star-filled {
+  @apply text-amber-500;
+}
+.shop-star-empty {
+  @apply text-(--ui-text-muted)/30;
+}
+
+/* Stepped indicator */
+.shop-step {
+  @apply flex items-center;
+}
+.shop-step-item {
+  @apply flex items-center gap-1.5 text-xs;
+}
+.shop-step-active {
+  @apply text-(--ui-primary) font-medium;
+}
+.shop-step-done {
+  @apply text-(--ui-success);
+}
+.shop-step-pending {
+  @apply text-(--ui-text-muted);
+}
+.shop-step-line {
+  @apply w-6 h-px bg-(--ui-border) mx-2;
+}
+.shop-step-line-active {
+  @apply bg-(--ui-primary);
+}
+
+/* Quick add button */
+.shop-quick-add {
+  @apply w-full text-xs font-medium rounded-lg py-2.5 px-3 transition-all duration-150 flex items-center justify-center gap-1 min-h-[38px];
+}
+.shop-quick-add-default {
+  @apply bg-(--ui-primary)/10 text-(--ui-primary) hover:bg-(--ui-primary)/20 active:scale-95;
+}
+.shop-quick-add-added {
+  @apply bg-(--ui-success)/10 text-(--ui-success);
+}
+.shop-quick-add-disabled {
+  @apply bg-(--ui-bg-muted) text-(--ui-text-muted)/50 cursor-not-allowed;
+}
+
+/* Member card gradient */
+.shop-member-card {
+  background: linear-gradient(135deg, var(--ui-primary) 0%, color-mix(in srgb, var(--ui-primary) 70%, #7C3AED) 100%);
+}
+
+/* Coupon card */
+.shop-coupon {
+  @apply relative overflow-hidden rounded-xl border border-dashed p-3;
+}
+.shop-coupon-available {
+  @apply border-(--ui-primary)/30 bg-(--ui-primary)/5;
+}
+.shop-coupon-used {
+  @apply border-(--ui-border) bg-(--ui-bg-muted)/50 opacity-60;
+}
+
+/* Payment method card */
+.shop-payment-card {
+  @apply flex items-center gap-3 p-3 rounded-xl border-2 transition-all duration-150 cursor-pointer;
+}
+.shop-payment-active {
+  @apply border-(--ui-primary) bg-(--ui-primary)/5 shadow-sm;
+}
+.shop-payment-inactive {
+  @apply border-(--ui-border) hover:border-(--ui-border-hover);
+}
+
+/* Mobile bottom nav */
+.shop-mobile-bar {
+  @apply fixed bottom-0 left-0 right-0 z-50 bg-white/90 dark:bg-zinc-900/90 backdrop-blur-lg border-t border-(--ui-border);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* Hero banner dots */
+.shop-hero-dot {
+  @apply size-2 rounded-full transition-all duration-300;
+}
+.shop-hero-dot-active {
+  @apply w-6 bg-white;
+}
+.shop-hero-dot-inactive {
+  @apply bg-white/40 hover:bg-white/60;
+}
+
+/* Scrollbar hide */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* Toast style */
+.shop-toast {
+  @apply rounded-xl shadow-lg border border-(--ui-border)/50;
+}
+
+/* ====== Animations ====== */
+
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fade-in-down {
+  from { opacity: 0; transform: translateY(-12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes scale-in {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+@keyframes slide-in-right {
+  from { opacity: 0; transform: translateX(20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes cart-bounce {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.3); }
+}
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+@keyframes float-up {
+  0% { opacity: 1; transform: translateY(0) scale(1); }
+  100% { opacity: 0; transform: translateY(-60px) scale(0.5); }
+}
+@keyframes pulse-soft {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+.shop-animate-in {
+  animation: fade-in-up 0.3s ease-out both;
+}
+.shop-animate-scale {
+  animation: scale-in 0.2s ease-out both;
+}
+.shop-animate-slide {
+  animation: slide-in-right 0.3s ease-out both;
+}
+.shop-cart-bounce {
+  animation: cart-bounce 0.3s ease-out;
+}
+.shop-shimmer {
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.08) 50%, transparent 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* Stagger animation for grid items */
+.shop-stagger-enter {
+  opacity: 0;
+  transform: translateY(16px);
+}
+.shop-stagger-enter-active {
+  transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+}
+
+/* Page transition */
+.page-enter-active,
+.page-leave-active {
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+.page-enter-from {
+  opacity: 0;
+  transform: translateY(8px);
+}
+.page-leave-to {
+  opacity: 0;
+  transform: translateY(-8px);
+}
+
+/* Safe area for mobile bottom bars */
+/* padding-bottom: env(safe-area-inset-bottom, 0px) — applied inline */
+
+/* ====== Shimmer skeleton ====== */
+.shop-skeleton {
+  @apply relative overflow-hidden bg-(--ui-bg-muted) rounded;
+}
+.shop-skeleton::after {
+  content: '';
+  @apply absolute inset-0;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.06) 50%, transparent 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
 }

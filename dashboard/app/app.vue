@@ -1,5 +1,17 @@
 <script setup lang="ts">
 const colorMode = useColorMode()
+const toast = useToast()
+
+// Global API error handler
+if (typeof window !== 'undefined') {
+  window.addEventListener('api-error', ((e: CustomEvent) => {
+    toast.add({
+      title: e.detail.title,
+      description: e.detail.description,
+      color: 'error'
+    })
+  }) as EventListener)
+}
 
 const color = computed(() => colorMode.value === 'dark' ? '#1b1718' : 'white')
 
@@ -13,7 +25,7 @@ useHead({
     { rel: 'icon', href: '/favicon.ico' }
   ],
   htmlAttrs: {
-    lang: 'en'
+    lang: 'zh-CN'
   }
 })
 
@@ -31,7 +43,7 @@ useSeoMeta({
 </script>
 
 <template>
-  <UApp>
+  <UApp :toaster="{ position: 'top-center' }">
     <NuxtLoadingIndicator />
 
     <NuxtLayout>
