@@ -16,7 +16,9 @@ const showSuggestions = ref(false)
 
 // Dark mode
 const colorMode = useColorMode()
-const isDark = computed(() => colorMode.value === 'dark')
+const isHydrated = ref(false)
+onMounted(() => { isHydrated.value = true })
+const isDark = computed(() => isHydrated.value && colorMode.value === 'dark')
 function toggleDark() {
   colorMode.preference = isDark.value ? 'light' : 'dark'
 }
