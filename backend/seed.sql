@@ -1,12 +1,12 @@
-pg_dump: 警告: 表上存在循环外键约束：
+pg_dump: ����: ���ϴ���ѭ�����Լ����
 pg_dump: detail: product_category
-pg_dump: hint: 不使用 --disable-triggers 选项或者临时删除约束，你将不能对备份进行恢复.
-pg_dump: hint: 考虑使用完全备份代替 --data-only选项进行备份以避免此问题.
+pg_dump: hint: ��ʹ�� --disable-triggers ѡ�������ʱɾ��Լ�����㽫���ܶԱ��ݽ��лָ�.
+pg_dump: hint: ����ʹ����ȫ���ݴ��� --data-onlyѡ����б����Ա��������.
 --
 -- PostgreSQL database dump
 --
 
-\restrict ca8ftGkKploB2fX2WrzYmtLW4uEKfTr9eGyCXfGPviwTv85RQB0rbyPO4f0LkqH
+\restrict Tei4g7mjgWfEfnds7uecXC10OPuKmRlZLUfeg5GKE5uObPSnHbizoTEwHbK7lYW
 
 -- Dumped from database version 18.4
 -- Dumped by pg_dump version 18.4
@@ -22,6 +22,12 @@ SET check_function_bodies = false;
 SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
+
+--
+-- Data for Name: auth_group; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+
 
 --
 -- Data for Name: django_content_type; Type: TABLE DATA; Schema: public; Owner: postgres
@@ -46,6 +52,7 @@ INSERT INTO public.django_content_type VALUES (16, 'members', 'member') ON CONFL
 INSERT INTO public.django_content_type VALUES (17, 'suppliers', 'supplier') ON CONFLICT DO NOTHING;
 INSERT INTO public.django_content_type VALUES (18, 'employees', 'shift') ON CONFLICT DO NOTHING;
 INSERT INTO public.django_content_type VALUES (19, 'finance', 'dailysummary') ON CONFLICT DO NOTHING;
+INSERT INTO public.django_content_type VALUES (20, 'members', 'rechargerecord') ON CONFLICT DO NOTHING;
 
 
 --
@@ -128,47 +135,16 @@ INSERT INTO public.auth_permission VALUES (73, 'Can add 日结汇总', 19, 'add_
 INSERT INTO public.auth_permission VALUES (74, 'Can change 日结汇总', 19, 'change_dailysummary') ON CONFLICT DO NOTHING;
 INSERT INTO public.auth_permission VALUES (75, 'Can delete 日结汇总', 19, 'delete_dailysummary') ON CONFLICT DO NOTHING;
 INSERT INTO public.auth_permission VALUES (76, 'Can view 日结汇总', 19, 'view_dailysummary') ON CONFLICT DO NOTHING;
+INSERT INTO public.auth_permission VALUES (77, 'Can add 充值记录', 20, 'add_rechargerecord') ON CONFLICT DO NOTHING;
+INSERT INTO public.auth_permission VALUES (78, 'Can change 充值记录', 20, 'change_rechargerecord') ON CONFLICT DO NOTHING;
+INSERT INTO public.auth_permission VALUES (79, 'Can delete 充值记录', 20, 'delete_rechargerecord') ON CONFLICT DO NOTHING;
+INSERT INTO public.auth_permission VALUES (80, 'Can view 充值记录', 20, 'view_rechargerecord') ON CONFLICT DO NOTHING;
 
 
 --
--- Data for Name: django_migrations; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: auth_group_permissions; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public.django_migrations VALUES (1, 'tenants', '0001_initial', '2026-06-30 17:30:31.123943+08') ON CONFLICT DO NOTHING;
-INSERT INTO public.django_migrations VALUES (2, 'contenttypes', '0001_initial', '2026-06-30 17:30:31.13276+08') ON CONFLICT DO NOTHING;
-INSERT INTO public.django_migrations VALUES (3, 'contenttypes', '0002_remove_content_type_name', '2026-06-30 17:30:31.135601+08') ON CONFLICT DO NOTHING;
-INSERT INTO public.django_migrations VALUES (4, 'auth', '0001_initial', '2026-06-30 17:30:31.154471+08') ON CONFLICT DO NOTHING;
-INSERT INTO public.django_migrations VALUES (5, 'auth', '0002_alter_permission_name_max_length', '2026-06-30 17:30:31.163961+08') ON CONFLICT DO NOTHING;
-INSERT INTO public.django_migrations VALUES (6, 'auth', '0003_alter_user_email_max_length', '2026-06-30 17:30:31.166193+08') ON CONFLICT DO NOTHING;
-INSERT INTO public.django_migrations VALUES (7, 'auth', '0004_alter_user_username_opts', '2026-06-30 17:30:31.168128+08') ON CONFLICT DO NOTHING;
-INSERT INTO public.django_migrations VALUES (8, 'auth', '0005_alter_user_last_login_null', '2026-06-30 17:30:31.169982+08') ON CONFLICT DO NOTHING;
-INSERT INTO public.django_migrations VALUES (9, 'auth', '0006_require_contenttypes_0002', '2026-06-30 17:30:31.170569+08') ON CONFLICT DO NOTHING;
-INSERT INTO public.django_migrations VALUES (10, 'auth', '0007_alter_validators_add_error_messages', '2026-06-30 17:30:31.172571+08') ON CONFLICT DO NOTHING;
-INSERT INTO public.django_migrations VALUES (11, 'auth', '0008_alter_user_username_max_length', '2026-06-30 17:30:31.174509+08') ON CONFLICT DO NOTHING;
-INSERT INTO public.django_migrations VALUES (12, 'auth', '0009_alter_user_last_name_max_length', '2026-06-30 17:30:31.176128+08') ON CONFLICT DO NOTHING;
-INSERT INTO public.django_migrations VALUES (13, 'auth', '0010_alter_group_name_max_length', '2026-06-30 17:30:31.179399+08') ON CONFLICT DO NOTHING;
-INSERT INTO public.django_migrations VALUES (14, 'auth', '0011_update_proxy_permissions', '2026-06-30 17:30:31.18169+08') ON CONFLICT DO NOTHING;
-INSERT INTO public.django_migrations VALUES (15, 'auth', '0012_alter_user_first_name_max_length', '2026-06-30 17:30:31.183361+08') ON CONFLICT DO NOTHING;
-INSERT INTO public.django_migrations VALUES (16, 'accounts', '0001_initial', '2026-06-30 17:30:31.213046+08') ON CONFLICT DO NOTHING;
-INSERT INTO public.django_migrations VALUES (17, 'admin', '0001_initial', '2026-06-30 17:30:31.22841+08') ON CONFLICT DO NOTHING;
-INSERT INTO public.django_migrations VALUES (18, 'admin', '0002_logentry_remove_auto_add', '2026-06-30 17:30:31.231953+08') ON CONFLICT DO NOTHING;
-INSERT INTO public.django_migrations VALUES (19, 'admin', '0003_logentry_add_action_flag_choices', '2026-06-30 17:30:31.235195+08') ON CONFLICT DO NOTHING;
-INSERT INTO public.django_migrations VALUES (20, 'employees', '0001_initial', '2026-06-30 17:30:31.246528+08') ON CONFLICT DO NOTHING;
-INSERT INTO public.django_migrations VALUES (21, 'finance', '0001_initial', '2026-06-30 17:30:31.255809+08') ON CONFLICT DO NOTHING;
-INSERT INTO public.django_migrations VALUES (22, 'products', '0001_initial', '2026-06-30 17:30:31.287044+08') ON CONFLICT DO NOTHING;
-INSERT INTO public.django_migrations VALUES (23, 'inventory', '0001_initial', '2026-06-30 17:30:31.312472+08') ON CONFLICT DO NOTHING;
-INSERT INTO public.django_migrations VALUES (24, 'members', '0001_initial', '2026-06-30 17:30:31.328473+08') ON CONFLICT DO NOTHING;
-INSERT INTO public.django_migrations VALUES (25, 'pos', '0001_initial', '2026-06-30 17:30:31.355187+08') ON CONFLICT DO NOTHING;
-INSERT INTO public.django_migrations VALUES (26, 'sessions', '0001_initial', '2026-06-30 17:30:31.369593+08') ON CONFLICT DO NOTHING;
-INSERT INTO public.django_migrations VALUES (27, 'suppliers', '0001_initial', '2026-06-30 17:30:31.380467+08') ON CONFLICT DO NOTHING;
-INSERT INTO public.django_migrations VALUES (28, 'pos', '0002_alter_orderitem_spec_name', '2026-06-30 17:46:25.996101+08') ON CONFLICT DO NOTHING;
-
-
---
--- Data for Name: tenant; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-INSERT INTO public.tenant VALUES (1, '安居生活超市', 'tpugxdr', '', '', '010-12345678', '', true, '2026-06-30 17:38:03.30844+08') ON CONFLICT DO NOTHING;
 
 
 --
@@ -178,6 +154,64 @@ INSERT INTO public.tenant VALUES (1, '安居生活超市', 'tpugxdr', '', '', '0
 INSERT INTO public."user" VALUES (1, 'pbkdf2_sha256$1200000$oAu1WXDPY6PbhjqqWc3UHY$fYrDtjg3u3pSgUh4H+ghY+BazVuwID8Kdmay6NYSayg=', NULL, true, 'admin', '', '', 'admin@anju.com', true, true, '2026-06-30 17:30:38.226607+08', '', '') ON CONFLICT DO NOTHING;
 INSERT INTO public."user" VALUES (2, 'pbkdf2_sha256$1200000$Y7peHjpv1dts8rDkNNUARn$CeBEWGCPkMLV90EA2qWp6/zfrZe9uRrvmSSF7JeboCY=', NULL, false, 'anjuadmin', '', '', '', false, true, '2026-06-30 17:38:03.169175+08', '13800138000', '') ON CONFLICT DO NOTHING;
 INSERT INTO public."user" VALUES (3, 'pbkdf2_sha256$1200000$Ri0eB6pCY06POrgQNO6YbQ$wT+OcmF0SHMNCp8Xnscm3MI9j/q/NUnXM/VaIasQWxQ=', NULL, true, 'boss', '', '', 'boss@anju.com', true, true, '2026-07-01 18:23:21.476052+08', '18888888888', '') ON CONFLICT DO NOTHING;
+
+
+--
+-- Data for Name: django_admin_log; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+
+
+--
+-- Data for Name: django_migrations; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO public.django_migrations VALUES (1, 'tenants', '0001_initial', '2026-07-03 17:26:25.520437+08') ON CONFLICT DO NOTHING;
+INSERT INTO public.django_migrations VALUES (2, 'contenttypes', '0001_initial', '2026-07-03 17:26:25.529628+08') ON CONFLICT DO NOTHING;
+INSERT INTO public.django_migrations VALUES (3, 'contenttypes', '0002_remove_content_type_name', '2026-07-03 17:26:25.532204+08') ON CONFLICT DO NOTHING;
+INSERT INTO public.django_migrations VALUES (4, 'auth', '0001_initial', '2026-07-03 17:26:25.549362+08') ON CONFLICT DO NOTHING;
+INSERT INTO public.django_migrations VALUES (5, 'auth', '0002_alter_permission_name_max_length', '2026-07-03 17:26:25.551558+08') ON CONFLICT DO NOTHING;
+INSERT INTO public.django_migrations VALUES (6, 'auth', '0003_alter_user_email_max_length', '2026-07-03 17:26:25.553322+08') ON CONFLICT DO NOTHING;
+INSERT INTO public.django_migrations VALUES (7, 'auth', '0004_alter_user_username_opts', '2026-07-03 17:26:25.555297+08') ON CONFLICT DO NOTHING;
+INSERT INTO public.django_migrations VALUES (8, 'auth', '0005_alter_user_last_login_null', '2026-07-03 17:26:25.557167+08') ON CONFLICT DO NOTHING;
+INSERT INTO public.django_migrations VALUES (9, 'auth', '0006_require_contenttypes_0002', '2026-07-03 17:26:25.55787+08') ON CONFLICT DO NOTHING;
+INSERT INTO public.django_migrations VALUES (10, 'auth', '0007_alter_validators_add_error_messages', '2026-07-03 17:26:25.559528+08') ON CONFLICT DO NOTHING;
+INSERT INTO public.django_migrations VALUES (11, 'auth', '0008_alter_user_username_max_length', '2026-07-03 17:26:25.561187+08') ON CONFLICT DO NOTHING;
+INSERT INTO public.django_migrations VALUES (12, 'auth', '0009_alter_user_last_name_max_length', '2026-07-03 17:26:25.562948+08') ON CONFLICT DO NOTHING;
+INSERT INTO public.django_migrations VALUES (13, 'auth', '0010_alter_group_name_max_length', '2026-07-03 17:26:25.564989+08') ON CONFLICT DO NOTHING;
+INSERT INTO public.django_migrations VALUES (14, 'auth', '0011_update_proxy_permissions', '2026-07-03 17:26:25.566714+08') ON CONFLICT DO NOTHING;
+INSERT INTO public.django_migrations VALUES (15, 'auth', '0012_alter_user_first_name_max_length', '2026-07-03 17:26:25.568489+08') ON CONFLICT DO NOTHING;
+INSERT INTO public.django_migrations VALUES (16, 'accounts', '0001_initial', '2026-07-03 17:26:25.596314+08') ON CONFLICT DO NOTHING;
+INSERT INTO public.django_migrations VALUES (17, 'admin', '0001_initial', '2026-07-03 17:26:25.61533+08') ON CONFLICT DO NOTHING;
+INSERT INTO public.django_migrations VALUES (18, 'admin', '0002_logentry_remove_auto_add', '2026-07-03 17:26:25.618308+08') ON CONFLICT DO NOTHING;
+INSERT INTO public.django_migrations VALUES (19, 'admin', '0003_logentry_add_action_flag_choices', '2026-07-03 17:26:25.62104+08') ON CONFLICT DO NOTHING;
+INSERT INTO public.django_migrations VALUES (20, 'employees', '0001_initial', '2026-07-03 17:26:25.628894+08') ON CONFLICT DO NOTHING;
+INSERT INTO public.django_migrations VALUES (21, 'finance', '0001_initial', '2026-07-03 17:26:25.638671+08') ON CONFLICT DO NOTHING;
+INSERT INTO public.django_migrations VALUES (22, 'products', '0001_initial', '2026-07-03 17:26:25.670511+08') ON CONFLICT DO NOTHING;
+INSERT INTO public.django_migrations VALUES (23, 'inventory', '0001_initial', '2026-07-03 17:26:25.695188+08') ON CONFLICT DO NOTHING;
+INSERT INTO public.django_migrations VALUES (24, 'members', '0001_initial', '2026-07-03 17:26:25.711067+08') ON CONFLICT DO NOTHING;
+INSERT INTO public.django_migrations VALUES (25, 'members', '0002_member_password', '2026-07-03 17:26:25.716265+08') ON CONFLICT DO NOTHING;
+INSERT INTO public.django_migrations VALUES (26, 'members', '0003_member_token', '2026-07-03 17:26:25.720867+08') ON CONFLICT DO NOTHING;
+INSERT INTO public.django_migrations VALUES (27, 'pos', '0001_initial', '2026-07-03 17:26:25.746124+08') ON CONFLICT DO NOTHING;
+INSERT INTO public.django_migrations VALUES (28, 'pos', '0002_alter_orderitem_spec_name', '2026-07-03 17:26:25.756488+08') ON CONFLICT DO NOTHING;
+INSERT INTO public.django_migrations VALUES (29, 'products', '0002_product_image_url', '2026-07-03 17:26:25.76277+08') ON CONFLICT DO NOTHING;
+INSERT INTO public.django_migrations VALUES (30, 'sessions', '0001_initial', '2026-07-03 17:26:25.767576+08') ON CONFLICT DO NOTHING;
+INSERT INTO public.django_migrations VALUES (31, 'suppliers', '0001_initial', '2026-07-03 17:26:25.777457+08') ON CONFLICT DO NOTHING;
+INSERT INTO public.django_migrations VALUES (32, 'members', '0004_rechargerecord', '2026-07-03 19:34:36.500391+08') ON CONFLICT DO NOTHING;
+INSERT INTO public.django_migrations VALUES (33, 'members', '0005_coupon', '2026-07-03 19:42:17.900293+08') ON CONFLICT DO NOTHING;
+
+
+--
+-- Data for Name: django_session; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+
+
+--
+-- Data for Name: tenant; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO public.tenant VALUES (1, '安居生活超市', 'tpugxdr', '', '', '010-12345678', '', true, '2026-06-30 17:38:03.30844+08') ON CONFLICT DO NOTHING;
 
 
 --
@@ -259,7 +293,7 @@ INSERT INTO public.inventory_record VALUES (1, '2026-06-30 17:53:05.277511+08', 
 -- Data for Name: member; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public.member VALUES (3, '2026-07-01 18:54:57.033056+08', '2026-07-01 19:50:27.277072+08', '张三', '13800001001', 'M001', 100, 50.00, 0.00, '', 1, 'dec5fe617ccb901d1352d7c4b75c4468f7a84995ac330c94349cb58fe5cad139', 'pbkdf2_sha256$1200000$XLWg1QTrdOBKMoSRagCNjP$rQpGVoUQ2LY7PhXR7Cvu3bEq3PDNBuIEfo+i/IWYP1I=') ON CONFLICT DO NOTHING;
+INSERT INTO public.member VALUES (3, '2026-07-01 18:54:57.033056+08', '2026-07-03 18:39:50.744703+08', '张三', '13800001001', 'M001', 234, 367.20, 234.80, '', 1, 'pbkdf2_sha256$1200000$q3hK8l21XmXvO5HJEGrIV7$+zfp4vnoCrwlwE5IYJ7Ag9byOZkHpu3XLVdnCgWBzII=', 'fccb791a2c0a17eaa44fc71b6b323fc634ab43fae35828b4676131465e51d120') ON CONFLICT DO NOTHING;
 
 
 --
@@ -310,6 +344,8 @@ INSERT INTO public.pos_order VALUES (41, '2026-07-01 19:47:38.893808+08', '2026-
 INSERT INTO public.pos_order VALUES (42, '2026-07-01 19:48:38.346069+08', '2026-07-01 19:48:38.346076+08', 'POS1782906518214', 34.00, 0.00, 34.00, 'cash', 'completed', '2026-07-01 19:48:38.346094+08', 1, 3, 1) ON CONFLICT DO NOTHING;
 INSERT INTO public.pos_order VALUES (43, '2026-07-01 19:53:24.813771+08', '2026-07-01 19:53:24.81378+08', 'POS1782906804101', 50.00, 0.00, 50.00, 'cash', 'completed', '2026-07-01 19:53:24.813803+08', 1, 3, 1) ON CONFLICT DO NOTHING;
 INSERT INTO public.pos_order VALUES (44, '2026-07-01 19:59:36.34521+08', '2026-07-01 19:59:36.34522+08', 'POS1782907176211', 22.00, 0.00, 22.00, 'cash', 'completed', '2026-07-01 19:59:36.345244+08', 1, 3, 1) ON CONFLICT DO NOTHING;
+INSERT INTO public.pos_order VALUES (45, '2026-07-03 18:45:14.919506+08', '2026-07-03 18:45:14.919515+08', 'POS1783075514231', 68.00, 0.00, 68.00, 'wechat', 'completed', '2026-07-03 18:45:14.919542+08', 1, 3, 1) ON CONFLICT DO NOTHING;
+INSERT INTO public.pos_order VALUES (46, '2026-07-03 19:00:31.784699+08', '2026-07-03 19:00:31.784708+08', 'POS1783076431385', 32.80, 0.00, 32.80, 'member_card', 'completed', '2026-07-03 19:00:31.784732+08', 1, 3, 1) ON CONFLICT DO NOTHING;
 
 
 --
@@ -401,6 +437,25 @@ INSERT INTO public.pos_order_item VALUES (82, '2026-07-01 19:48:38.347655+08', '
 INSERT INTO public.pos_order_item VALUES (83, '2026-07-01 19:53:24.81478+08', '2026-07-01 19:53:24.814784+08', '雀巢巧伴伴', '430g', 1.000, 28.00, 28.00, 43, 11, 1) ON CONFLICT DO NOTHING;
 INSERT INTO public.pos_order_item VALUES (84, '2026-07-01 19:53:24.815459+08', '2026-07-01 19:53:24.815462+08', '亨氏番茄酱', '650g', 1.000, 22.00, 22.00, 43, 10, 1) ON CONFLICT DO NOTHING;
 INSERT INTO public.pos_order_item VALUES (85, '2026-07-01 19:59:36.346253+08', '2026-07-01 19:59:36.346257+08', '亨氏番茄酱', '650g', 1.000, 22.00, 22.00, 44, 10, 1) ON CONFLICT DO NOTHING;
+INSERT INTO public.pos_order_item VALUES (86, '2026-07-03 18:45:14.921196+08', '2026-07-03 18:45:14.921201+08', '零度可乐', '', 1.000, 3.00, 3.00, 45, 13, 1) ON CONFLICT DO NOTHING;
+INSERT INTO public.pos_order_item VALUES (87, '2026-07-03 18:45:14.922594+08', '2026-07-03 18:45:14.922599+08', '妙卡巧克力', '', 1.000, 12.00, 12.00, 45, 12, 1) ON CONFLICT DO NOTHING;
+INSERT INTO public.pos_order_item VALUES (88, '2026-07-03 18:45:14.92323+08', '2026-07-03 18:45:14.923234+08', '雀巢巧伴伴', '', 1.000, 28.00, 28.00, 45, 11, 1) ON CONFLICT DO NOTHING;
+INSERT INTO public.pos_order_item VALUES (89, '2026-07-03 18:45:14.923762+08', '2026-07-03 18:45:14.923766+08', '亨氏番茄酱', '', 1.000, 22.00, 22.00, 45, 10, 1) ON CONFLICT DO NOTHING;
+INSERT INTO public.pos_order_item VALUES (90, '2026-07-03 18:45:14.924328+08', '2026-07-03 18:45:14.924332+08', '可口可乐', '', 1.000, 3.00, 3.00, 45, 9, 1) ON CONFLICT DO NOTHING;
+INSERT INTO public.pos_order_item VALUES (91, '2026-07-03 19:00:31.786447+08', '2026-07-03 19:00:31.786453+08', '农夫山泉', '', 1.000, 2.00, 2.00, 46, 8, 1) ON CONFLICT DO NOTHING;
+INSERT INTO public.pos_order_item VALUES (92, '2026-07-03 19:00:31.787777+08', '2026-07-03 19:00:31.787782+08', '青岛啤酒', '', 3.000, 6.00, 18.00, 46, 6, 1) ON CONFLICT DO NOTHING;
+INSERT INTO public.pos_order_item VALUES (93, '2026-07-03 19:00:31.788325+08', '2026-07-03 19:00:31.788329+08', '旺旺雪饼', '', 1.000, 12.80, 12.80, 46, 5, 1) ON CONFLICT DO NOTHING;
+
+
+--
+-- Data for Name: recharge_record; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO public.recharge_record VALUES (1, '2026-07-03 19:35:05.583157+08', '2026-07-03 19:35:05.583164+08', 50.00, 0.00, 50.00, 3, 1) ON CONFLICT DO NOTHING;
+INSERT INTO public.recharge_record VALUES (2, '2026-07-03 19:35:05.615089+08', '2026-07-03 19:35:05.6151+08', 50.00, 0.00, 50.00, 3, 1) ON CONFLICT DO NOTHING;
+INSERT INTO public.recharge_record VALUES (3, '2026-07-03 19:35:05.63977+08', '2026-07-03 19:35:05.639793+08', 50.00, 0.00, 50.00, 3, 1) ON CONFLICT DO NOTHING;
+INSERT INTO public.recharge_record VALUES (4, '2026-07-03 19:35:10.036233+08', '2026-07-03 19:35:10.036239+08', 100.00, 10.00, 100.00, 3, 1) ON CONFLICT DO NOTHING;
+INSERT INTO public.recharge_record VALUES (5, '2026-07-03 21:09:20.930937+08', '2026-07-03 21:09:20.930947+08', 100.00, 10.00, 100.00, 3, 1) ON CONFLICT DO NOTHING;
 
 
 --
@@ -418,6 +473,12 @@ INSERT INTO public.supplier VALUES (2, '2026-06-30 17:44:06.171106+08', '2026-06
 
 
 --
+-- Data for Name: user_groups; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+
+
+--
 -- Data for Name: user_tenant; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -427,24 +488,51 @@ INSERT INTO public.user_tenant VALUES (3, 'super_admin', '2026-07-01 18:23:50.65
 
 
 --
+-- Data for Name: user_user_permissions; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+
+
+--
+-- Name: auth_group_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.auth_group_id_seq', 1, false);
+
+
+--
+-- Name: auth_group_permissions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.auth_group_permissions_id_seq', 1, false);
+
+
+--
 -- Name: auth_permission_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.auth_permission_id_seq', 76, true);
+SELECT pg_catalog.setval('public.auth_permission_id_seq', 80, true);
+
+
+--
+-- Name: django_admin_log_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.django_admin_log_id_seq', 1, false);
 
 
 --
 -- Name: django_content_type_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.django_content_type_id_seq', 19, true);
+SELECT pg_catalog.setval('public.django_content_type_id_seq', 20, true);
 
 
 --
 -- Name: django_migrations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.django_migrations_id_seq', 28, true);
+SELECT pg_catalog.setval('public.django_migrations_id_seq', 33, true);
 
 
 --
@@ -479,14 +567,14 @@ SELECT pg_catalog.setval('public.member_id_seq', 3, true);
 -- Name: pos_order_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.pos_order_id_seq', 44, true);
+SELECT pg_catalog.setval('public.pos_order_id_seq', 46, true);
 
 
 --
 -- Name: pos_order_item_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.pos_order_item_id_seq', 85, true);
+SELECT pg_catalog.setval('public.pos_order_item_id_seq', 93, true);
 
 
 --
@@ -511,6 +599,13 @@ SELECT pg_catalog.setval('public.product_sku_id_seq', 13, true);
 
 
 --
+-- Name: recharge_record_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.recharge_record_id_seq', 5, true);
+
+
+--
 -- Name: stock_check_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -532,6 +627,13 @@ SELECT pg_catalog.setval('public.tenant_id_seq', 1, true);
 
 
 --
+-- Name: user_groups_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.user_groups_id_seq', 1, false);
+
+
+--
 -- Name: user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -546,8 +648,15 @@ SELECT pg_catalog.setval('public.user_tenant_id_seq', 3, true);
 
 
 --
+-- Name: user_user_permissions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.user_user_permissions_id_seq', 1, false);
+
+
+--
 -- PostgreSQL database dump complete
 --
 
-\unrestrict ca8ftGkKploB2fX2WrzYmtLW4uEKfTr9eGyCXfGPviwTv85RQB0rbyPO4f0LkqH
+\unrestrict Tei4g7mjgWfEfnds7uecXC10OPuKmRlZLUfeg5GKE5uObPSnHbizoTEwHbK7lYW
 
