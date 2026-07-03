@@ -11,7 +11,7 @@ SAAS 多租户前后端分离超市管理系统。**Nuxt 4 + Nuxt UI v4** 前端
 | 后端 | Django 5/6 + DRF |
 | 认证 | JWT (simplejwt) 管理端 + Token 会员端 |
 | 数据库 | PostgreSQL 18 |
-| 安全 | nuxt-security (CSP/限速/请求限制) |
+| 设计系统 | 自定义 CSS 设计系统（卡片、标签、动画、骨架屏） |
 
 ## 项目结构
 
@@ -27,7 +27,11 @@ anju-supermarket/
 │   │   │   │   ├── checkout.vue        # 结算
 │   │   │   │   ├── orders.vue          # 我的订单
 │   │   │   │   ├── member.vue          # 会员中心
-│   │   │   │   └── login.vue           # 顾客登录
+│   │   │   │   ├── login.vue           # 顾客登录
+│   │   │   │   ├── coupons.vue         # 优惠券
+│   │   │   │   ├── analytics.vue       # 消费分析
+│   │   │   │   ├── favorites.vue       # 收藏
+│   │   │   │   └── recharge.vue        # 充值中心
 │   │   │   └── admin/      # 管理后台
 │   │   │       ├── index.vue           # 仪表盘
 │   │   │       ├── pos.vue             # 收银台
@@ -39,7 +43,7 @@ anju-supermarket/
 │   │   │       ├── finance.vue         # 财务/报表
 │   │   │       └── settings/           # 系统设置
 │   │   ├── components/     # Vue 组件
-│   │   ├── composables/    # useAuth, useShopApi, useDashboard
+│   │   ├── composables/    # useAuth, useShopApi, useDashboard, useFavorite, useImageFallback
 │   │   └── layouts/        # dashboard.vue, shop.vue, auth.vue
 │   └── server/api/
 │       ├── auth/           # 管理端 BFF 代理 (JWT Cookie)
@@ -72,6 +76,10 @@ anju-supermarket/
 | `/{slug}/login` | 顾客登录 | `shop` | 公开 |
 | `/{slug}/orders` | 订单历史 | `shop` | 会员 |
 | `/{slug}/member` | 会员中心 | `shop` | 会员 |
+| `/{slug}/coupons` | 优惠券 | `shop` | 会员 |
+| `/{slug}/analytics` | 消费分析 | `shop` | 会员 |
+| `/{slug}/favorites` | 收藏 | `shop` | 会员 |
+| `/{slug}/recharge` | 充值中心 | `shop` | 会员 |
 | `/admin` | 仪表盘 | `dashboard` | 管理员 |
 | `/admin/pos` | 收银台 | `dashboard` | 管理员 |
 | `/admin/products` | 商品管理 | `dashboard` | 管理员 |
@@ -89,13 +97,18 @@ anju-supermarket/
 | 订单追踪 | 订单列表、展开明细 |
 | 会员中心 | 积分、余额、消费记录 |
 | 会员登录 | 手机号 + 密码 |
+| 优惠券 | 领券中心、我的优惠券 |
+| 消费分析 | 消费趋势图表 |
+| 收藏 | 收藏商品 |
+| 充值中心 | 会员储值 |
 
 ### 🖥️ 管理后台
 | 模块 | 功能 |
 |---|---|
 | 收银/POS | 扫码/搜索商品、购物车、四种支付方式 |
 | 商品管理 | 分类、SPU/SKU、条码、图片上传、扫码录入 |
-| 库存管理 | 入库/出库流水、库存预警 |
+| 库存管理 | 入库/出库流水、库存预警、彩色类型标签 |
+| 优惠券管理 | 满减/折扣券 CRUD、启用/停用 |
 | 会员管理 | 会员 CRUD、积分、储值 |
 | 供应商管理 | 供应商信息 |
 | 员工管理 | 员工账号、角色 |
@@ -176,7 +189,6 @@ psql -U postgres anju_db < seed.sql
 
 ## 安全
 
-- CSP、XSS、请求大小限制（nuxt-security）
 - API 限流（DRF Throttling）
 - Cookie `httpOnly` / `sameSite` / `secure`
 - 密码强度校验（最少 8 位，常见密码黑名单）
