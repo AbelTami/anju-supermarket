@@ -1,0 +1,4792 @@
+[
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "admin",
+    "model": "logentry"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "auth",
+    "model": "group"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "auth",
+    "model": "permission"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "contenttypes",
+    "model": "contenttype"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "sessions",
+    "model": "session"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "tenants",
+    "model": "tenant"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "accounts",
+    "model": "user"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "accounts",
+    "model": "usertenant"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "products",
+    "model": "category"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "products",
+    "model": "product"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "products",
+    "model": "productsku"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "inventory",
+    "model": "inventoryrecord"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "inventory",
+    "model": "stockcheck"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "pos",
+    "model": "order"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "pos",
+    "model": "orderitem"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "members",
+    "model": "member"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "suppliers",
+    "model": "supplier"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "employees",
+    "model": "shift"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "finance",
+    "model": "dailysummary"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "members",
+    "model": "rechargerecord"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "inventory",
+    "model": "stockcheckitem"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "lt3dtn86np6l4frmg0272no49103q1m2",
+  "fields": {
+    "session_data": ".eJxVjMsOgjAQAP-lZ9PQ0gfr0Tvf0Ox2F4uaklA4Gf_dkHDQ68xk3irhvpW0N1nTzOqqjLr8MsL8lHoIfmC9LzovdVtn0keiT9v0uLC8bmf7NyjYyrHtHTKBQ0sYnAEvZvJAZqBMeepDBPbeiAuugz6zHUA6CBEDdz5aiurzBeE2N3s:1wfwJT:8bQyn0F2U-ActuQCPeM2OcqVeJOSMsqHVWZg3FZaiuc",
+    "expire_date": "2026-07-18T09:05:27.825Z"
+  }
+},
+{
+  "model": "tenants.tenant",
+  "pk": 1,
+  "fields": {
+    "name": "安居生活超市",
+    "slug": "tpugxdr",
+    "logo": "",
+    "address": "",
+    "phone": "010-12345678",
+    "business_hours": "",
+    "is_active": true,
+    "created_at": "2026-06-30T09:38:03.308Z"
+  }
+},
+{
+  "model": "products.category",
+  "pk": 1,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T09:44:06.155Z",
+    "updated_at": "2026-06-30T09:44:06.155Z",
+    "name": "饮料",
+    "parent": null,
+    "sort_order": 0
+  }
+},
+{
+  "model": "products.category",
+  "pk": 2,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T09:44:06.157Z",
+    "updated_at": "2026-06-30T09:44:06.157Z",
+    "name": "食品",
+    "parent": null,
+    "sort_order": 0
+  }
+},
+{
+  "model": "products.category",
+  "pk": 3,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T09:44:06.158Z",
+    "updated_at": "2026-06-30T09:44:06.158Z",
+    "name": "乳制品",
+    "parent": null,
+    "sort_order": 0
+  }
+},
+{
+  "model": "products.category",
+  "pk": 4,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T12:45:02.964Z",
+    "updated_at": "2026-06-30T12:45:02.964Z",
+    "name": "零食",
+    "parent": null,
+    "sort_order": 0
+  }
+},
+{
+  "model": "products.category",
+  "pk": 5,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T12:45:02.968Z",
+    "updated_at": "2026-06-30T12:45:02.968Z",
+    "name": "酒类",
+    "parent": null,
+    "sort_order": 0
+  }
+},
+{
+  "model": "products.category",
+  "pk": 6,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T12:45:02.969Z",
+    "updated_at": "2026-06-30T12:45:02.969Z",
+    "name": "调味品",
+    "parent": null,
+    "sort_order": 0
+  }
+},
+{
+  "model": "products.category",
+  "pk": 7,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T12:45:02.970Z",
+    "updated_at": "2026-06-30T12:45:02.970Z",
+    "name": "日用品",
+    "parent": null,
+    "sort_order": 0
+  }
+},
+{
+  "model": "products.category",
+  "pk": 8,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T12:45:02.971Z",
+    "updated_at": "2026-06-30T12:45:02.971Z",
+    "name": "冷冻食品",
+    "parent": null,
+    "sort_order": 0
+  }
+},
+{
+  "model": "products.category",
+  "pk": 9,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T12:45:02.972Z",
+    "updated_at": "2026-06-30T12:45:02.972Z",
+    "name": "粮油米面",
+    "parent": null,
+    "sort_order": 0
+  }
+},
+{
+  "model": "products.category",
+  "pk": 10,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T12:45:02.972Z",
+    "updated_at": "2026-06-30T12:45:02.972Z",
+    "name": "个人护理",
+    "parent": null,
+    "sort_order": 0
+  }
+},
+{
+  "model": "products.category",
+  "pk": 11,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T12:45:02.973Z",
+    "updated_at": "2026-06-30T12:45:02.973Z",
+    "name": "家居清洁",
+    "parent": null,
+    "sort_order": 0
+  }
+},
+{
+  "model": "products.category",
+  "pk": 12,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T12:45:02.974Z",
+    "updated_at": "2026-06-30T12:45:02.974Z",
+    "name": "文具玩具",
+    "parent": null,
+    "sort_order": 0
+  }
+},
+{
+  "model": "products.product",
+  "pk": 1,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T09:44:06.160Z",
+    "updated_at": "2026-07-01T12:18:55.239Z",
+    "name": "可口可乐(大瓶)",
+    "category": 1,
+    "image": "products/可口可乐大瓶.jpg",
+    "image_url": "",
+    "unit": "瓶",
+    "is_weighted": false,
+    "is_active": true
+  }
+},
+{
+  "model": "products.product",
+  "pk": 2,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T09:44:06.163Z",
+    "updated_at": "2026-06-30T09:44:06.163Z",
+    "name": "农夫山泉",
+    "category": 1,
+    "image": "",
+    "image_url": "",
+    "unit": "瓶",
+    "is_weighted": false,
+    "is_active": true
+  }
+},
+{
+  "model": "products.product",
+  "pk": 3,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T09:44:06.164Z",
+    "updated_at": "2026-06-30T09:44:06.164Z",
+    "name": "康师傅方便面",
+    "category": 2,
+    "image": "",
+    "image_url": "",
+    "unit": "袋",
+    "is_weighted": false,
+    "is_active": true
+  }
+},
+{
+  "model": "products.product",
+  "pk": 4,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T09:44:06.164Z",
+    "updated_at": "2026-06-30T09:44:06.164Z",
+    "name": "伊利纯牛奶",
+    "category": 3,
+    "image": "",
+    "image_url": "",
+    "unit": "盒",
+    "is_weighted": false,
+    "is_active": true
+  }
+},
+{
+  "model": "products.product",
+  "pk": 5,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T09:44:06.165Z",
+    "updated_at": "2026-06-30T09:44:06.165Z",
+    "name": "旺旺雪饼",
+    "category": 2,
+    "image": "",
+    "image_url": "",
+    "unit": "袋",
+    "is_weighted": false,
+    "is_active": true
+  }
+},
+{
+  "model": "products.product",
+  "pk": 6,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T09:44:06.166Z",
+    "updated_at": "2026-06-30T09:44:06.166Z",
+    "name": "青岛啤酒",
+    "category": 1,
+    "image": "",
+    "image_url": "",
+    "unit": "瓶",
+    "is_weighted": false,
+    "is_active": true
+  }
+},
+{
+  "model": "products.product",
+  "pk": 7,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-07-01T11:28:29.361Z",
+    "updated_at": "2026-07-01T12:10:49.148Z",
+    "name": "百事可乐",
+    "category": 1,
+    "image": "products/百事可乐_o8g33xU.jpg",
+    "image_url": "",
+    "unit": "瓶",
+    "is_weighted": false,
+    "is_active": true
+  }
+},
+{
+  "model": "products.product",
+  "pk": 8,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-07-01T11:32:50.619Z",
+    "updated_at": "2026-07-01T11:32:50.619Z",
+    "name": "农夫山泉",
+    "category": 1,
+    "image": "",
+    "image_url": "https://images.openfoodfacts.org/images/products/692/116/850/9256/front_en.3.400.jpg",
+    "unit": "瓶",
+    "is_weighted": false,
+    "is_active": true
+  }
+},
+{
+  "model": "products.product",
+  "pk": 9,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-07-01T11:32:55.311Z",
+    "updated_at": "2026-07-01T11:32:55.311Z",
+    "name": "可口可乐",
+    "category": 1,
+    "image": "",
+    "image_url": "https://images.openfoodfacts.org/images/products/544/900/000/0996/front_en.1035.400.jpg",
+    "unit": "罐",
+    "is_weighted": false,
+    "is_active": true
+  }
+},
+{
+  "model": "products.product",
+  "pk": 10,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-07-01T11:32:58.504Z",
+    "updated_at": "2026-07-01T11:32:58.504Z",
+    "name": "亨氏番茄酱",
+    "category": 6,
+    "image": "",
+    "image_url": "https://images.openfoodfacts.org/images/products/871/570/011/0622/front_fr.18.400.jpg",
+    "unit": "瓶",
+    "is_weighted": false,
+    "is_active": true
+  }
+},
+{
+  "model": "products.product",
+  "pk": 11,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-07-01T11:33:01.883Z",
+    "updated_at": "2026-07-01T11:33:01.883Z",
+    "name": "雀巢巧伴伴",
+    "category": 4,
+    "image": "",
+    "image_url": "https://images.openfoodfacts.org/images/products/761/303/462/6844/front_fr.355.400.jpg",
+    "unit": "盒",
+    "is_weighted": false,
+    "is_active": true
+  }
+},
+{
+  "model": "products.product",
+  "pk": 12,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-07-01T11:33:05.274Z",
+    "updated_at": "2026-07-01T11:33:05.274Z",
+    "name": "妙卡巧克力",
+    "category": 4,
+    "image": "",
+    "image_url": "https://images.openfoodfacts.org/images/products/304/514/010/5502/front_fr.625.400.jpg",
+    "unit": "块",
+    "is_weighted": false,
+    "is_active": true
+  }
+},
+{
+  "model": "products.product",
+  "pk": 13,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-07-01T11:33:08.604Z",
+    "updated_at": "2026-07-04T09:40:04.963Z",
+    "name": "零度可乐",
+    "category": 1,
+    "image": "products/百事可乐_rqFtmLx.jpg",
+    "image_url": "https://images.openfoodfacts.org/images/products/544/900/013/1805/front_en.687.400.jpg",
+    "unit": "罐",
+    "is_weighted": false,
+    "is_active": false
+  }
+},
+{
+  "model": "products.productsku",
+  "pk": 1,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T09:44:06.161Z",
+    "updated_at": "2026-06-30T09:44:06.161Z",
+    "product": 1,
+    "barcode": "6901234567890",
+    "spec_name": "330ml",
+    "spec_attrs": {},
+    "purchase_price": "2.00",
+    "selling_price": "3.00",
+    "stock_quantity": "200.000",
+    "stock_alert": "20.000"
+  }
+},
+{
+  "model": "products.productsku",
+  "pk": 2,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T09:44:06.163Z",
+    "updated_at": "2026-06-30T09:44:06.163Z",
+    "product": 2,
+    "barcode": "6901234567891",
+    "spec_name": "550ml",
+    "spec_attrs": {},
+    "purchase_price": "1.00",
+    "selling_price": "2.00",
+    "stock_quantity": "200.000",
+    "stock_alert": "30.000"
+  }
+},
+{
+  "model": "products.productsku",
+  "pk": 3,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T09:44:06.164Z",
+    "updated_at": "2026-06-30T09:44:06.164Z",
+    "product": 3,
+    "barcode": "6901234567892",
+    "spec_name": "红烧牛肉",
+    "spec_attrs": {},
+    "purchase_price": "3.00",
+    "selling_price": "4.50",
+    "stock_quantity": "80.000",
+    "stock_alert": "10.000"
+  }
+},
+{
+  "model": "products.productsku",
+  "pk": 4,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T09:44:06.165Z",
+    "updated_at": "2026-06-30T09:44:06.165Z",
+    "product": 4,
+    "barcode": "6901234567893",
+    "spec_name": "250ml",
+    "spec_attrs": {},
+    "purchase_price": "4.00",
+    "selling_price": "5.50",
+    "stock_quantity": "60.000",
+    "stock_alert": "10.000"
+  }
+},
+{
+  "model": "products.productsku",
+  "pk": 5,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T09:44:06.166Z",
+    "updated_at": "2026-06-30T09:44:06.166Z",
+    "product": 5,
+    "barcode": "6901234567894",
+    "spec_name": "520g",
+    "spec_attrs": {},
+    "purchase_price": "8.00",
+    "selling_price": "12.80",
+    "stock_quantity": "45.000",
+    "stock_alert": "5.000"
+  }
+},
+{
+  "model": "products.productsku",
+  "pk": 6,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T09:44:06.167Z",
+    "updated_at": "2026-06-30T09:44:06.167Z",
+    "product": 6,
+    "barcode": "6901234567895",
+    "spec_name": "500ml",
+    "spec_attrs": {},
+    "purchase_price": "3.50",
+    "selling_price": "6.00",
+    "stock_quantity": "100.000",
+    "stock_alert": "15.000"
+  }
+},
+{
+  "model": "products.productsku",
+  "pk": 7,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-07-01T11:28:29.362Z",
+    "updated_at": "2026-07-01T11:28:29.362Z",
+    "product": 7,
+    "barcode": "5449000214911",
+    "spec_name": "330ml",
+    "spec_attrs": {},
+    "purchase_price": "2.20",
+    "selling_price": "3.00",
+    "stock_quantity": "120.000",
+    "stock_alert": "20.000"
+  }
+},
+{
+  "model": "products.productsku",
+  "pk": 8,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-07-01T11:32:50.620Z",
+    "updated_at": "2026-07-01T11:32:50.620Z",
+    "product": 8,
+    "barcode": "6921168509256",
+    "spec_name": "550ml",
+    "spec_attrs": {},
+    "purchase_price": "1.00",
+    "selling_price": "2.00",
+    "stock_quantity": "200.000",
+    "stock_alert": "10.000"
+  }
+},
+{
+  "model": "products.productsku",
+  "pk": 9,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-07-01T11:32:55.312Z",
+    "updated_at": "2026-07-01T11:32:55.312Z",
+    "product": 9,
+    "barcode": "5449000000996",
+    "spec_name": "330ml",
+    "spec_attrs": {},
+    "purchase_price": "2.00",
+    "selling_price": "3.00",
+    "stock_quantity": "150.000",
+    "stock_alert": "10.000"
+  }
+},
+{
+  "model": "products.productsku",
+  "pk": 10,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-07-01T11:32:58.505Z",
+    "updated_at": "2026-07-01T11:32:58.505Z",
+    "product": 10,
+    "barcode": "8715700110622",
+    "spec_name": "650g",
+    "spec_attrs": {},
+    "purchase_price": "15.00",
+    "selling_price": "22.00",
+    "stock_quantity": "30.000",
+    "stock_alert": "10.000"
+  }
+},
+{
+  "model": "products.productsku",
+  "pk": 11,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-07-01T11:33:01.884Z",
+    "updated_at": "2026-07-01T11:33:01.884Z",
+    "product": 11,
+    "barcode": "7613034626844",
+    "spec_name": "430g",
+    "spec_attrs": {},
+    "purchase_price": "18.00",
+    "selling_price": "28.00",
+    "stock_quantity": "20.000",
+    "stock_alert": "10.000"
+  }
+},
+{
+  "model": "products.productsku",
+  "pk": 12,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-07-01T11:33:05.275Z",
+    "updated_at": "2026-07-01T11:33:05.275Z",
+    "product": 12,
+    "barcode": "3045140105502",
+    "spec_name": "100g",
+    "spec_attrs": {},
+    "purchase_price": "8.00",
+    "selling_price": "12.00",
+    "stock_quantity": "50.000",
+    "stock_alert": "10.000"
+  }
+},
+{
+  "model": "products.productsku",
+  "pk": 13,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-07-01T11:33:08.605Z",
+    "updated_at": "2026-07-01T11:33:08.605Z",
+    "product": 13,
+    "barcode": "5449000131805",
+    "spec_name": "330ml",
+    "spec_attrs": {},
+    "purchase_price": "2.00",
+    "selling_price": "3.00",
+    "stock_quantity": "107.000",
+    "stock_alert": "10.000"
+  }
+},
+{
+  "model": "inventory.stockcheckitem",
+  "pk": 1,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-07-04T09:34:04.119Z",
+    "updated_at": "2026-07-04T09:34:04.119Z",
+    "stock_check": 1,
+    "sku": 13,
+    "system_quantity": "0.000",
+    "actual_quantity": "98.000",
+    "diff_quantity": "98.000",
+    "remark": "test"
+  }
+},
+{
+  "model": "inventory.stockcheckitem",
+  "pk": 2,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-07-04T09:34:04.120Z",
+    "updated_at": "2026-07-04T09:34:04.120Z",
+    "stock_check": 1,
+    "sku": 12,
+    "system_quantity": "0.000",
+    "actual_quantity": "52.000",
+    "diff_quantity": "0.000",
+    "remark": "test2"
+  }
+},
+{
+  "model": "inventory.stockcheckitem",
+  "pk": 3,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-07-04T09:34:44.314Z",
+    "updated_at": "2026-07-04T09:34:44.314Z",
+    "stock_check": 2,
+    "sku": 13,
+    "system_quantity": "100.000",
+    "actual_quantity": "98.000",
+    "diff_quantity": "-2.000",
+    "remark": ""
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 1,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T09:45:39.216Z",
+    "updated_at": "2026-06-30T09:45:39.216Z",
+    "order": 1,
+    "sku": 1,
+    "product_name": "可口可乐",
+    "spec_name": "330ml",
+    "quantity": "2.000",
+    "price": "3.00",
+    "subtotal": "6.00"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 2,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T09:46:44.072Z",
+    "updated_at": "2026-06-30T09:46:44.072Z",
+    "order": 2,
+    "sku": 1,
+    "product_name": "可口可乐",
+    "spec_name": "330ml",
+    "quantity": "2.000",
+    "price": "3.00",
+    "subtotal": "6.00"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 3,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.262Z",
+    "updated_at": "2026-06-30T11:27:52.262Z",
+    "order": 3,
+    "sku": 4,
+    "product_name": "康师傅方便面",
+    "spec_name": "红烧牛肉",
+    "quantity": "3.000",
+    "price": "4.50",
+    "subtotal": "13.50"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 4,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.263Z",
+    "updated_at": "2026-06-30T11:27:52.263Z",
+    "order": 3,
+    "sku": 2,
+    "product_name": "旺旺雪饼",
+    "spec_name": "520g",
+    "quantity": "1.000",
+    "price": "12.80",
+    "subtotal": "12.80"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 5,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.275Z",
+    "updated_at": "2026-06-30T11:27:52.275Z",
+    "order": 4,
+    "sku": 3,
+    "product_name": "青岛啤酒",
+    "spec_name": "500ml",
+    "quantity": "3.000",
+    "price": "6.00",
+    "subtotal": "18.00"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 6,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.275Z",
+    "updated_at": "2026-06-30T11:27:52.275Z",
+    "order": 4,
+    "sku": 6,
+    "product_name": "旺旺雪饼",
+    "spec_name": "520g",
+    "quantity": "2.000",
+    "price": "12.80",
+    "subtotal": "25.60"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 7,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.287Z",
+    "updated_at": "2026-06-30T11:27:52.287Z",
+    "order": 5,
+    "sku": 3,
+    "product_name": "农夫山泉",
+    "spec_name": "550ml",
+    "quantity": "2.000",
+    "price": "2.00",
+    "subtotal": "4.00"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 8,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.288Z",
+    "updated_at": "2026-06-30T11:27:52.288Z",
+    "order": 5,
+    "sku": 3,
+    "product_name": "旺旺雪饼",
+    "spec_name": "520g",
+    "quantity": "3.000",
+    "price": "12.80",
+    "subtotal": "38.40"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 9,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.300Z",
+    "updated_at": "2026-06-30T11:27:52.300Z",
+    "order": 6,
+    "sku": 1,
+    "product_name": "康师傅方便面",
+    "spec_name": "红烧牛肉",
+    "quantity": "1.000",
+    "price": "4.50",
+    "subtotal": "4.50"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 10,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.300Z",
+    "updated_at": "2026-06-30T11:27:52.300Z",
+    "order": 6,
+    "sku": 2,
+    "product_name": "可口可乐",
+    "spec_name": "330ml",
+    "quantity": "3.000",
+    "price": "3.00",
+    "subtotal": "9.00"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 11,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.301Z",
+    "updated_at": "2026-06-30T11:27:52.301Z",
+    "order": 6,
+    "sku": 6,
+    "product_name": "青岛啤酒",
+    "spec_name": "500ml",
+    "quantity": "1.000",
+    "price": "6.00",
+    "subtotal": "6.00"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 12,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.315Z",
+    "updated_at": "2026-06-30T11:27:52.315Z",
+    "order": 7,
+    "sku": 1,
+    "product_name": "康师傅方便面",
+    "spec_name": "红烧牛肉",
+    "quantity": "1.000",
+    "price": "4.50",
+    "subtotal": "4.50"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 13,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.316Z",
+    "updated_at": "2026-06-30T11:27:52.316Z",
+    "order": 7,
+    "sku": 4,
+    "product_name": "伊利纯牛奶",
+    "spec_name": "250ml",
+    "quantity": "3.000",
+    "price": "5.50",
+    "subtotal": "16.50"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 14,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.329Z",
+    "updated_at": "2026-06-30T11:27:52.329Z",
+    "order": 8,
+    "sku": 1,
+    "product_name": "伊利纯牛奶",
+    "spec_name": "250ml",
+    "quantity": "1.000",
+    "price": "5.50",
+    "subtotal": "5.50"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 15,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.329Z",
+    "updated_at": "2026-06-30T11:27:52.329Z",
+    "order": 8,
+    "sku": 2,
+    "product_name": "农夫山泉",
+    "spec_name": "550ml",
+    "quantity": "2.000",
+    "price": "2.00",
+    "subtotal": "4.00"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 16,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.341Z",
+    "updated_at": "2026-06-30T11:27:52.341Z",
+    "order": 9,
+    "sku": 6,
+    "product_name": "旺旺雪饼",
+    "spec_name": "520g",
+    "quantity": "1.000",
+    "price": "12.80",
+    "subtotal": "12.80"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 17,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.342Z",
+    "updated_at": "2026-06-30T11:27:52.342Z",
+    "order": 9,
+    "sku": 3,
+    "product_name": "伊利纯牛奶",
+    "spec_name": "250ml",
+    "quantity": "3.000",
+    "price": "5.50",
+    "subtotal": "16.50"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 18,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.353Z",
+    "updated_at": "2026-06-30T11:27:52.353Z",
+    "order": 10,
+    "sku": 6,
+    "product_name": "伊利纯牛奶",
+    "spec_name": "250ml",
+    "quantity": "3.000",
+    "price": "5.50",
+    "subtotal": "16.50"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 19,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.354Z",
+    "updated_at": "2026-06-30T11:27:52.354Z",
+    "order": 10,
+    "sku": 2,
+    "product_name": "可口可乐",
+    "spec_name": "330ml",
+    "quantity": "1.000",
+    "price": "3.00",
+    "subtotal": "3.00"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 20,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.355Z",
+    "updated_at": "2026-06-30T11:27:52.355Z",
+    "order": 10,
+    "sku": 2,
+    "product_name": "旺旺雪饼",
+    "spec_name": "520g",
+    "quantity": "3.000",
+    "price": "12.80",
+    "subtotal": "38.40"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 21,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.367Z",
+    "updated_at": "2026-06-30T11:27:52.367Z",
+    "order": 11,
+    "sku": 6,
+    "product_name": "农夫山泉",
+    "spec_name": "550ml",
+    "quantity": "3.000",
+    "price": "2.00",
+    "subtotal": "6.00"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 22,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.378Z",
+    "updated_at": "2026-06-30T11:27:52.378Z",
+    "order": 12,
+    "sku": 1,
+    "product_name": "伊利纯牛奶",
+    "spec_name": "250ml",
+    "quantity": "3.000",
+    "price": "5.50",
+    "subtotal": "16.50"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 23,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.379Z",
+    "updated_at": "2026-06-30T11:27:52.379Z",
+    "order": 12,
+    "sku": 1,
+    "product_name": "农夫山泉",
+    "spec_name": "550ml",
+    "quantity": "1.000",
+    "price": "2.00",
+    "subtotal": "2.00"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 24,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.390Z",
+    "updated_at": "2026-06-30T11:27:52.390Z",
+    "order": 13,
+    "sku": 6,
+    "product_name": "青岛啤酒",
+    "spec_name": "500ml",
+    "quantity": "1.000",
+    "price": "6.00",
+    "subtotal": "6.00"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 25,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.391Z",
+    "updated_at": "2026-06-30T11:27:52.391Z",
+    "order": 13,
+    "sku": 3,
+    "product_name": "可口可乐",
+    "spec_name": "330ml",
+    "quantity": "2.000",
+    "price": "3.00",
+    "subtotal": "6.00"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 26,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.391Z",
+    "updated_at": "2026-06-30T11:27:52.391Z",
+    "order": 13,
+    "sku": 3,
+    "product_name": "康师傅方便面",
+    "spec_name": "红烧牛肉",
+    "quantity": "2.000",
+    "price": "4.50",
+    "subtotal": "9.00"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 27,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.402Z",
+    "updated_at": "2026-06-30T11:27:52.402Z",
+    "order": 14,
+    "sku": 4,
+    "product_name": "青岛啤酒",
+    "spec_name": "500ml",
+    "quantity": "2.000",
+    "price": "6.00",
+    "subtotal": "12.00"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 28,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.414Z",
+    "updated_at": "2026-06-30T11:27:52.414Z",
+    "order": 15,
+    "sku": 1,
+    "product_name": "农夫山泉",
+    "spec_name": "550ml",
+    "quantity": "2.000",
+    "price": "2.00",
+    "subtotal": "4.00"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 29,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.414Z",
+    "updated_at": "2026-06-30T11:27:52.414Z",
+    "order": 15,
+    "sku": 3,
+    "product_name": "可口可乐",
+    "spec_name": "330ml",
+    "quantity": "2.000",
+    "price": "3.00",
+    "subtotal": "6.00"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 30,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.414Z",
+    "updated_at": "2026-06-30T11:27:52.414Z",
+    "order": 15,
+    "sku": 2,
+    "product_name": "旺旺雪饼",
+    "spec_name": "520g",
+    "quantity": "3.000",
+    "price": "12.80",
+    "subtotal": "38.40"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 31,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.426Z",
+    "updated_at": "2026-06-30T11:27:52.426Z",
+    "order": 16,
+    "sku": 2,
+    "product_name": "青岛啤酒",
+    "spec_name": "500ml",
+    "quantity": "2.000",
+    "price": "6.00",
+    "subtotal": "12.00"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 32,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.438Z",
+    "updated_at": "2026-06-30T11:27:52.438Z",
+    "order": 17,
+    "sku": 1,
+    "product_name": "可口可乐",
+    "spec_name": "330ml",
+    "quantity": "3.000",
+    "price": "3.00",
+    "subtotal": "9.00"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 33,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.450Z",
+    "updated_at": "2026-06-30T11:27:52.450Z",
+    "order": 18,
+    "sku": 4,
+    "product_name": "青岛啤酒",
+    "spec_name": "500ml",
+    "quantity": "3.000",
+    "price": "6.00",
+    "subtotal": "18.00"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 34,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.450Z",
+    "updated_at": "2026-06-30T11:27:52.450Z",
+    "order": 18,
+    "sku": 2,
+    "product_name": "农夫山泉",
+    "spec_name": "550ml",
+    "quantity": "3.000",
+    "price": "2.00",
+    "subtotal": "6.00"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 35,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.463Z",
+    "updated_at": "2026-06-30T11:27:52.463Z",
+    "order": 19,
+    "sku": 3,
+    "product_name": "康师傅方便面",
+    "spec_name": "红烧牛肉",
+    "quantity": "1.000",
+    "price": "4.50",
+    "subtotal": "4.50"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 36,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.463Z",
+    "updated_at": "2026-06-30T11:27:52.463Z",
+    "order": 19,
+    "sku": 6,
+    "product_name": "农夫山泉",
+    "spec_name": "550ml",
+    "quantity": "2.000",
+    "price": "2.00",
+    "subtotal": "4.00"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 37,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.464Z",
+    "updated_at": "2026-06-30T11:27:52.464Z",
+    "order": 19,
+    "sku": 2,
+    "product_name": "青岛啤酒",
+    "spec_name": "500ml",
+    "quantity": "1.000",
+    "price": "6.00",
+    "subtotal": "6.00"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 38,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.477Z",
+    "updated_at": "2026-06-30T11:27:52.477Z",
+    "order": 20,
+    "sku": 2,
+    "product_name": "伊利纯牛奶",
+    "spec_name": "250ml",
+    "quantity": "2.000",
+    "price": "5.50",
+    "subtotal": "11.00"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 39,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.477Z",
+    "updated_at": "2026-06-30T11:27:52.477Z",
+    "order": 20,
+    "sku": 4,
+    "product_name": "康师傅方便面",
+    "spec_name": "红烧牛肉",
+    "quantity": "2.000",
+    "price": "4.50",
+    "subtotal": "9.00"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 40,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.478Z",
+    "updated_at": "2026-06-30T11:27:52.478Z",
+    "order": 20,
+    "sku": 6,
+    "product_name": "农夫山泉",
+    "spec_name": "550ml",
+    "quantity": "1.000",
+    "price": "2.00",
+    "subtotal": "2.00"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 41,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.490Z",
+    "updated_at": "2026-06-30T11:27:52.490Z",
+    "order": 21,
+    "sku": 1,
+    "product_name": "康师傅方便面",
+    "spec_name": "红烧牛肉",
+    "quantity": "2.000",
+    "price": "4.50",
+    "subtotal": "9.00"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 42,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.491Z",
+    "updated_at": "2026-06-30T11:27:52.491Z",
+    "order": 21,
+    "sku": 2,
+    "product_name": "农夫山泉",
+    "spec_name": "550ml",
+    "quantity": "1.000",
+    "price": "2.00",
+    "subtotal": "2.00"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 43,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.491Z",
+    "updated_at": "2026-06-30T11:27:52.491Z",
+    "order": 21,
+    "sku": 3,
+    "product_name": "青岛啤酒",
+    "spec_name": "500ml",
+    "quantity": "1.000",
+    "price": "6.00",
+    "subtotal": "6.00"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 44,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.503Z",
+    "updated_at": "2026-06-30T11:27:52.503Z",
+    "order": 22,
+    "sku": 6,
+    "product_name": "青岛啤酒",
+    "spec_name": "500ml",
+    "quantity": "3.000",
+    "price": "6.00",
+    "subtotal": "18.00"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 45,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.504Z",
+    "updated_at": "2026-06-30T11:27:52.504Z",
+    "order": 22,
+    "sku": 5,
+    "product_name": "农夫山泉",
+    "spec_name": "550ml",
+    "quantity": "2.000",
+    "price": "2.00",
+    "subtotal": "4.00"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 46,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.505Z",
+    "updated_at": "2026-06-30T11:27:52.505Z",
+    "order": 22,
+    "sku": 6,
+    "product_name": "康师傅方便面",
+    "spec_name": "红烧牛肉",
+    "quantity": "2.000",
+    "price": "4.50",
+    "subtotal": "9.00"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 47,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.516Z",
+    "updated_at": "2026-06-30T11:27:52.516Z",
+    "order": 23,
+    "sku": 4,
+    "product_name": "伊利纯牛奶",
+    "spec_name": "250ml",
+    "quantity": "1.000",
+    "price": "5.50",
+    "subtotal": "5.50"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 48,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.517Z",
+    "updated_at": "2026-06-30T11:27:52.517Z",
+    "order": 23,
+    "sku": 3,
+    "product_name": "旺旺雪饼",
+    "spec_name": "520g",
+    "quantity": "3.000",
+    "price": "12.80",
+    "subtotal": "38.40"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 49,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.517Z",
+    "updated_at": "2026-06-30T11:27:52.517Z",
+    "order": 23,
+    "sku": 1,
+    "product_name": "农夫山泉",
+    "spec_name": "550ml",
+    "quantity": "2.000",
+    "price": "2.00",
+    "subtotal": "4.00"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 50,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.529Z",
+    "updated_at": "2026-06-30T11:27:52.529Z",
+    "order": 24,
+    "sku": 6,
+    "product_name": "康师傅方便面",
+    "spec_name": "红烧牛肉",
+    "quantity": "2.000",
+    "price": "4.50",
+    "subtotal": "9.00"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 51,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.540Z",
+    "updated_at": "2026-06-30T11:27:52.540Z",
+    "order": 25,
+    "sku": 5,
+    "product_name": "伊利纯牛奶",
+    "spec_name": "250ml",
+    "quantity": "3.000",
+    "price": "5.50",
+    "subtotal": "16.50"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 52,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.551Z",
+    "updated_at": "2026-06-30T11:27:52.551Z",
+    "order": 26,
+    "sku": 4,
+    "product_name": "青岛啤酒",
+    "spec_name": "500ml",
+    "quantity": "2.000",
+    "price": "6.00",
+    "subtotal": "12.00"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 53,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.552Z",
+    "updated_at": "2026-06-30T11:27:52.552Z",
+    "order": 26,
+    "sku": 6,
+    "product_name": "可口可乐",
+    "spec_name": "330ml",
+    "quantity": "1.000",
+    "price": "3.00",
+    "subtotal": "3.00"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 54,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.553Z",
+    "updated_at": "2026-06-30T11:27:52.553Z",
+    "order": 26,
+    "sku": 1,
+    "product_name": "伊利纯牛奶",
+    "spec_name": "250ml",
+    "quantity": "1.000",
+    "price": "5.50",
+    "subtotal": "5.50"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 55,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.564Z",
+    "updated_at": "2026-06-30T11:27:52.564Z",
+    "order": 27,
+    "sku": 3,
+    "product_name": "农夫山泉",
+    "spec_name": "550ml",
+    "quantity": "2.000",
+    "price": "2.00",
+    "subtotal": "4.00"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 56,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.576Z",
+    "updated_at": "2026-06-30T11:27:52.576Z",
+    "order": 28,
+    "sku": 3,
+    "product_name": "青岛啤酒",
+    "spec_name": "500ml",
+    "quantity": "3.000",
+    "price": "6.00",
+    "subtotal": "18.00"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 57,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.588Z",
+    "updated_at": "2026-06-30T11:27:52.588Z",
+    "order": 29,
+    "sku": 3,
+    "product_name": "可口可乐",
+    "spec_name": "330ml",
+    "quantity": "2.000",
+    "price": "3.00",
+    "subtotal": "6.00"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 58,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.588Z",
+    "updated_at": "2026-06-30T11:27:52.588Z",
+    "order": 29,
+    "sku": 1,
+    "product_name": "农夫山泉",
+    "spec_name": "550ml",
+    "quantity": "2.000",
+    "price": "2.00",
+    "subtotal": "4.00"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 59,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.600Z",
+    "updated_at": "2026-06-30T11:27:52.600Z",
+    "order": 30,
+    "sku": 1,
+    "product_name": "伊利纯牛奶",
+    "spec_name": "250ml",
+    "quantity": "3.000",
+    "price": "5.50",
+    "subtotal": "16.50"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 60,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.601Z",
+    "updated_at": "2026-06-30T11:27:52.601Z",
+    "order": 30,
+    "sku": 3,
+    "product_name": "旺旺雪饼",
+    "spec_name": "520g",
+    "quantity": "2.000",
+    "price": "12.80",
+    "subtotal": "25.60"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 61,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.612Z",
+    "updated_at": "2026-06-30T11:27:52.612Z",
+    "order": 31,
+    "sku": 4,
+    "product_name": "青岛啤酒",
+    "spec_name": "500ml",
+    "quantity": "2.000",
+    "price": "6.00",
+    "subtotal": "12.00"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 62,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.613Z",
+    "updated_at": "2026-06-30T11:27:52.613Z",
+    "order": 31,
+    "sku": 6,
+    "product_name": "农夫山泉",
+    "spec_name": "550ml",
+    "quantity": "3.000",
+    "price": "2.00",
+    "subtotal": "6.00"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 63,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.613Z",
+    "updated_at": "2026-06-30T11:27:52.613Z",
+    "order": 31,
+    "sku": 1,
+    "product_name": "康师傅方便面",
+    "spec_name": "红烧牛肉",
+    "quantity": "2.000",
+    "price": "4.50",
+    "subtotal": "9.00"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 64,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.624Z",
+    "updated_at": "2026-06-30T11:27:52.624Z",
+    "order": 32,
+    "sku": 5,
+    "product_name": "青岛啤酒",
+    "spec_name": "500ml",
+    "quantity": "3.000",
+    "price": "6.00",
+    "subtotal": "18.00"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 65,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.635Z",
+    "updated_at": "2026-06-30T11:27:52.636Z",
+    "order": 33,
+    "sku": 5,
+    "product_name": "旺旺雪饼",
+    "spec_name": "520g",
+    "quantity": "3.000",
+    "price": "12.80",
+    "subtotal": "38.40"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 66,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.636Z",
+    "updated_at": "2026-06-30T11:27:52.636Z",
+    "order": 33,
+    "sku": 4,
+    "product_name": "康师傅方便面",
+    "spec_name": "红烧牛肉",
+    "quantity": "3.000",
+    "price": "4.50",
+    "subtotal": "13.50"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 67,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.647Z",
+    "updated_at": "2026-06-30T11:27:52.647Z",
+    "order": 34,
+    "sku": 3,
+    "product_name": "康师傅方便面",
+    "spec_name": "红烧牛肉",
+    "quantity": "3.000",
+    "price": "4.50",
+    "subtotal": "13.50"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 68,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.648Z",
+    "updated_at": "2026-06-30T11:27:52.648Z",
+    "order": 34,
+    "sku": 5,
+    "product_name": "可口可乐",
+    "spec_name": "330ml",
+    "quantity": "2.000",
+    "price": "3.00",
+    "subtotal": "6.00"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 69,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.648Z",
+    "updated_at": "2026-06-30T11:27:52.648Z",
+    "order": 34,
+    "sku": 2,
+    "product_name": "旺旺雪饼",
+    "spec_name": "520g",
+    "quantity": "2.000",
+    "price": "12.80",
+    "subtotal": "25.60"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 70,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.660Z",
+    "updated_at": "2026-06-30T11:27:52.660Z",
+    "order": 35,
+    "sku": 1,
+    "product_name": "康师傅方便面",
+    "spec_name": "红烧牛肉",
+    "quantity": "3.000",
+    "price": "4.50",
+    "subtotal": "13.50"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 71,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.660Z",
+    "updated_at": "2026-06-30T11:27:52.660Z",
+    "order": 35,
+    "sku": 2,
+    "product_name": "青岛啤酒",
+    "spec_name": "500ml",
+    "quantity": "3.000",
+    "price": "6.00",
+    "subtotal": "18.00"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 72,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.661Z",
+    "updated_at": "2026-06-30T11:27:52.661Z",
+    "order": 35,
+    "sku": 2,
+    "product_name": "伊利纯牛奶",
+    "spec_name": "250ml",
+    "quantity": "3.000",
+    "price": "5.50",
+    "subtotal": "16.50"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 73,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.672Z",
+    "updated_at": "2026-06-30T11:27:52.672Z",
+    "order": 36,
+    "sku": 4,
+    "product_name": "农夫山泉",
+    "spec_name": "550ml",
+    "quantity": "3.000",
+    "price": "2.00",
+    "subtotal": "6.00"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 74,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.672Z",
+    "updated_at": "2026-06-30T11:27:52.672Z",
+    "order": 36,
+    "sku": 4,
+    "product_name": "可口可乐",
+    "spec_name": "330ml",
+    "quantity": "3.000",
+    "price": "3.00",
+    "subtotal": "9.00"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 75,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.673Z",
+    "updated_at": "2026-06-30T11:27:52.673Z",
+    "order": 36,
+    "sku": 5,
+    "product_name": "伊利纯牛奶",
+    "spec_name": "250ml",
+    "quantity": "2.000",
+    "price": "5.50",
+    "subtotal": "11.00"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 76,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.684Z",
+    "updated_at": "2026-06-30T11:27:52.684Z",
+    "order": 37,
+    "sku": 6,
+    "product_name": "农夫山泉",
+    "spec_name": "550ml",
+    "quantity": "2.000",
+    "price": "2.00",
+    "subtotal": "4.00"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 77,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:47:18.231Z",
+    "updated_at": "2026-06-30T11:47:18.231Z",
+    "order": 38,
+    "sku": 4,
+    "product_name": "伊利纯牛奶",
+    "spec_name": "250ml",
+    "quantity": "1.000",
+    "price": "5.50",
+    "subtotal": "5.50"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 78,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-07-01T11:11:13.658Z",
+    "updated_at": "2026-07-01T11:11:13.658Z",
+    "order": 39,
+    "sku": 1,
+    "product_name": "可口可乐(大瓶)",
+    "spec_name": "330ml",
+    "quantity": "1.000",
+    "price": "3.00",
+    "subtotal": "3.00"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 79,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-07-01T11:47:38.417Z",
+    "updated_at": "2026-07-01T11:47:38.417Z",
+    "order": 40,
+    "sku": 7,
+    "product_name": "测试",
+    "spec_name": "默认",
+    "quantity": "1.000",
+    "price": "10.00",
+    "subtotal": "10.00"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 80,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-07-01T11:47:38.894Z",
+    "updated_at": "2026-07-01T11:47:38.894Z",
+    "order": 41,
+    "sku": 7,
+    "product_name": "测试",
+    "spec_name": "默认",
+    "quantity": "1.000",
+    "price": "10.00",
+    "subtotal": "10.00"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 81,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-07-01T11:48:38.347Z",
+    "updated_at": "2026-07-01T11:48:38.347Z",
+    "order": 42,
+    "sku": 12,
+    "product_name": "妙卡巧克力",
+    "spec_name": "100g",
+    "quantity": "1.000",
+    "price": "12.00",
+    "subtotal": "12.00"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 82,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-07-01T11:48:38.347Z",
+    "updated_at": "2026-07-01T11:48:38.347Z",
+    "order": 42,
+    "sku": 10,
+    "product_name": "亨氏番茄酱",
+    "spec_name": "650g",
+    "quantity": "1.000",
+    "price": "22.00",
+    "subtotal": "22.00"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 83,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-07-01T11:53:24.814Z",
+    "updated_at": "2026-07-01T11:53:24.814Z",
+    "order": 43,
+    "sku": 11,
+    "product_name": "雀巢巧伴伴",
+    "spec_name": "430g",
+    "quantity": "1.000",
+    "price": "28.00",
+    "subtotal": "28.00"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 84,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-07-01T11:53:24.815Z",
+    "updated_at": "2026-07-01T11:53:24.815Z",
+    "order": 43,
+    "sku": 10,
+    "product_name": "亨氏番茄酱",
+    "spec_name": "650g",
+    "quantity": "1.000",
+    "price": "22.00",
+    "subtotal": "22.00"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 85,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-07-01T11:59:36.346Z",
+    "updated_at": "2026-07-01T11:59:36.346Z",
+    "order": 44,
+    "sku": 10,
+    "product_name": "亨氏番茄酱",
+    "spec_name": "650g",
+    "quantity": "1.000",
+    "price": "22.00",
+    "subtotal": "22.00"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 86,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-07-03T10:45:14.921Z",
+    "updated_at": "2026-07-03T10:45:14.921Z",
+    "order": 45,
+    "sku": 13,
+    "product_name": "零度可乐",
+    "spec_name": "",
+    "quantity": "1.000",
+    "price": "3.00",
+    "subtotal": "3.00"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 87,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-07-03T10:45:14.922Z",
+    "updated_at": "2026-07-03T10:45:14.922Z",
+    "order": 45,
+    "sku": 12,
+    "product_name": "妙卡巧克力",
+    "spec_name": "",
+    "quantity": "1.000",
+    "price": "12.00",
+    "subtotal": "12.00"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 88,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-07-03T10:45:14.923Z",
+    "updated_at": "2026-07-03T10:45:14.923Z",
+    "order": 45,
+    "sku": 11,
+    "product_name": "雀巢巧伴伴",
+    "spec_name": "",
+    "quantity": "1.000",
+    "price": "28.00",
+    "subtotal": "28.00"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 89,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-07-03T10:45:14.923Z",
+    "updated_at": "2026-07-03T10:45:14.923Z",
+    "order": 45,
+    "sku": 10,
+    "product_name": "亨氏番茄酱",
+    "spec_name": "",
+    "quantity": "1.000",
+    "price": "22.00",
+    "subtotal": "22.00"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 90,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-07-03T10:45:14.924Z",
+    "updated_at": "2026-07-03T10:45:14.924Z",
+    "order": 45,
+    "sku": 9,
+    "product_name": "可口可乐",
+    "spec_name": "",
+    "quantity": "1.000",
+    "price": "3.00",
+    "subtotal": "3.00"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 91,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-07-03T11:00:31.786Z",
+    "updated_at": "2026-07-03T11:00:31.786Z",
+    "order": 46,
+    "sku": 8,
+    "product_name": "农夫山泉",
+    "spec_name": "",
+    "quantity": "1.000",
+    "price": "2.00",
+    "subtotal": "2.00"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 92,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-07-03T11:00:31.787Z",
+    "updated_at": "2026-07-03T11:00:31.787Z",
+    "order": 46,
+    "sku": 6,
+    "product_name": "青岛啤酒",
+    "spec_name": "",
+    "quantity": "3.000",
+    "price": "6.00",
+    "subtotal": "18.00"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 93,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-07-03T11:00:31.788Z",
+    "updated_at": "2026-07-03T11:00:31.788Z",
+    "order": 46,
+    "sku": 5,
+    "product_name": "旺旺雪饼",
+    "spec_name": "",
+    "quantity": "1.000",
+    "price": "12.80",
+    "subtotal": "12.80"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 94,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-07-04T09:27:19.720Z",
+    "updated_at": "2026-07-04T09:27:19.720Z",
+    "order": 47,
+    "sku": 13,
+    "product_name": "Test",
+    "spec_name": "default",
+    "quantity": "1.000",
+    "price": "12.50",
+    "subtotal": "12.50"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 95,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-07-04T09:27:38.519Z",
+    "updated_at": "2026-07-04T09:27:38.519Z",
+    "order": 48,
+    "sku": 13,
+    "product_name": "TestItem",
+    "spec_name": "default",
+    "quantity": "2.000",
+    "price": "12.50",
+    "subtotal": "25.00"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 96,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-07-04T10:14:36.749Z",
+    "updated_at": "2026-07-04T10:14:36.749Z",
+    "order": 49,
+    "sku": 13,
+    "product_name": "Test",
+    "spec_name": "default",
+    "quantity": "1.000",
+    "price": "12.50",
+    "subtotal": "12.50"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 97,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-07-04T10:15:21.885Z",
+    "updated_at": "2026-07-04T10:15:21.885Z",
+    "order": 50,
+    "sku": 13,
+    "product_name": "零度可乐",
+    "spec_name": "",
+    "quantity": "1.000",
+    "price": "3.00",
+    "subtotal": "3.00"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 98,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-07-04T10:15:21.886Z",
+    "updated_at": "2026-07-04T10:15:21.886Z",
+    "order": 50,
+    "sku": 12,
+    "product_name": "妙卡巧克力",
+    "spec_name": "",
+    "quantity": "1.000",
+    "price": "12.00",
+    "subtotal": "12.00"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 99,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-07-04T10:15:21.887Z",
+    "updated_at": "2026-07-04T10:15:21.887Z",
+    "order": 50,
+    "sku": 11,
+    "product_name": "雀巢巧伴伴",
+    "spec_name": "",
+    "quantity": "1.000",
+    "price": "28.00",
+    "subtotal": "28.00"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 100,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-07-04T10:19:48.920Z",
+    "updated_at": "2026-07-04T10:19:48.920Z",
+    "order": 51,
+    "sku": 13,
+    "product_name": "Test",
+    "spec_name": "default",
+    "quantity": "2.000",
+    "price": "15.00",
+    "subtotal": "30.00"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 101,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-07-04T10:21:29.512Z",
+    "updated_at": "2026-07-04T10:21:29.512Z",
+    "order": 52,
+    "sku": 11,
+    "product_name": "雀巢巧伴伴",
+    "spec_name": "",
+    "quantity": "1.000",
+    "price": "28.00",
+    "subtotal": "28.00"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 102,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-07-04T10:21:29.512Z",
+    "updated_at": "2026-07-04T10:21:29.512Z",
+    "order": 52,
+    "sku": 10,
+    "product_name": "亨氏番茄酱",
+    "spec_name": "",
+    "quantity": "1.000",
+    "price": "22.00",
+    "subtotal": "22.00"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 103,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-07-04T10:21:29.513Z",
+    "updated_at": "2026-07-04T10:21:29.513Z",
+    "order": 52,
+    "sku": 9,
+    "product_name": "可口可乐",
+    "spec_name": "",
+    "quantity": "1.000",
+    "price": "3.00",
+    "subtotal": "3.00"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 104,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-07-04T10:21:29.513Z",
+    "updated_at": "2026-07-04T10:21:29.513Z",
+    "order": 52,
+    "sku": 7,
+    "product_name": "百事可乐",
+    "spec_name": "",
+    "quantity": "1.000",
+    "price": "3.00",
+    "subtotal": "3.00"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 105,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-07-04T10:21:29.513Z",
+    "updated_at": "2026-07-04T10:21:29.513Z",
+    "order": 52,
+    "sku": 8,
+    "product_name": "农夫山泉",
+    "spec_name": "",
+    "quantity": "1.000",
+    "price": "2.00",
+    "subtotal": "2.00"
+  }
+},
+{
+  "model": "members.member",
+  "pk": 3,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-07-01T10:54:57.033Z",
+    "updated_at": "2026-07-03T10:39:50.744Z",
+    "name": "张三",
+    "phone": "13800001001",
+    "password": "pbkdf2_sha256$1200000$q3hK8l21XmXvO5HJEGrIV7$+zfp4vnoCrwlwE5IYJ7Ag9byOZkHpu3XLVdnCgWBzII=",
+    "token": "fccb791a2c0a17eaa44fc71b6b323fc634ab43fae35828b4676131465e51d120",
+    "token_created_at": null,
+    "card_no": "M001",
+    "points": 234,
+    "balance": "367.20",
+    "total_spent": "234.80",
+    "remark": ""
+  }
+},
+{
+  "model": "members.member",
+  "pk": 5,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-07-04T09:55:29.598Z",
+    "updated_at": "2026-07-04T09:55:29.598Z",
+    "name": "ZhangSan",
+    "phone": "13800000001",
+    "password": "pbkdf2_sha256$1200000$A8u58shc3yjtKYU9HRzxXA$MlxkQ3kjizeggWJHGQ6sZxM+iYP4LnZA7v9Z5Gzt2zE=",
+    "token": "c1d0c4787907ac224e23f87c867c63f181ebfe09bdda65f0e6eb00e49f16ab7d",
+    "token_created_at": "2026-07-04T10:19:56.528Z",
+    "card_no": "M001",
+    "points": 246,
+    "balance": "362.00",
+    "total_spent": "146.00",
+    "remark": ""
+  }
+},
+{
+  "model": "suppliers.supplier",
+  "pk": 1,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T09:44:06.169Z",
+    "updated_at": "2026-06-30T09:44:06.169Z",
+    "name": "宏达食品批发",
+    "contact": "王总",
+    "phone": "13900002001",
+    "address": "",
+    "remark": ""
+  }
+},
+{
+  "model": "suppliers.supplier",
+  "pk": 2,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T09:44:06.171Z",
+    "updated_at": "2026-06-30T09:44:06.171Z",
+    "name": "永利商贸",
+    "contact": "陈经理",
+    "phone": "13900002002",
+    "address": "",
+    "remark": ""
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add log entry",
+    "content_type": [
+      "admin",
+      "logentry"
+    ],
+    "codename": "add_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change log entry",
+    "content_type": [
+      "admin",
+      "logentry"
+    ],
+    "codename": "change_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete log entry",
+    "content_type": [
+      "admin",
+      "logentry"
+    ],
+    "codename": "delete_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view log entry",
+    "content_type": [
+      "admin",
+      "logentry"
+    ],
+    "codename": "view_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add permission",
+    "content_type": [
+      "auth",
+      "permission"
+    ],
+    "codename": "add_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change permission",
+    "content_type": [
+      "auth",
+      "permission"
+    ],
+    "codename": "change_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete permission",
+    "content_type": [
+      "auth",
+      "permission"
+    ],
+    "codename": "delete_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view permission",
+    "content_type": [
+      "auth",
+      "permission"
+    ],
+    "codename": "view_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add group",
+    "content_type": [
+      "auth",
+      "group"
+    ],
+    "codename": "add_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change group",
+    "content_type": [
+      "auth",
+      "group"
+    ],
+    "codename": "change_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete group",
+    "content_type": [
+      "auth",
+      "group"
+    ],
+    "codename": "delete_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view group",
+    "content_type": [
+      "auth",
+      "group"
+    ],
+    "codename": "view_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add content type",
+    "content_type": [
+      "contenttypes",
+      "contenttype"
+    ],
+    "codename": "add_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change content type",
+    "content_type": [
+      "contenttypes",
+      "contenttype"
+    ],
+    "codename": "change_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete content type",
+    "content_type": [
+      "contenttypes",
+      "contenttype"
+    ],
+    "codename": "delete_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view content type",
+    "content_type": [
+      "contenttypes",
+      "contenttype"
+    ],
+    "codename": "view_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add session",
+    "content_type": [
+      "sessions",
+      "session"
+    ],
+    "codename": "add_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change session",
+    "content_type": [
+      "sessions",
+      "session"
+    ],
+    "codename": "change_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete session",
+    "content_type": [
+      "sessions",
+      "session"
+    ],
+    "codename": "delete_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view session",
+    "content_type": [
+      "sessions",
+      "session"
+    ],
+    "codename": "view_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add 租户",
+    "content_type": [
+      "tenants",
+      "tenant"
+    ],
+    "codename": "add_tenant"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change 租户",
+    "content_type": [
+      "tenants",
+      "tenant"
+    ],
+    "codename": "change_tenant"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete 租户",
+    "content_type": [
+      "tenants",
+      "tenant"
+    ],
+    "codename": "delete_tenant"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view 租户",
+    "content_type": [
+      "tenants",
+      "tenant"
+    ],
+    "codename": "view_tenant"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add 用户",
+    "content_type": [
+      "accounts",
+      "user"
+    ],
+    "codename": "add_user"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change 用户",
+    "content_type": [
+      "accounts",
+      "user"
+    ],
+    "codename": "change_user"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete 用户",
+    "content_type": [
+      "accounts",
+      "user"
+    ],
+    "codename": "delete_user"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view 用户",
+    "content_type": [
+      "accounts",
+      "user"
+    ],
+    "codename": "view_user"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add 用户-租户关联",
+    "content_type": [
+      "accounts",
+      "usertenant"
+    ],
+    "codename": "add_usertenant"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change 用户-租户关联",
+    "content_type": [
+      "accounts",
+      "usertenant"
+    ],
+    "codename": "change_usertenant"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete 用户-租户关联",
+    "content_type": [
+      "accounts",
+      "usertenant"
+    ],
+    "codename": "delete_usertenant"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view 用户-租户关联",
+    "content_type": [
+      "accounts",
+      "usertenant"
+    ],
+    "codename": "view_usertenant"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add 商品分类",
+    "content_type": [
+      "products",
+      "category"
+    ],
+    "codename": "add_category"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change 商品分类",
+    "content_type": [
+      "products",
+      "category"
+    ],
+    "codename": "change_category"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete 商品分类",
+    "content_type": [
+      "products",
+      "category"
+    ],
+    "codename": "delete_category"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view 商品分类",
+    "content_type": [
+      "products",
+      "category"
+    ],
+    "codename": "view_category"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add 商品",
+    "content_type": [
+      "products",
+      "product"
+    ],
+    "codename": "add_product"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change 商品",
+    "content_type": [
+      "products",
+      "product"
+    ],
+    "codename": "change_product"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete 商品",
+    "content_type": [
+      "products",
+      "product"
+    ],
+    "codename": "delete_product"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view 商品",
+    "content_type": [
+      "products",
+      "product"
+    ],
+    "codename": "view_product"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add 商品SKU",
+    "content_type": [
+      "products",
+      "productsku"
+    ],
+    "codename": "add_productsku"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change 商品SKU",
+    "content_type": [
+      "products",
+      "productsku"
+    ],
+    "codename": "change_productsku"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete 商品SKU",
+    "content_type": [
+      "products",
+      "productsku"
+    ],
+    "codename": "delete_productsku"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view 商品SKU",
+    "content_type": [
+      "products",
+      "productsku"
+    ],
+    "codename": "view_productsku"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add 库存流水",
+    "content_type": [
+      "inventory",
+      "inventoryrecord"
+    ],
+    "codename": "add_inventoryrecord"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change 库存流水",
+    "content_type": [
+      "inventory",
+      "inventoryrecord"
+    ],
+    "codename": "change_inventoryrecord"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete 库存流水",
+    "content_type": [
+      "inventory",
+      "inventoryrecord"
+    ],
+    "codename": "delete_inventoryrecord"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view 库存流水",
+    "content_type": [
+      "inventory",
+      "inventoryrecord"
+    ],
+    "codename": "view_inventoryrecord"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add 盘点单",
+    "content_type": [
+      "inventory",
+      "stockcheck"
+    ],
+    "codename": "add_stockcheck"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change 盘点单",
+    "content_type": [
+      "inventory",
+      "stockcheck"
+    ],
+    "codename": "change_stockcheck"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete 盘点单",
+    "content_type": [
+      "inventory",
+      "stockcheck"
+    ],
+    "codename": "delete_stockcheck"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view 盘点单",
+    "content_type": [
+      "inventory",
+      "stockcheck"
+    ],
+    "codename": "view_stockcheck"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add 收银订单",
+    "content_type": [
+      "pos",
+      "order"
+    ],
+    "codename": "add_order"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change 收银订单",
+    "content_type": [
+      "pos",
+      "order"
+    ],
+    "codename": "change_order"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete 收银订单",
+    "content_type": [
+      "pos",
+      "order"
+    ],
+    "codename": "delete_order"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view 收银订单",
+    "content_type": [
+      "pos",
+      "order"
+    ],
+    "codename": "view_order"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add 订单明细",
+    "content_type": [
+      "pos",
+      "orderitem"
+    ],
+    "codename": "add_orderitem"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change 订单明细",
+    "content_type": [
+      "pos",
+      "orderitem"
+    ],
+    "codename": "change_orderitem"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete 订单明细",
+    "content_type": [
+      "pos",
+      "orderitem"
+    ],
+    "codename": "delete_orderitem"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view 订单明细",
+    "content_type": [
+      "pos",
+      "orderitem"
+    ],
+    "codename": "view_orderitem"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add 会员",
+    "content_type": [
+      "members",
+      "member"
+    ],
+    "codename": "add_member"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change 会员",
+    "content_type": [
+      "members",
+      "member"
+    ],
+    "codename": "change_member"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete 会员",
+    "content_type": [
+      "members",
+      "member"
+    ],
+    "codename": "delete_member"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view 会员",
+    "content_type": [
+      "members",
+      "member"
+    ],
+    "codename": "view_member"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add 供应商",
+    "content_type": [
+      "suppliers",
+      "supplier"
+    ],
+    "codename": "add_supplier"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change 供应商",
+    "content_type": [
+      "suppliers",
+      "supplier"
+    ],
+    "codename": "change_supplier"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete 供应商",
+    "content_type": [
+      "suppliers",
+      "supplier"
+    ],
+    "codename": "delete_supplier"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view 供应商",
+    "content_type": [
+      "suppliers",
+      "supplier"
+    ],
+    "codename": "view_supplier"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add 排班",
+    "content_type": [
+      "employees",
+      "shift"
+    ],
+    "codename": "add_shift"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change 排班",
+    "content_type": [
+      "employees",
+      "shift"
+    ],
+    "codename": "change_shift"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete 排班",
+    "content_type": [
+      "employees",
+      "shift"
+    ],
+    "codename": "delete_shift"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view 排班",
+    "content_type": [
+      "employees",
+      "shift"
+    ],
+    "codename": "view_shift"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add 日结汇总",
+    "content_type": [
+      "finance",
+      "dailysummary"
+    ],
+    "codename": "add_dailysummary"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change 日结汇总",
+    "content_type": [
+      "finance",
+      "dailysummary"
+    ],
+    "codename": "change_dailysummary"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete 日结汇总",
+    "content_type": [
+      "finance",
+      "dailysummary"
+    ],
+    "codename": "delete_dailysummary"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view 日结汇总",
+    "content_type": [
+      "finance",
+      "dailysummary"
+    ],
+    "codename": "view_dailysummary"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add 充值记录",
+    "content_type": [
+      "members",
+      "rechargerecord"
+    ],
+    "codename": "add_rechargerecord"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change 充值记录",
+    "content_type": [
+      "members",
+      "rechargerecord"
+    ],
+    "codename": "change_rechargerecord"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete 充值记录",
+    "content_type": [
+      "members",
+      "rechargerecord"
+    ],
+    "codename": "delete_rechargerecord"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view 充值记录",
+    "content_type": [
+      "members",
+      "rechargerecord"
+    ],
+    "codename": "view_rechargerecord"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add 盘点明细",
+    "content_type": [
+      "inventory",
+      "stockcheckitem"
+    ],
+    "codename": "add_stockcheckitem"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change 盘点明细",
+    "content_type": [
+      "inventory",
+      "stockcheckitem"
+    ],
+    "codename": "change_stockcheckitem"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete 盘点明细",
+    "content_type": [
+      "inventory",
+      "stockcheckitem"
+    ],
+    "codename": "delete_stockcheckitem"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view 盘点明细",
+    "content_type": [
+      "inventory",
+      "stockcheckitem"
+    ],
+    "codename": "view_stockcheckitem"
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$oAu1WXDPY6PbhjqqWc3UHY$fYrDtjg3u3pSgUh4H+ghY+BazVuwID8Kdmay6NYSayg=",
+    "last_login": "2026-07-04T09:05:27.824Z",
+    "is_superuser": true,
+    "username": "admin",
+    "first_name": "",
+    "last_name": "",
+    "email": "admin@anju.com",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2026-06-30T09:30:38.226Z",
+    "phone": "",
+    "avatar": "",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$Y7peHjpv1dts8rDkNNUARn$CeBEWGCPkMLV90EA2qWp6/zfrZe9uRrvmSSF7JeboCY=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "anjuadmin",
+    "first_name": "",
+    "last_name": "",
+    "email": "",
+    "is_staff": false,
+    "is_active": false,
+    "date_joined": "2026-06-30T09:38:03.169Z",
+    "phone": "13800138000",
+    "avatar": "",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$Ri0eB6pCY06POrgQNO6YbQ$wT+OcmF0SHMNCp8Xnscm3MI9j/q/NUnXM/VaIasQWxQ=",
+    "last_login": null,
+    "is_superuser": true,
+    "username": "boss",
+    "first_name": "",
+    "last_name": "",
+    "email": "boss@anju.com",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2026-07-01T10:23:21.476Z",
+    "phone": "18888888888",
+    "avatar": "",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.usertenant",
+  "pk": 1,
+  "fields": {
+    "user": [
+      "anjuadmin"
+    ],
+    "tenant": 1,
+    "role": "manager",
+    "joined_at": "2026-06-30T09:38:03.309Z"
+  }
+},
+{
+  "model": "accounts.usertenant",
+  "pk": 2,
+  "fields": {
+    "user": [
+      "admin"
+    ],
+    "tenant": 1,
+    "role": "manager",
+    "joined_at": "2026-06-30T10:09:13.936Z"
+  }
+},
+{
+  "model": "accounts.usertenant",
+  "pk": 3,
+  "fields": {
+    "user": [
+      "boss"
+    ],
+    "tenant": 1,
+    "role": "super_admin",
+    "joined_at": "2026-07-01T10:23:50.650Z"
+  }
+},
+{
+  "model": "inventory.inventoryrecord",
+  "pk": 1,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T09:53:05.277Z",
+    "updated_at": "2026-06-30T09:53:05.277Z",
+    "sku": 1,
+    "type": "purchase_in",
+    "quantity": "50.000",
+    "before_quantity": "150.000",
+    "after_quantity": "200.000",
+    "remark": "test",
+    "operator": [
+      "anjuadmin"
+    ]
+  }
+},
+{
+  "model": "inventory.inventoryrecord",
+  "pk": 2,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-07-04T09:35:39.835Z",
+    "updated_at": "2026-07-04T09:35:39.835Z",
+    "sku": 13,
+    "type": "check_out",
+    "quantity": "2.000",
+    "before_quantity": "100.000",
+    "after_quantity": "98.000",
+    "remark": "盘点单 #2 自动生成",
+    "operator": [
+      "admin"
+    ]
+  }
+},
+{
+  "model": "inventory.inventoryrecord",
+  "pk": 3,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-07-04T09:37:55.163Z",
+    "updated_at": "2026-07-04T09:37:55.163Z",
+    "sku": 13,
+    "type": "return_in",
+    "quantity": "1.000",
+    "before_quantity": "98.000",
+    "after_quantity": "99.000",
+    "remark": "customer return",
+    "operator": [
+      "admin"
+    ]
+  }
+},
+{
+  "model": "inventory.inventoryrecord",
+  "pk": 4,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-07-04T09:38:02.617Z",
+    "updated_at": "2026-07-04T09:38:02.617Z",
+    "sku": 13,
+    "type": "return_in",
+    "quantity": "1.000",
+    "before_quantity": "99.000",
+    "after_quantity": "100.000",
+    "remark": "customer return",
+    "operator": [
+      "admin"
+    ]
+  }
+},
+{
+  "model": "inventory.inventoryrecord",
+  "pk": 5,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-07-04T09:39:14.888Z",
+    "updated_at": "2026-07-04T09:39:14.888Z",
+    "sku": 13,
+    "type": "purchase_in",
+    "quantity": "10.000",
+    "before_quantity": "100.000",
+    "after_quantity": "110.000",
+    "remark": "test-purchase_in",
+    "operator": [
+      "admin"
+    ]
+  }
+},
+{
+  "model": "inventory.inventoryrecord",
+  "pk": 6,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-07-04T09:39:15.318Z",
+    "updated_at": "2026-07-04T09:39:15.318Z",
+    "sku": 13,
+    "type": "return_in",
+    "quantity": "3.000",
+    "before_quantity": "110.000",
+    "after_quantity": "113.000",
+    "remark": "test-return_in",
+    "operator": [
+      "admin"
+    ]
+  }
+},
+{
+  "model": "inventory.inventoryrecord",
+  "pk": 7,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-07-04T09:39:15.791Z",
+    "updated_at": "2026-07-04T09:39:15.791Z",
+    "sku": 13,
+    "type": "check_in",
+    "quantity": "2.000",
+    "before_quantity": "113.000",
+    "after_quantity": "115.000",
+    "remark": "test-check_in",
+    "operator": [
+      "admin"
+    ]
+  }
+},
+{
+  "model": "inventory.inventoryrecord",
+  "pk": 8,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-07-04T09:39:16.228Z",
+    "updated_at": "2026-07-04T09:39:16.228Z",
+    "sku": 13,
+    "type": "sale_out",
+    "quantity": "5.000",
+    "before_quantity": "115.000",
+    "after_quantity": "110.000",
+    "remark": "test-sale_out",
+    "operator": [
+      "admin"
+    ]
+  }
+},
+{
+  "model": "inventory.inventoryrecord",
+  "pk": 9,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-07-04T09:39:16.689Z",
+    "updated_at": "2026-07-04T09:39:16.689Z",
+    "sku": 13,
+    "type": "damage_out",
+    "quantity": "1.000",
+    "before_quantity": "110.000",
+    "after_quantity": "109.000",
+    "remark": "test-damage_out",
+    "operator": [
+      "admin"
+    ]
+  }
+},
+{
+  "model": "inventory.inventoryrecord",
+  "pk": 10,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-07-04T09:39:17.115Z",
+    "updated_at": "2026-07-04T09:39:17.115Z",
+    "sku": 13,
+    "type": "check_out",
+    "quantity": "2.000",
+    "before_quantity": "109.000",
+    "after_quantity": "107.000",
+    "remark": "test-check_out",
+    "operator": [
+      "admin"
+    ]
+  }
+},
+{
+  "model": "inventory.stockcheck",
+  "pk": 1,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-07-04T09:34:04.118Z",
+    "updated_at": "2026-07-04T09:34:04.118Z",
+    "status": "checking",
+    "remark": "monthly check",
+    "created_by": [
+      "admin"
+    ]
+  }
+},
+{
+  "model": "inventory.stockcheck",
+  "pk": 2,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-07-04T09:34:44.313Z",
+    "updated_at": "2026-07-04T09:34:44.313Z",
+    "status": "done",
+    "remark": "test",
+    "created_by": [
+      "admin"
+    ]
+  }
+},
+{
+  "model": "pos.order",
+  "pk": 1,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T09:45:39.214Z",
+    "updated_at": "2026-06-30T11:30:32.458Z",
+    "order_no": "POS1782812739548",
+    "total_amount": "10.50",
+    "discount_amount": "0.00",
+    "paid_amount": "10.50",
+    "payment_method": "wechat",
+    "member": null,
+    "cashier": [
+      "anjuadmin"
+    ],
+    "status": "completed",
+    "paid_at": "2026-06-26T01:25:00Z"
+  }
+},
+{
+  "model": "pos.order",
+  "pk": 2,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T09:46:44.071Z",
+    "updated_at": "2026-06-30T11:30:32.458Z",
+    "order_no": "POS1782812804862",
+    "total_amount": "10.50",
+    "discount_amount": "0.00",
+    "paid_amount": "10.50",
+    "payment_method": "wechat",
+    "member": null,
+    "cashier": [
+      "anjuadmin"
+    ],
+    "status": "completed",
+    "paid_at": "2026-06-18T04:18:00Z"
+  }
+},
+{
+  "model": "pos.order",
+  "pk": 3,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.259Z",
+    "updated_at": "2026-06-30T11:30:32.457Z",
+    "order_no": "POS1782818872424",
+    "total_amount": "21.80",
+    "discount_amount": "0.00",
+    "paid_amount": "21.80",
+    "payment_method": "alipay",
+    "member": null,
+    "cashier": [
+      "anjuadmin"
+    ],
+    "status": "completed",
+    "paid_at": "2026-06-19T04:28:00Z"
+  }
+},
+{
+  "model": "pos.order",
+  "pk": 4,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.274Z",
+    "updated_at": "2026-06-30T11:30:32.456Z",
+    "order_no": "POS1782818872854",
+    "total_amount": "30.80",
+    "discount_amount": "0.00",
+    "paid_amount": "30.80",
+    "payment_method": "member_card",
+    "member": null,
+    "cashier": [
+      "anjuadmin"
+    ],
+    "status": "completed",
+    "paid_at": "2026-06-27T08:25:00Z"
+  }
+},
+{
+  "model": "pos.order",
+  "pk": 5,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.286Z",
+    "updated_at": "2026-06-30T11:30:32.456Z",
+    "order_no": "POS1782818872324",
+    "total_amount": "40.40",
+    "discount_amount": "0.00",
+    "paid_amount": "40.40",
+    "payment_method": "cash",
+    "member": null,
+    "cashier": [
+      "anjuadmin"
+    ],
+    "status": "completed",
+    "paid_at": "2026-06-29T05:23:00Z"
+  }
+},
+{
+  "model": "pos.order",
+  "pk": 6,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.299Z",
+    "updated_at": "2026-06-30T11:30:32.455Z",
+    "order_no": "POS1782818872556",
+    "total_amount": "37.50",
+    "discount_amount": "0.00",
+    "paid_amount": "37.50",
+    "payment_method": "alipay",
+    "member": null,
+    "cashier": [
+      "anjuadmin"
+    ],
+    "status": "completed",
+    "paid_at": "2026-06-23T09:14:00Z"
+  }
+},
+{
+  "model": "pos.order",
+  "pk": 7,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.311Z",
+    "updated_at": "2026-06-30T11:30:32.454Z",
+    "order_no": "POS1782818872880",
+    "total_amount": "21.00",
+    "discount_amount": "0.00",
+    "paid_amount": "21.00",
+    "payment_method": "member_card",
+    "member": null,
+    "cashier": [
+      "anjuadmin"
+    ],
+    "status": "completed",
+    "paid_at": "2026-06-26T02:03:00Z"
+  }
+},
+{
+  "model": "pos.order",
+  "pk": 8,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.328Z",
+    "updated_at": "2026-06-30T11:30:32.454Z",
+    "order_no": "POS1782818872139",
+    "total_amount": "9.50",
+    "discount_amount": "0.00",
+    "paid_amount": "9.50",
+    "payment_method": "member_card",
+    "member": null,
+    "cashier": [
+      "anjuadmin"
+    ],
+    "status": "completed",
+    "paid_at": "2026-06-21T08:16:00Z"
+  }
+},
+{
+  "model": "pos.order",
+  "pk": 9,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.340Z",
+    "updated_at": "2026-06-30T11:30:32.453Z",
+    "order_no": "POS1782818872467",
+    "total_amount": "43.90",
+    "discount_amount": "0.00",
+    "paid_amount": "43.90",
+    "payment_method": "alipay",
+    "member": null,
+    "cashier": [
+      "anjuadmin"
+    ],
+    "status": "completed",
+    "paid_at": "2026-06-24T00:45:00Z"
+  }
+},
+{
+  "model": "pos.order",
+  "pk": 10,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.352Z",
+    "updated_at": "2026-06-30T11:30:32.453Z",
+    "order_no": "POS1782818872566",
+    "total_amount": "42.60",
+    "discount_amount": "0.00",
+    "paid_amount": "42.60",
+    "payment_method": "member_card",
+    "member": null,
+    "cashier": [
+      "anjuadmin"
+    ],
+    "status": "completed",
+    "paid_at": "2026-06-30T10:46:00Z"
+  }
+},
+{
+  "model": "pos.order",
+  "pk": 11,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.366Z",
+    "updated_at": "2026-06-30T11:30:32.452Z",
+    "order_no": "POS1782818872598",
+    "total_amount": "2.00",
+    "discount_amount": "0.00",
+    "paid_amount": "2.00",
+    "payment_method": "wechat",
+    "member": null,
+    "cashier": [
+      "anjuadmin"
+    ],
+    "status": "completed",
+    "paid_at": "2026-06-21T13:18:00Z"
+  }
+},
+{
+  "model": "pos.order",
+  "pk": 12,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.377Z",
+    "updated_at": "2026-06-30T11:30:32.452Z",
+    "order_no": "POS1782818872507",
+    "total_amount": "13.00",
+    "discount_amount": "0.00",
+    "paid_amount": "13.00",
+    "payment_method": "cash",
+    "member": null,
+    "cashier": [
+      "anjuadmin"
+    ],
+    "status": "completed",
+    "paid_at": "2026-06-24T06:22:00Z"
+  }
+},
+{
+  "model": "pos.order",
+  "pk": 13,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.389Z",
+    "updated_at": "2026-06-30T11:30:32.451Z",
+    "order_no": "POS1782818872978",
+    "total_amount": "40.50",
+    "discount_amount": "0.00",
+    "paid_amount": "40.50",
+    "payment_method": "alipay",
+    "member": null,
+    "cashier": [
+      "anjuadmin"
+    ],
+    "status": "completed",
+    "paid_at": "2026-06-22T04:39:00Z"
+  }
+},
+{
+  "model": "pos.order",
+  "pk": 14,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.402Z",
+    "updated_at": "2026-06-30T11:30:32.451Z",
+    "order_no": "POS1782818872611",
+    "total_amount": "6.00",
+    "discount_amount": "0.00",
+    "paid_amount": "6.00",
+    "payment_method": "alipay",
+    "member": null,
+    "cashier": [
+      "anjuadmin"
+    ],
+    "status": "completed",
+    "paid_at": "2026-06-19T02:24:00Z"
+  }
+},
+{
+  "model": "pos.order",
+  "pk": 15,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.413Z",
+    "updated_at": "2026-06-30T11:30:32.450Z",
+    "order_no": "POS1782818872387",
+    "total_amount": "25.80",
+    "discount_amount": "0.00",
+    "paid_amount": "25.80",
+    "payment_method": "alipay",
+    "member": null,
+    "cashier": [
+      "anjuadmin"
+    ],
+    "status": "completed",
+    "paid_at": "2026-06-23T13:23:00Z"
+  }
+},
+{
+  "model": "pos.order",
+  "pk": 16,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.425Z",
+    "updated_at": "2026-06-30T11:30:32.450Z",
+    "order_no": "POS1782818872997",
+    "total_amount": "12.00",
+    "discount_amount": "0.00",
+    "paid_amount": "12.00",
+    "payment_method": "member_card",
+    "member": null,
+    "cashier": [
+      "anjuadmin"
+    ],
+    "status": "completed",
+    "paid_at": "2026-06-29T05:06:00Z"
+  }
+},
+{
+  "model": "pos.order",
+  "pk": 17,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.437Z",
+    "updated_at": "2026-06-30T11:30:32.449Z",
+    "order_no": "POS1782818872622",
+    "total_amount": "9.00",
+    "discount_amount": "0.00",
+    "paid_amount": "9.00",
+    "payment_method": "member_card",
+    "member": null,
+    "cashier": [
+      "anjuadmin"
+    ],
+    "status": "completed",
+    "paid_at": "2026-06-27T07:36:00Z"
+  }
+},
+{
+  "model": "pos.order",
+  "pk": 18,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.449Z",
+    "updated_at": "2026-06-30T11:30:32.449Z",
+    "order_no": "POS1782818872617",
+    "total_amount": "12.00",
+    "discount_amount": "0.00",
+    "paid_amount": "12.00",
+    "payment_method": "member_card",
+    "member": null,
+    "cashier": [
+      "anjuadmin"
+    ],
+    "status": "completed",
+    "paid_at": "2026-06-30T01:07:00Z"
+  }
+},
+{
+  "model": "pos.order",
+  "pk": 19,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.462Z",
+    "updated_at": "2026-06-30T11:30:32.448Z",
+    "order_no": "POS1782818872423",
+    "total_amount": "27.50",
+    "discount_amount": "0.00",
+    "paid_amount": "27.50",
+    "payment_method": "wechat",
+    "member": null,
+    "cashier": [
+      "anjuadmin"
+    ],
+    "status": "completed",
+    "paid_at": "2026-06-23T13:29:00Z"
+  }
+},
+{
+  "model": "pos.order",
+  "pk": 20,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.476Z",
+    "updated_at": "2026-06-30T11:30:32.448Z",
+    "order_no": "POS1782818872806",
+    "total_amount": "36.00",
+    "discount_amount": "0.00",
+    "paid_amount": "36.00",
+    "payment_method": "cash",
+    "member": null,
+    "cashier": [
+      "anjuadmin"
+    ],
+    "status": "completed",
+    "paid_at": "2026-06-28T12:50:00Z"
+  }
+},
+{
+  "model": "pos.order",
+  "pk": 21,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.489Z",
+    "updated_at": "2026-06-30T11:30:32.447Z",
+    "order_no": "POS1782818872545",
+    "total_amount": "27.00",
+    "discount_amount": "0.00",
+    "paid_amount": "27.00",
+    "payment_method": "alipay",
+    "member": null,
+    "cashier": [
+      "anjuadmin"
+    ],
+    "status": "completed",
+    "paid_at": "2026-06-30T04:23:00Z"
+  }
+},
+{
+  "model": "pos.order",
+  "pk": 22,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.502Z",
+    "updated_at": "2026-06-30T11:30:32.447Z",
+    "order_no": "POS1782818872334",
+    "total_amount": "37.50",
+    "discount_amount": "0.00",
+    "paid_amount": "37.50",
+    "payment_method": "wechat",
+    "member": null,
+    "cashier": [
+      "anjuadmin"
+    ],
+    "status": "completed",
+    "paid_at": "2026-06-27T05:03:00Z"
+  }
+},
+{
+  "model": "pos.order",
+  "pk": 23,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.516Z",
+    "updated_at": "2026-06-30T11:30:32.446Z",
+    "order_no": "POS1782818872256",
+    "total_amount": "47.90",
+    "discount_amount": "0.00",
+    "paid_amount": "47.90",
+    "payment_method": "wechat",
+    "member": null,
+    "cashier": [
+      "anjuadmin"
+    ],
+    "status": "completed",
+    "paid_at": "2026-06-20T12:19:00Z"
+  }
+},
+{
+  "model": "pos.order",
+  "pk": 24,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.528Z",
+    "updated_at": "2026-06-30T11:30:32.446Z",
+    "order_no": "POS1782818872405",
+    "total_amount": "9.00",
+    "discount_amount": "0.00",
+    "paid_amount": "9.00",
+    "payment_method": "alipay",
+    "member": null,
+    "cashier": [
+      "anjuadmin"
+    ],
+    "status": "completed",
+    "paid_at": "2026-06-26T12:39:00Z"
+  }
+},
+{
+  "model": "pos.order",
+  "pk": 25,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.540Z",
+    "updated_at": "2026-06-30T11:30:32.446Z",
+    "order_no": "POS1782818872982",
+    "total_amount": "16.50",
+    "discount_amount": "0.00",
+    "paid_amount": "16.50",
+    "payment_method": "cash",
+    "member": null,
+    "cashier": [
+      "anjuadmin"
+    ],
+    "status": "completed",
+    "paid_at": "2026-06-21T01:13:00Z"
+  }
+},
+{
+  "model": "pos.order",
+  "pk": 26,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.551Z",
+    "updated_at": "2026-06-30T11:30:32.445Z",
+    "order_no": "POS1782818872320",
+    "total_amount": "23.00",
+    "discount_amount": "0.00",
+    "paid_amount": "23.00",
+    "payment_method": "alipay",
+    "member": null,
+    "cashier": [
+      "anjuadmin"
+    ],
+    "status": "completed",
+    "paid_at": "2026-06-19T10:19:00Z"
+  }
+},
+{
+  "model": "pos.order",
+  "pk": 27,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.564Z",
+    "updated_at": "2026-06-30T11:30:32.445Z",
+    "order_no": "POS1782818872214",
+    "total_amount": "6.00",
+    "discount_amount": "0.00",
+    "paid_amount": "6.00",
+    "payment_method": "alipay",
+    "member": null,
+    "cashier": [
+      "anjuadmin"
+    ],
+    "status": "completed",
+    "paid_at": "2026-06-26T05:54:00Z"
+  }
+},
+{
+  "model": "pos.order",
+  "pk": 28,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.575Z",
+    "updated_at": "2026-06-30T11:30:32.444Z",
+    "order_no": "POS1782818872618",
+    "total_amount": "6.00",
+    "discount_amount": "0.00",
+    "paid_amount": "6.00",
+    "payment_method": "cash",
+    "member": null,
+    "cashier": [
+      "anjuadmin"
+    ],
+    "status": "completed",
+    "paid_at": "2026-06-19T02:30:00Z"
+  }
+},
+{
+  "model": "pos.order",
+  "pk": 29,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.587Z",
+    "updated_at": "2026-06-30T11:30:32.444Z",
+    "order_no": "POS1782818872989",
+    "total_amount": "9.00",
+    "discount_amount": "0.00",
+    "paid_amount": "9.00",
+    "payment_method": "member_card",
+    "member": null,
+    "cashier": [
+      "anjuadmin"
+    ],
+    "status": "completed",
+    "paid_at": "2026-06-24T05:34:00Z"
+  }
+},
+{
+  "model": "pos.order",
+  "pk": 30,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.599Z",
+    "updated_at": "2026-06-30T11:30:32.444Z",
+    "order_no": "POS1782818872282",
+    "total_amount": "54.90",
+    "discount_amount": "0.00",
+    "paid_amount": "54.90",
+    "payment_method": "cash",
+    "member": null,
+    "cashier": [
+      "anjuadmin"
+    ],
+    "status": "completed",
+    "paid_at": "2026-06-23T08:10:00Z"
+  }
+},
+{
+  "model": "pos.order",
+  "pk": 31,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.611Z",
+    "updated_at": "2026-06-30T11:30:32.443Z",
+    "order_no": "POS1782818872245",
+    "total_amount": "35.50",
+    "discount_amount": "0.00",
+    "paid_amount": "35.50",
+    "payment_method": "wechat",
+    "member": null,
+    "cashier": [
+      "anjuadmin"
+    ],
+    "status": "completed",
+    "paid_at": "2026-06-29T07:00:00Z"
+  }
+},
+{
+  "model": "pos.order",
+  "pk": 32,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.624Z",
+    "updated_at": "2026-06-30T11:30:32.443Z",
+    "order_no": "POS1782818872252",
+    "total_amount": "12.00",
+    "discount_amount": "0.00",
+    "paid_amount": "12.00",
+    "payment_method": "cash",
+    "member": null,
+    "cashier": [
+      "anjuadmin"
+    ],
+    "status": "completed",
+    "paid_at": "2026-06-30T11:32:00Z"
+  }
+},
+{
+  "model": "pos.order",
+  "pk": 33,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.635Z",
+    "updated_at": "2026-06-30T11:30:32.442Z",
+    "order_no": "POS1782818872231",
+    "total_amount": "51.90",
+    "discount_amount": "0.00",
+    "paid_amount": "51.90",
+    "payment_method": "member_card",
+    "member": null,
+    "cashier": [
+      "anjuadmin"
+    ],
+    "status": "completed",
+    "paid_at": "2026-06-19T04:03:00Z"
+  }
+},
+{
+  "model": "pos.order",
+  "pk": 34,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.647Z",
+    "updated_at": "2026-06-30T11:30:32.442Z",
+    "order_no": "POS1782818872257",
+    "total_amount": "50.40",
+    "discount_amount": "0.00",
+    "paid_amount": "50.40",
+    "payment_method": "alipay",
+    "member": null,
+    "cashier": [
+      "anjuadmin"
+    ],
+    "status": "completed",
+    "paid_at": "2026-06-27T09:25:00Z"
+  }
+},
+{
+  "model": "pos.order",
+  "pk": 35,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.659Z",
+    "updated_at": "2026-06-30T11:30:32.441Z",
+    "order_no": "POS1782818872413",
+    "total_amount": "31.00",
+    "discount_amount": "0.00",
+    "paid_amount": "31.00",
+    "payment_method": "cash",
+    "member": null,
+    "cashier": [
+      "anjuadmin"
+    ],
+    "status": "completed",
+    "paid_at": "2026-06-29T11:24:00Z"
+  }
+},
+{
+  "model": "pos.order",
+  "pk": 36,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.671Z",
+    "updated_at": "2026-06-30T11:30:32.440Z",
+    "order_no": "POS1782818872786",
+    "total_amount": "27.50",
+    "discount_amount": "0.00",
+    "paid_amount": "27.50",
+    "payment_method": "cash",
+    "member": null,
+    "cashier": [
+      "anjuadmin"
+    ],
+    "status": "completed",
+    "paid_at": "2026-06-17T02:31:00Z"
+  }
+},
+{
+  "model": "pos.order",
+  "pk": 37,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:27:52.683Z",
+    "updated_at": "2026-06-30T11:30:32.439Z",
+    "order_no": "POS1782818872224",
+    "total_amount": "4.00",
+    "discount_amount": "0.00",
+    "paid_amount": "4.00",
+    "payment_method": "member_card",
+    "member": null,
+    "cashier": [
+      "anjuadmin"
+    ],
+    "status": "completed",
+    "paid_at": "2026-06-19T00:20:00Z"
+  }
+},
+{
+  "model": "pos.order",
+  "pk": 38,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-06-30T11:47:18.229Z",
+    "updated_at": "2026-06-30T11:47:18.229Z",
+    "order_no": "POS1782820038875",
+    "total_amount": "5.50",
+    "discount_amount": "0.00",
+    "paid_amount": "5.50",
+    "payment_method": "alipay",
+    "member": null,
+    "cashier": [
+      "admin"
+    ],
+    "status": "completed",
+    "paid_at": "2026-06-30T11:47:18.229Z"
+  }
+},
+{
+  "model": "pos.order",
+  "pk": 39,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-07-01T11:11:13.657Z",
+    "updated_at": "2026-07-01T11:11:13.657Z",
+    "order_no": "POS1782904273499",
+    "total_amount": "3.00",
+    "discount_amount": "0.00",
+    "paid_amount": "3.00",
+    "payment_method": "member_card",
+    "member": null,
+    "cashier": [
+      "admin"
+    ],
+    "status": "completed",
+    "paid_at": "2026-07-01T11:11:13.657Z"
+  }
+},
+{
+  "model": "pos.order",
+  "pk": 40,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-07-01T11:47:38.416Z",
+    "updated_at": "2026-07-01T11:47:38.416Z",
+    "order_no": "POS1782906458463",
+    "total_amount": "28.00",
+    "discount_amount": "0.00",
+    "paid_amount": "28.00",
+    "payment_method": "cash",
+    "member": null,
+    "cashier": [
+      "admin"
+    ],
+    "status": "completed",
+    "paid_at": "2026-07-01T11:47:38.416Z"
+  }
+},
+{
+  "model": "pos.order",
+  "pk": 41,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-07-01T11:47:38.893Z",
+    "updated_at": "2026-07-01T11:47:38.893Z",
+    "order_no": "POS1782906458189",
+    "total_amount": "28.00",
+    "discount_amount": "0.00",
+    "paid_amount": "28.00",
+    "payment_method": "cash",
+    "member": 3,
+    "cashier": [
+      "admin"
+    ],
+    "status": "completed",
+    "paid_at": "2026-07-01T11:47:38.893Z"
+  }
+},
+{
+  "model": "pos.order",
+  "pk": 42,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-07-01T11:48:38.346Z",
+    "updated_at": "2026-07-01T11:48:38.346Z",
+    "order_no": "POS1782906518214",
+    "total_amount": "34.00",
+    "discount_amount": "0.00",
+    "paid_amount": "34.00",
+    "payment_method": "cash",
+    "member": 3,
+    "cashier": [
+      "admin"
+    ],
+    "status": "completed",
+    "paid_at": "2026-07-01T11:48:38.346Z"
+  }
+},
+{
+  "model": "pos.order",
+  "pk": 43,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-07-01T11:53:24.813Z",
+    "updated_at": "2026-07-01T11:53:24.813Z",
+    "order_no": "POS1782906804101",
+    "total_amount": "50.00",
+    "discount_amount": "0.00",
+    "paid_amount": "50.00",
+    "payment_method": "cash",
+    "member": 3,
+    "cashier": [
+      "admin"
+    ],
+    "status": "completed",
+    "paid_at": "2026-07-01T11:53:24.813Z"
+  }
+},
+{
+  "model": "pos.order",
+  "pk": 44,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-07-01T11:59:36.345Z",
+    "updated_at": "2026-07-01T11:59:36.345Z",
+    "order_no": "POS1782907176211",
+    "total_amount": "22.00",
+    "discount_amount": "0.00",
+    "paid_amount": "22.00",
+    "payment_method": "cash",
+    "member": 3,
+    "cashier": [
+      "admin"
+    ],
+    "status": "completed",
+    "paid_at": "2026-07-01T11:59:36.345Z"
+  }
+},
+{
+  "model": "pos.order",
+  "pk": 45,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-07-03T10:45:14.919Z",
+    "updated_at": "2026-07-03T10:45:14.919Z",
+    "order_no": "POS1783075514231",
+    "total_amount": "68.00",
+    "discount_amount": "0.00",
+    "paid_amount": "68.00",
+    "payment_method": "wechat",
+    "member": 3,
+    "cashier": [
+      "admin"
+    ],
+    "status": "completed",
+    "paid_at": "2026-07-03T10:45:14.919Z"
+  }
+},
+{
+  "model": "pos.order",
+  "pk": 46,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-07-03T11:00:31.784Z",
+    "updated_at": "2026-07-03T11:00:31.784Z",
+    "order_no": "POS1783076431385",
+    "total_amount": "32.80",
+    "discount_amount": "0.00",
+    "paid_amount": "32.80",
+    "payment_method": "member_card",
+    "member": 3,
+    "cashier": [
+      "admin"
+    ],
+    "status": "completed",
+    "paid_at": "2026-07-03T11:00:31.784Z"
+  }
+},
+{
+  "model": "pos.order",
+  "pk": 47,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-07-04T09:27:19.718Z",
+    "updated_at": "2026-07-04T09:27:19.718Z",
+    "order_no": "POS1783157239956",
+    "total_amount": "12.50",
+    "discount_amount": "0.00",
+    "paid_amount": "12.50",
+    "payment_method": "wechat",
+    "member": null,
+    "cashier": [
+      "admin"
+    ],
+    "status": "completed",
+    "paid_at": "2026-07-04T09:27:19.718Z"
+  }
+},
+{
+  "model": "pos.order",
+  "pk": 48,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-07-04T09:27:38.518Z",
+    "updated_at": "2026-07-04T09:27:38.518Z",
+    "order_no": "POS1783157258342",
+    "total_amount": "25.00",
+    "discount_amount": "0.00",
+    "paid_amount": "25.00",
+    "payment_method": "cash",
+    "member": null,
+    "cashier": [
+      "admin"
+    ],
+    "status": "completed",
+    "paid_at": "2026-07-04T09:27:38.518Z"
+  }
+},
+{
+  "model": "pos.order",
+  "pk": 49,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-07-04T10:14:36.747Z",
+    "updated_at": "2026-07-04T10:14:36.747Z",
+    "order_no": "POS1783160076910",
+    "total_amount": "12.50",
+    "discount_amount": "0.00",
+    "paid_amount": "12.50",
+    "payment_method": "member_card",
+    "member": 5,
+    "cashier": null,
+    "status": "completed",
+    "paid_at": "2026-07-04T10:14:36.747Z"
+  }
+},
+{
+  "model": "pos.order",
+  "pk": 50,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-07-04T10:15:21.883Z",
+    "updated_at": "2026-07-04T10:15:21.883Z",
+    "order_no": "POS1783160121118",
+    "total_amount": "43.00",
+    "discount_amount": "0.00",
+    "paid_amount": "43.00",
+    "payment_method": "cash",
+    "member": 5,
+    "cashier": null,
+    "status": "completed",
+    "paid_at": "2026-07-04T10:15:21.883Z"
+  }
+},
+{
+  "model": "pos.order",
+  "pk": 51,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-07-04T10:19:48.919Z",
+    "updated_at": "2026-07-04T10:19:48.919Z",
+    "order_no": "POS1783160388258",
+    "total_amount": "30.00",
+    "discount_amount": "0.00",
+    "paid_amount": "30.00",
+    "payment_method": "wechat",
+    "member": 5,
+    "cashier": null,
+    "status": "completed",
+    "paid_at": "2026-07-04T10:19:48.919Z"
+  }
+},
+{
+  "model": "pos.order",
+  "pk": 52,
+  "fields": {
+    "tenant": 1,
+    "created_at": "2026-07-04T10:21:29.511Z",
+    "updated_at": "2026-07-04T10:21:29.511Z",
+    "order_no": "POS1783160489173",
+    "total_amount": "58.00",
+    "discount_amount": "0.00",
+    "paid_amount": "58.00",
+    "payment_method": "cash",
+    "member": 5,
+    "cashier": null,
+    "status": "completed",
+    "paid_at": "2026-07-04T10:21:29.511Z"
+  }
+}
+]
