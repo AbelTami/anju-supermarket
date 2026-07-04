@@ -124,6 +124,7 @@ watchEffect(() => {
 </script>
 
 <template>
+  <ClientOnly>
   <div class="py-6 px-4 lg:px-6 max-w-3xl mx-auto shop-animate-in pb-24 lg:pb-6">
     <!-- Header -->
     <div class="flex items-center gap-3 mb-6">
@@ -297,4 +298,5 @@ watchEffect(() => {
       </div>
     </div>
   </div>
+  </ClientOnly>
 </template>

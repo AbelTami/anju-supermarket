@@ -5,7 +5,7 @@ import { useAuth } from '~/composables/useAuth'
 const auth = useAuth()
 const toast = useToast()
 const tenantSlug = computed(() => (auth.currentTenant.value as any)?.slug || '')
-const apiUrl = () => tenantSlug.value ? `/api/tenant/${tenantSlug.value}/employees` : ''
+const apiUrl = () => tenantSlug.value ? `/api/tenant/${tenantSlug.value}/employees` : undefined
 
 const { data, status, refresh } = useFetch(apiUrl, { lazy: true, server: false, watch: [tenantSlug] })
 const q = ref('')

@@ -87,12 +87,34 @@ const finalPaymentMethod = computed(() =>
     : paymentMethod.value,
 )
 
-// Coupon (mock)
-const availableCoupons = ref([
-  { id: 1, title: '满100减20', minAmount: 100, discount: 20, code: 'MAN100J20' },
-  { id: 2, title: '满200减50', minAmount: 200, discount: 50, code: 'MAN200J50' }
-])
+// Coupon — fetch member's real coupons from API
+interface MemberCoupon { id: number; title: string; minAmount: number; discount: number; code: string; discount_type: string; discount_value: string; min_amount: string; coupon_title: string }
+const availableCoupons = ref<MemberCoupon[]>([])
 const selectedCoupon = ref<number | null>(null)
+
+async function loadCoupons() {
+  const token = memberAuth.token.value
+  if (!token) return
+  try {
+    const resp = await $fetch<{ results: any[] }>(`/api/shop/${slug.value}/members/coupons/`, {
+      headers: { Authorization: `Token ${token}` },
+    })
+    availableCoupons.value = (resp.results || []).map((c: any) => ({
+      id: c.id,
+      title: c.coupon_title,
+      minAmount: Number(c.min_amount),
+      discount: Number(c.discount_value),
+      code: c.code,
+      discount_type: c.discount_type,
+      discount_value: c.discount_value,
+      coupon_title: c.coupon_title,
+      min_amount: c.min_amount,
+    }))
+  } catch { /* keep empty */ }
+}
+
+onMounted(() => loadCoupons())
+
 const discountAmount = computed(() => {
   if (selectedCoupon.value === null) return 0
   const coupon = availableCoupons.value.find(c => c.id === selectedCoupon.value)
@@ -135,6 +157,7 @@ async function handlePlaceOrder() {
       customerName: customerName.value || '',
       customerPhone: customerPhone.value || '',
       pickupNote: pickupNote.value || '',
+      coupon_id: selectedCoupon.value,
       items
     }
 

@@ -2,6 +2,7 @@
 from common.permissions import HasMemberToken, IsTenantUser
 from common.token_utils import get_member_from_request
 from django.db import transaction
+from django.utils import timezone
 from rest_framework import viewsets
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.filters import OrderingFilter
@@ -56,6 +57,25 @@ class OrderViewSet(viewsets.ModelViewSet):
                 raise AuthenticationFailed('无效的会员令牌')
 
         order = serializer.save(cashier=cashier, tenant=self.request.tenant, member=member)
+
+        # Validate and apply coupon if provided
+        coupon_id = serializer.validated_data.get('coupon_id')
+        if coupon_id and member:
+            from apps.coupons.models import Coupon, MemberCoupon
+            from apps.coupons.services import coupon_service
+            try:
+                coupon = Coupon.objects.get(id=coupon_id, tenant=self.request.tenant)
+            except Coupon.DoesNotExist:
+                raise AuthenticationFailed('优惠券不存在')
+
+            result = coupon_service.validate(coupon, member, order.items.all())
+            if not result.valid:
+                raise AuthenticationFailed(result.reason)
+
+            # Mark coupon as used
+            MemberCoupon.objects.filter(member=member, coupon=coupon, used=False).update(
+                used=True, used_at=timezone.now()
+            )
 
         # ponytail: award points and update total_spent for non-member_card payments
         if member and order.payment_method != 'member_card':

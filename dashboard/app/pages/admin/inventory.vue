@@ -49,6 +49,7 @@ const paginationRowModel = getPaginationRowModel()
     </template>
 
     <template #body>
+      <ClientOnly>
       <div class="p-4">
         <!-- Low-stock alert banner -->
         <UAlert
@@ -75,6 +76,7 @@ const paginationRowModel = getPaginationRowModel()
         <div v-else-if="status === 'pending'" class="text-center py-12 text-dimmed">加载中...</div>
         <div v-else class="text-center py-12 text-dimmed">暂无库存记录</div>
       </div>
+      </ClientOnly>
     </template>
   </UDashboardPanel>
 </template>

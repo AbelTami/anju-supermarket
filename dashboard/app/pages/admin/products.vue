@@ -12,7 +12,7 @@ const search = ref('')
 const editModal = useTemplateRef('editModal')
 const tenantSlug = computed(() => (auth.currentTenant.value as any)?.slug || '')
 
-const apiUrl = () => tenantSlug.value ? `/api/tenant/${tenantSlug.value}/products` : ''
+const apiUrl = () => tenantSlug.value ? `/api/tenant/${tenantSlug.value}/products` : undefined
 
 const { data, status, refresh } = useFetch(apiUrl, {
   lazy: true,

@@ -16,12 +16,15 @@ class OrderCreateSerializer(serializers.ModelSerializer):
     """Create order with nested items."""
     items = OrderItemSerializer(many=True)
 
+    coupon_id = serializers.IntegerField(required=False, allow_null=True, write_only=True)
+
     class Meta:
         model = Order
-        fields = ['total_amount', 'discount_amount', 'paid_amount', 'payment_method', 'member', 'items']
+        fields = ['total_amount', 'discount_amount', 'paid_amount', 'payment_method', 'member', 'items', 'coupon_id']
 
     def create(self, validated_data):
         items_data = validated_data.pop('items')
+        validated_data.pop('coupon_id', None)  # handled in perform_create, not on Order model
         validated_data['tenant'] = self.context['request'].tenant
         # Use passed cashier or fall back to request user
         if 'cashier' not in validated_data:

@@ -19,10 +19,24 @@ class Coupon(TenantAwareModel):
     valid_from = models.DateTimeField(null=True, blank=True, verbose_name='生效')
     valid_until = models.DateTimeField(null=True, blank=True, verbose_name='过期')
     is_active = models.BooleanField(default=True, verbose_name='启用')
+    categories = models.ManyToManyField('products.Category', blank=True, verbose_name='适用品类', help_text='不选则全场通用')
 
     class Meta:
         db_table = 'coupon'
         verbose_name = '优惠券'
+
+    @property
+    def is_universal(self) -> bool:
+        """品类为空 → 全场通用"""
+        return not self.categories.exists()
+
+    @property
+    def scope_label(self) -> str:
+        """前端可直接渲染的适用范围文字"""
+        if self.is_universal:
+            return '全场通用'
+        names = '、'.join(c.name for c in self.categories.all())
+        return f'仅限{names}'
 
 
 class MemberCoupon(TenantAwareModel):

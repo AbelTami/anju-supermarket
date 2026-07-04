@@ -12,7 +12,7 @@ const toast = useToast()
 
 const search = ref('')
 const tenantSlug = computed(() => (auth.currentTenant.value as any)?.slug || '')
-const apiUrl = () => tenantSlug.value ? `/api/tenant/${tenantSlug.value}/employees` : ''
+const apiUrl = () => tenantSlug.value ? `/api/tenant/${tenantSlug.value}/employees` : undefined
 
 const { data, status, refresh } = useFetch(apiUrl, { lazy: true, server: false, watch: [tenantSlug] })
 

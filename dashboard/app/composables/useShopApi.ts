@@ -21,7 +21,7 @@ export function mediaUrl(path: string | null | undefined): string | null {
 
 /** Fallback placeholder for products without images — stable per product name. */
 export function productPlaceholder(name: string): string {
-  return `https://picsum.photos/seed/${encodeURIComponent(name.replace(/\s+/g, '').slice(0, 30))}/400/400`
+  return `data:image/svg+xml,${encodeURIComponent(`<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400' fill='%23f1f5f9'><rect width='400' height='400'/><text x='200' y='220' text-anchor='middle' font-size='120' font-weight='bold' fill='%2394a3b8'>${(name || '?').charAt(0)}</text></svg>`)}`
 }
 
 export interface ProductParams {
