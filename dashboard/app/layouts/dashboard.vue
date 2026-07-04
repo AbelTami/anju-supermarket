@@ -75,6 +75,10 @@ const links = computed(() => [[{
     to: '/admin/settings/notifications',
     onSelect: () => { open.value = false }
   }, {
+    label: '优惠券管理',
+    to: '/admin/settings/coupons',
+    onSelect: () => { open.value = false }
+  }, {
     label: '打印模板',
     to: '/admin/settings/security',
     onSelect: () => { open.value = false }

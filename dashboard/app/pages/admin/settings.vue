@@ -15,6 +15,10 @@ const links = [[{
   icon: 'i-lucide-shield',
   to: '/admin/settings/notifications'
 }, {
+  label: '优惠券管理',
+  icon: 'i-lucide-ticket',
+  to: '/admin/settings/coupons'
+}, {
   label: '打印模板',
   icon: 'i-lucide-printer',
   to: '/admin/settings/security'

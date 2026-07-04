@@ -65,8 +65,22 @@ class MemberViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['get'], url_path='coupons', permission_classes=[IsTenantUser, HasMemberToken])
     def coupons(self, request, **kwargs):
-        """GET /{slug}/members/coupons/ — member coupons (stub)."""
-        return Response({'results': [], 'count': 0})
+        """GET /{slug}/members/coupons/ — member's owned coupons."""
+        from apps.coupons.models import MemberCoupon
+        from apps.coupons.serializers import MemberCouponSerializer
+
+        member = get_member_from_request(request)
+        if not member:
+            return Response({'results': [], 'count': 0})
+
+        qs = MemberCoupon.objects.filter(
+            tenant=request.tenant, member=member,
+        ).select_related('coupon').order_by('-created_at')
+
+        return Response({
+            'results': MemberCouponSerializer(qs, many=True).data,
+            'count': qs.count(),
+        })
 
     @action(detail=False, methods=['post'], url_path='deduct-balance', permission_classes=[IsTenantUser, HasMemberToken])
     def deduct_balance(self, request, **kwargs):
