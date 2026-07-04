@@ -163,12 +163,18 @@ pnpm dev
 
 ### 导入测试数据
 
+**方式 1: Django fixture (推荐，跨环境兼容)**
 ```bash
 cd backend
 python manage.py loaddata seed_data.json
 ```
 
-导入后包含：1 个超市 + 50+ 条码商品 + 会员 (含积分和余额) + 订单历史。
+**方式 2: pg_dump 完整恢复**
+```bash
+psql -U postgres anju_db < backend/anju_db_dump.sql
+```
+
+导入后包含：1 个超市 + 50+ 条码商品 + 会员 (含积分和余额) + 50+ 订单历史 + 库存流水。
 
 ## 测试账号
 
