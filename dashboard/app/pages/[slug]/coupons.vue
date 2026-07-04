@@ -23,7 +23,7 @@ async function loadCoupons() {
     return
   }
   try {
-    const data = await $fetch(`/api/shop/${slug.value}/shop/coupons/`, {
+    const data = await $fetch(`/api/shop/${slug.value}/members/coupons/`, {
       headers: { Authorization: `Token ${token.value}` },
     })
     const all: CouponInfo[] = Array.isArray(data) ? data : (data as PaginatedResponse<CouponInfo>)?.results || []
