@@ -1,6 +1,7 @@
 """Multi-tenant middleware — extracts tenant_slug from URL path."""
 import re
 
+from django.db import connection
 from django.http import Http404
 
 from apps.tenants.models import Tenant
@@ -14,6 +15,7 @@ class TenantMiddleware:
     """Extract tenant from URL prefix: /api/{tenant_slug}/...
 
     Skips /auth/ paths entirely — they are public and tenant-agnostic.
+    Sets PostgreSQL session variable for RLS enforcement.
     """
 
     def __init__(self, get_response):
@@ -38,6 +40,12 @@ class TenantMiddleware:
 
                 try:
                     request.tenant = Tenant.objects.get(slug=slug, is_active=True)
+                    # Set PostgreSQL session variable for RLS enforcement
+                    with connection.cursor() as cursor:
+                        cursor.execute(
+                            "SET SESSION app.tenant_id = %s",
+                            [str(request.tenant.id)],
+                        )
                 except Tenant.DoesNotExist:
                     raise Http404("Tenant not found")
 

@@ -8,8 +8,8 @@ const router = useRouter()
 const slug = computed(() => route.params.slug as string)
 const { fetchOrders } = useShopApi()
 
-const memberToken = useCookie('member-token')
-const token = computed(() => memberToken.value || null)
+const memberAuth = useMemberAuth()
+const token = computed(() => memberAuth.token.value)
 
 const profile = ref<any>(null)
 const orders = ref<OrderInfo[]>([])
@@ -17,16 +17,17 @@ const isLoading = ref(true)
 
 async function loadData() {
   isLoading.value = true
-  try {
-    const { fetchMemberProfile } = useShopApi()
-    const [prof, ords] = await Promise.all([
-      fetchMemberProfile(slug.value, token.value!),
-      fetchOrders(slug.value, token.value!),
-    ])
-    profile.value = prof
-    orders.value = Array.isArray(ords) ? ords as OrderInfo[] : (ords as PaginatedResponse<OrderInfo>).results || []
-  } catch { /* ignore */ }
-  finally { isLoading.value = false }
+  // ponytail: allSettled so one failure doesn't block the other
+  const [prof, ords] = await Promise.allSettled([
+    memberAuth.fetchProfile(slug.value),
+    token.value ? fetchOrders(slug.value, token.value).catch(() => ({ results: [] })) : Promise.resolve({ results: [] }),
+  ])
+  if (prof.status === 'fulfilled' && prof.value) profile.value = prof.value
+  if (ords.status === 'fulfilled') {
+    const data = ords.value as any
+    orders.value = Array.isArray(data) ? data : (data.results || [])
+  }
+  isLoading.value = false
 }
 
 onMounted(() => {
@@ -40,12 +41,12 @@ const avgPerOrder = computed(() => totalOrders.value > 0 ? totalSpent.value / to
 const points = computed(() => Number(profile.value?.points ?? 0))
 const balance = computed(() => Number(profile.value?.balance ?? 0))
 
-// Monthly breakdown (mock — in prod group by month from backend)
+// Monthly breakdown from order data
 const monthlyData = computed(() => {
   const months: Record<string, number> = {}
   orders.value.forEach((o) => {
     if (o.paid_at) {
-      const m = o.paid_at.slice(0, 7) // "2026-07"
+      const m = o.paid_at.slice(0, 7)
       months[m] = (months[m] || 0) + Number(o.paid_amount || 0)
     }
   })
@@ -71,6 +72,7 @@ function monthLabel(m: string): string {
 </script>
 
 <template>
+  <ClientOnly>
   <div class="py-6 px-4 lg:px-6 max-w-2xl mx-auto shop-animate-in pb-24 lg:pb-6">
     <!-- Header -->
     <div class="flex items-center gap-3 mb-6">
@@ -100,7 +102,7 @@ function monthLabel(m: string): string {
       <div class="shop-skeleton h-32 rounded-xl" />
     </div>
 
-    <!-- Stats cards -->
+    <!-- Content -->
     <div v-else class="space-y-5">
       <!-- Summary -->
       <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
@@ -124,88 +126,40 @@ function monthLabel(m: string): string {
 
       <!-- Monthly bar chart -->
       <div class="shop-card p-5">
-        <div class="flex items-center gap-2 mb-5">
-          <div class="size-7 rounded-lg bg-(--ui-primary)/10 flex items-center justify-center">
-            <UIcon name="i-lucide-bar-chart-3" class="size-3.5 text-(--ui-primary)" />
-          </div>
-          <h2 class="text-sm font-semibold text-(--ui-text)">月度消费趋势</h2>
-        </div>
-
-        <div v-if="monthlyData.length === 0" class="text-center py-8 text-xs text-(--ui-text-muted)">
-          暂无消费数据
-        </div>
-
+        <h2 class="text-sm font-semibold text-(--ui-text) mb-4">月度消费趋势</h2>
+        <div v-if="monthlyData.length === 0" class="text-center py-8 text-xs text-(--ui-text-muted)">暂无消费数据 — 快去下一单吧！</div>
         <div v-else class="space-y-3">
-          <div
-            v-for="[month, amount] in monthlyData"
-            :key="month"
-            class="flex items-center gap-3"
-          >
+          <div v-for="[month, amount] in monthlyData" :key="month" class="flex items-center gap-3">
             <span class="text-[10px] text-(--ui-text-muted) w-12 shrink-0 text-right">{{ monthLabel(month) }}</span>
-            <div class="flex-1 h-6 rounded-full bg-(--ui-bg-muted) overflow-hidden relative">
-              <div
-                class="h-full rounded-full transition-all duration-500"
-                :class="amount >= maxMonthly * 0.8 ? 'bg-gradient-to-r from-(--ui-primary) to-violet-500' : amount >= maxMonthly * 0.5 ? 'bg-(--ui-primary)' : 'bg-(--ui-primary)/60'"
-                :style="{ width: `${(amount / maxMonthly) * 100}%` }"
-              />
+            <div class="flex-1 h-6 rounded-full bg-(--ui-bg-muted) overflow-hidden">
+              <div class="h-full rounded-full bg-(--ui-primary)" :style="{ width: `${(amount / maxMonthly) * 100}%` }" />
             </div>
             <span class="text-xs font-medium tabular-nums text-(--ui-text) w-20 shrink-0 text-right">{{ formatPrice(amount) }}</span>
           </div>
         </div>
       </div>
 
-      <!-- Member info -->
+      <!-- Member overview -->
       <div class="shop-card p-5">
-        <div class="flex items-center gap-2 mb-4">
-          <div class="size-7 rounded-lg bg-(--ui-primary)/10 flex items-center justify-center">
-            <UIcon name="i-lucide-info" class="size-3.5 text-(--ui-primary)" />
-          </div>
-          <h2 class="text-sm font-semibold text-(--ui-text)">会员概览</h2>
-        </div>
+        <h2 class="text-sm font-semibold text-(--ui-text) mb-3">会员概览</h2>
         <div class="grid grid-cols-2 gap-y-3 gap-x-6 text-sm">
-          <div class="flex justify-between">
-            <span class="text-(--ui-text-muted)">注册时间</span>
-            <span class="text-(--ui-text) font-medium">{{ profile?.created_at ? new Date(profile.created_at).toLocaleDateString('zh-CN') : '-' }}</span>
-          </div>
-          <div class="flex justify-between">
-            <span class="text-(--ui-text-muted)">储值余额</span>
-            <span class="text-(--ui-text) font-medium tabular-nums">{{ formatPrice(balance) }}</span>
-          </div>
-          <div class="flex justify-between">
-            <span class="text-(--ui-text-muted)">总订单数</span>
-            <span class="text-(--ui-text) font-medium">{{ totalOrders }}</span>
-          </div>
-          <div class="flex justify-between">
-            <span class="text-(--ui-text-muted)">积分</span>
-            <span class="text-(--ui-text) font-medium tabular-nums">{{ points }}</span>
-          </div>
+          <div class="flex justify-between"><span class="text-(--ui-text-muted)">储值余额</span><span class="text-(--ui-text) font-medium tabular-nums">{{ formatPrice(balance) }}</span></div>
+          <div class="flex justify-between"><span class="text-(--ui-text-muted)">总订单数</span><span class="text-(--ui-text) font-medium">{{ totalOrders }}</span></div>
+          <div class="flex justify-between"><span class="text-(--ui-text-muted)">积分</span><span class="text-(--ui-text) font-medium tabular-nums">{{ points }}</span></div>
+          <div class="flex justify-between"><span class="text-(--ui-text-muted)">累计消费</span><span class="text-(--ui-text) font-medium tabular-nums">{{ formatPrice(totalSpent) }}</span></div>
         </div>
       </div>
 
       <!-- Recent orders -->
       <div class="shop-card p-5">
         <div class="flex items-center justify-between mb-4">
-          <div class="flex items-center gap-2">
-            <div class="size-7 rounded-lg bg-(--ui-primary)/10 flex items-center justify-center">
-              <UIcon name="i-lucide-receipt" class="size-3.5 text-(--ui-primary)" />
-            </div>
-            <h2 class="text-sm font-semibold text-(--ui-text)">最近订单</h2>
-          </div>
+          <h2 class="text-sm font-semibold text-(--ui-text)">最近订单</h2>
           <NuxtLink :to="`/${slug}/orders`" class="text-xs text-(--ui-primary) hover:underline">查看全部</NuxtLink>
         </div>
-
-        <div v-if="orders.length === 0" class="text-center py-6 text-xs text-(--ui-text-muted)">
-          暂无订单
-        </div>
-
+        <div v-if="orders.length === 0" class="text-center py-6 text-xs text-(--ui-text-muted)">暂无订单</div>
         <div v-else class="space-y-2">
-          <div
-            v-for="order in orders.slice(0, 5)"
-            :key="order.id"
-            class="flex items-center justify-between py-2 border-b border-(--ui-border)/20 last:border-0"
-          >
+          <div v-for="order in orders.slice(0, 5)" :key="order.id" class="flex items-center justify-between py-2 border-b border-(--ui-border)/20 last:border-0">
             <div class="flex items-center gap-2 min-w-0">
-              <div class="size-2 rounded-full shrink-0" :class="order.status === 'completed' || order.status === 'paid' ? 'bg-(--ui-success)' : 'bg-(--ui-text-muted)/30'" />
               <span class="text-xs text-(--ui-text-muted) truncate">{{ formatDate(order.paid_at) }}</span>
             </div>
             <span class="text-sm font-medium tabular-nums text-(--ui-text)">{{ formatPrice(order.paid_amount) }}</span>
@@ -214,4 +168,5 @@ function monthLabel(m: string): string {
       </div>
     </div>
   </div>
+  </ClientOnly>
 </template>

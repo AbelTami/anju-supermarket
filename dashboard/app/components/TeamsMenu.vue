@@ -35,6 +35,7 @@ const currentLabel = computed(() => {
 </script>
 
 <template>
+  <ClientOnly>
   <UDropdownMenu
     :items="tenantItems"
     :content="{ align: 'center', collisionPadding: 12 }"
@@ -55,4 +56,5 @@ const currentLabel = computed(() => {
       }"
     />
   </UDropdownMenu>
+  </ClientOnly>
 </template>

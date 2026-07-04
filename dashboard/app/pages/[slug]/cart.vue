@@ -41,7 +41,8 @@ const totalCount = computed(() =>
 )
 
 function formatPrice(price: number): string {
-  return `¥${price.toFixed(2)}`
+  const n = Number(price)
+  return isNaN(n) ? '¥0.00' : `¥${n.toFixed(2)}`
 }
 
 function toggleSelect(itemId: string) {

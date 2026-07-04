@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { eachDayOfInterval, eachWeekOfInterval, eachMonthOfInterval, format } from 'date-fns'
 import { VisXYContainer, VisLine, VisAxis, VisArea, VisCrosshair, VisTooltip } from '@unovis/vue'
+import { useAuth } from '~/composables/useAuth'
 import type { Period, Range } from '~/types'
 
 const cardRef = useTemplateRef<HTMLElement | null>('cardRef')
@@ -16,8 +17,6 @@ type DataRecord = {
 }
 
 const { width } = useElementSize(cardRef)
-
-import { useAuth } from '~/composables/useAuth'
 const auth = useAuth()
 
 const data = ref<DataRecord[]>([])
@@ -46,7 +45,7 @@ const formatDate = (date: Date): string => {
   return ({
     daily: format(date, 'd MMM'),
     weekly: format(date, 'd MMM'),
-    monthly: format(date, 'MMM yyy')
+    monthly: format(date, 'MMM yyyy')
   })[props.period]
 }
 
@@ -100,6 +99,8 @@ const template = (d: DataRecord) => d ? `${formatDate(d.date)}: ${formatNumber(d
       />
 
       <VisCrosshair
+        :x="x"
+        :y="y"
         color="var(--ui-primary)"
         :template="template"
       />

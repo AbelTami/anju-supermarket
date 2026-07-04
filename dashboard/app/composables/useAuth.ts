@@ -1,18 +1,17 @@
 /** Auth state — shared across the app via VueUse createSharedComposable. */
 import { createSharedComposable } from '@vueuse/core'
+import type { TenantInfo, UserInfo } from '~~/app/types'
 
-export interface TenantInfo {
-  id: number
-  name: string
-  slug: string
+interface LoginResponse {
+  user: UserInfo
+  tenants: TenantInfo[]
+  accessToken: string
 }
 
-export interface UserInfo {
-  id: number
-  username: string
-  phone: string
-  email: string
-  first_name?: string
+interface RegisterResponse {
+  user: UserInfo
+  tenant: TenantInfo
+  accessToken: string
 }
 
 const _useAuth = () => {
@@ -20,13 +19,14 @@ const _useAuth = () => {
   const tenants = ref<TenantInfo[]>([])
   const currentTenant = ref<TenantInfo | null>(null)
   const isLoading = ref(false)
+  const accessToken = ref<string | null>(null)
 
-  /** Fetch current user profile from the BFF. Uses $fetch to avoid Nuxt useFetch cache. */
+  /** Fetch current user profile from the BFF. */
   async function fetchProfile() {
     try {
-      const profile = await $fetch('/api/auth/profile') as any
+      const profile = await $fetch<UserInfo & { tenants?: TenantInfo[] }>('/api/auth/profile')
       if (profile) {
-        user.value = { id: profile.id, username: profile.username, phone: profile.phone, email: profile.email, first_name: profile.first_name }
+        user.value = { ...profile }
         if (profile.tenants) {
           tenants.value = profile.tenants
           if (!currentTenant.value && profile.tenants.length > 0) {
@@ -35,20 +35,24 @@ const _useAuth = () => {
         }
       }
     } catch {
-      user.value = null
-      tenants.value = []
+      if (!user.value) {
+        tenants.value = []
+      }
     }
   }
 
   async function login(username: string, password: string) {
     isLoading.value = true
     try {
-      const result = await $fetch('/api/auth/login', {
+      const result = await $fetch<LoginResponse>('/api/auth/login', {
         method: 'POST',
         body: { username, password },
-      }) as any
+        ignoreResponseError: true,
+      })
+      if (!result?.user) return false
       user.value = result.user
       tenants.value = result.tenants || []
+      accessToken.value = result.accessToken || null
       if (tenants.value.length > 0) {
         currentTenant.value = tenants.value[0]
       }
@@ -63,11 +67,14 @@ const _useAuth = () => {
   async function register(tenantName: string, username: string, password: string, phone: string) {
     isLoading.value = true
     try {
-      const result = await $fetch('/api/auth/register', {
+      const result = await $fetch<RegisterResponse>('/api/auth/register', {
         method: 'POST',
         body: { tenant_name: tenantName, username, password, phone },
-      }) as any
+        ignoreResponseError: true,
+      })
+      if (!result?.user) return false
       user.value = result.user
+      accessToken.value = result.accessToken || null
       if (result.tenant) {
         tenants.value = [result.tenant]
         currentTenant.value = result.tenant
@@ -85,7 +92,10 @@ const _useAuth = () => {
     user.value = null
     tenants.value = []
     currentTenant.value = null
-    await navigateTo('/admin/auth/login')
+    accessToken.value = null
+    try {
+      await navigateTo('/admin/auth/login')
+    } catch { /* navigation failed — ignore */ }
   }
 
   function switchTenant(tenant: TenantInfo) {
@@ -97,6 +107,7 @@ const _useAuth = () => {
     tenants: readonly(tenants),
     currentTenant: readonly(currentTenant),
     isLoading: readonly(isLoading),
+    accessToken: readonly(accessToken),
     fetchProfile,
     login,
     register,

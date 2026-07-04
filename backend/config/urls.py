@@ -5,7 +5,6 @@ from django.contrib import admin
 from django.urls import include, path
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
     path('api/auth/', include('apps.accounts.urls')),
     path('api/', include('apps.tenants.urls')),
     path('api/', include('apps.products.urls')),
@@ -18,4 +17,6 @@ urlpatterns = [
 ]
 
 if settings.DEBUG:
+    # Django admin — only enabled in DEBUG mode for development
+    urlpatterns = [path('admin/', admin.site.urls)] + urlpatterns
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

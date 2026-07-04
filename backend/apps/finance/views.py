@@ -2,7 +2,7 @@
 from collections import defaultdict
 from datetime import date, timedelta
 
-from common.permissions import IsTenantUser
+from common.permissions import IsSuperAdminOrManager, IsTenantUser
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
@@ -13,7 +13,7 @@ from .serializers import DailySummarySerializer
 
 
 class DailySummaryViewSet(viewsets.ReadOnlyModelViewSet):
-    permission_classes = [IsAuthenticated, IsTenantUser]
+    permission_classes = [IsAuthenticated, IsTenantUser, IsSuperAdminOrManager]
     serializer_class = DailySummarySerializer
 
     def get_queryset(self):

@@ -11,7 +11,10 @@ const _useDashboard = () => {
     'g-r': () => router.push('/admin/products'),
     'g-c': () => router.push('/admin/customers'),
     'g-s': () => router.push('/admin/settings'),
-    'n': () => isNotificationsSlideoverOpen.value = !isNotificationsSlideoverOpen.value
+    'n': () => {
+      if (document.activeElement?.tagName === 'INPUT' || document.activeElement?.tagName === 'TEXTAREA') return
+      isNotificationsSlideoverOpen.value = !isNotificationsSlideoverOpen.value
+    }
   })
 
   watch(() => route.fullPath, () => {

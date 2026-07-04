@@ -10,11 +10,11 @@ const slug = computed(() => route.params.slug as string)
 const { fetchOrders } = useShopApi()
 
 // Auth check
-const memberToken = useCookie('member-token')
-const token = computed(() => memberToken.value || null)
+const memberAuth = useMemberAuth()
+const token = computed(() => memberAuth.token.value)
 
 onMounted(() => {
-  if (!memberToken.value) {
+  if (!token.value) {
     router.replace(`/${slug.value}/login`)
   }
 })

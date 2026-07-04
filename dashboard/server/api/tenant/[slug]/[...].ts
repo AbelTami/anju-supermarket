@@ -12,8 +12,19 @@ export default defineEventHandler(async (event) => {
   if (!slug || !/^[a-z0-9_-]+$/i.test(slug)) {
     throw createError({ statusCode: 400, message: 'Invalid tenant' })
   }
-  // Sanitize rest path: only allow alphanumeric, slash, hyphen, underscore, dot, query params
-  const safeRest = rest ? rest.replace(/[^a-zA-Z0-9/_.?=&%-]/g, '') : ''
+  // Path traversal protection: normalize and reject any path that escapes
+  let safeRest = (rest || '').replace(/\\/g, '/')
+  // Normalize ../ sequences
+  while (safeRest.includes('/./') || safeRest.includes('//') || safeRest.startsWith('./')) {
+    safeRest = safeRest.replace('/./', '/').replace('//', '/')
+    if (safeRest.startsWith('./')) safeRest = safeRest.slice(2)
+  }
+  // Reject path traversal attempts
+  if (safeRest.includes('..')) {
+    throw createError({ statusCode: 403, message: 'Forbidden' })
+  }
+  // Only allow alphanumeric, slash, hyphen, underscore, query params
+  safeRest = safeRest.replace(/[^a-zA-Z0-9/_.?=&-]/g, '')
   const pathSuffix = safeRest ? `${safeRest}/` : ''
 
   const backendUrl = useRuntimeConfig().apiBase
@@ -22,7 +33,7 @@ export default defineEventHandler(async (event) => {
 
   // Handle multipart file uploads
   const contentType = getHeader(event, 'content-type') || ''
-  const isMultipart = contentType.includes('multipart/form-data')
+  const isMultipart = contentType.startsWith('multipart/')
 
   let body: any = null
   if (method !== 'GET') {
@@ -57,8 +68,8 @@ export default defineEventHandler(async (event) => {
     const errBody = err.data || err.message
     throw createError({
       statusCode,
-      statusMessage: typeof errBody === 'string' ? errBody : JSON.stringify(errBody),
-      message: typeof errBody === 'string' ? errBody : JSON.stringify(errBody),
+      statusMessage: '请求处理失败',
+      message: '请求处理失败',
     })
   }
 })

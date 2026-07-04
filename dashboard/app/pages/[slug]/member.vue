@@ -5,14 +5,12 @@ const route = useRoute()
 const router = useRouter()
 const toast = useToast()
 const slug = computed(() => route.params.slug as string)
-const { fetchMemberProfile } = useShopApi()
-
 // Auth check
-const memberToken = useCookie('member-token')
-const token = computed(() => memberToken.value || null)
+const memberAuth = useMemberAuth()
+const token = computed(() => memberAuth.token.value)
 
 onMounted(() => {
-  if (!memberToken.value) {
+  if (!token.value) {
     router.replace(`/${slug.value}/login`)
   }
 })
@@ -26,7 +24,7 @@ async function loadProfile() {
   isLoading.value = true
   errorMessage.value = ''
   try {
-    const data = await fetchMemberProfile(slug.value, token.value)
+    const data = await memberAuth.fetchProfile(slug.value)
     profile.value = data
   } catch (err: any) {
     errorMessage.value = err?.data?.detail || '加载会员信息失败'
@@ -36,7 +34,7 @@ async function loadProfile() {
 }
 
 function handleLogout() {
-  memberToken.value = null
+  memberAuth.logout()
   toast.add({ title: '已退出登录', color: 'info', duration: 2000, ui: { container: 'shop-toast' } })
   router.push(`/${slug.value}`)
 }
@@ -72,6 +70,7 @@ watchEffect(() => {
 </script>
 
 <template>
+  <ClientOnly>
   <div class="py-6 px-4 lg:px-6 max-w-2xl mx-auto shop-animate-in pb-24 lg:pb-6">
     <!-- Header -->
     <div class="flex items-center gap-3 mb-6">
@@ -285,4 +284,5 @@ watchEffect(() => {
       </button>
     </div>
   </div>
+  </ClientOnly>
 </template>

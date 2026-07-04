@@ -26,7 +26,11 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
   loading.value = true
   try {
     const ok = await auth.login(event.data.username, event.data.password)
-    if (ok) await router.push('/admin')
+    if (ok) {
+      await router.push('/admin')
+    } else {
+      errorMsg.value = '账号或密码不正确，请重试'
+    }
   } catch {
     errorMsg.value = '账号或密码不正确，请重试'
   } finally {

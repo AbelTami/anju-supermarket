@@ -2,11 +2,12 @@
 from django.contrib.auth.hashers import make_password
 from rest_framework import serializers
 
+from apps.accounts.models import UserTenant
 from .models import Member
 
 
-class MemberSerializer(serializers.ModelSerializer):
-    phone = serializers.SerializerMethodField()
+class MemberWriteSerializer(serializers.ModelSerializer):
+    """Used for create/update — phone is writable."""
 
     class Meta:
         model = Member
@@ -15,30 +16,6 @@ class MemberSerializer(serializers.ModelSerializer):
         extra_kwargs = {
             'password': {'write_only': True, 'required': False, 'allow_blank': True},
         }
-
-    def get_phone(self, obj):
-        """Return full phone for staff; mask for non-employees."""
-        request = self.context.get('request')
-        # Context override — member viewing own profile
-        if self.context.get('show_full_phone'):
-            return obj.phone
-        # Staff members (authenticated users with a role in this tenant) see full phone
-        if request and request.user.is_authenticated:
-            from apps.accounts.models import UserTenant
-            is_employee = UserTenant.objects.filter(
-                user=request.user, tenant=obj.tenant
-            ).exists()
-            if is_employee:
-                return obj.phone
-        # Mask for everyone else (anonymous, member token, etc.)
-        return self._mask_phone(obj.phone)
-
-    @staticmethod
-    def _mask_phone(phone):
-        """Mask middle digits of a phone number: 138****0001."""
-        if not phone or len(phone) < 7:
-            return phone
-        return phone[:3] + '****' + phone[-4:]
 
     def create(self, validated_data):
         password = validated_data.pop('password', None)
@@ -51,3 +28,27 @@ class MemberSerializer(serializers.ModelSerializer):
         if password:
             validated_data['password'] = make_password(password)
         return super().update(instance, validated_data)
+
+
+class MemberSerializer(MemberWriteSerializer):
+    """Read serializer — masks phone for non-staff."""
+
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        data['phone'] = self._mask_phone_for_context(instance)
+        return data
+
+    def _mask_phone_for_context(self, obj):
+        request = self.context.get('request')
+        if self.context.get('show_full_phone'):
+            return obj.phone
+        if request and request.user and request.user.is_authenticated:
+            if UserTenant.objects.filter(user=request.user, tenant=obj.tenant).exists():
+                return obj.phone
+        return self._mask_phone(obj.phone)
+
+    @staticmethod
+    def _mask_phone(phone):
+        if not phone or len(phone) < 7:
+            return phone
+        return phone[:3] + '****' + phone[-4:]

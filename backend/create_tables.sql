@@ -91,6 +91,7 @@ CREATE TABLE IF NOT EXISTS product (
     name varchar(200) NOT NULL,
     category_id bigint REFERENCES product_category(id) ON DELETE SET NULL,
     image varchar(100),
+    image_url varchar(500) NOT NULL DEFAULT '',
     unit varchar(20) NOT NULL DEFAULT '个',
     is_weighted boolean NOT NULL DEFAULT false,
     is_active boolean NOT NULL DEFAULT true
@@ -111,7 +112,7 @@ CREATE TABLE IF NOT EXISTS product_sku (
     selling_price numeric(10,2) NOT NULL DEFAULT 0,
     stock_quantity numeric(12,3) NOT NULL DEFAULT 0,
     stock_alert numeric(12,3) NOT NULL DEFAULT 0,
-    UNIQUE (barcode)
+    UNIQUE (tenant_id, barcode)
 );
 CREATE INDEX IF NOT EXISTS idx_psku_tenant_created ON product_sku(tenant_id, created_at DESC);
 
@@ -123,6 +124,9 @@ CREATE TABLE IF NOT EXISTS member (
     updated_at timestamptz NOT NULL DEFAULT now(),
     name varchar(100) NOT NULL,
     phone varchar(20) NOT NULL,
+    password varchar(128) NOT NULL DEFAULT '',
+    token varchar(128) NOT NULL DEFAULT '',
+    token_created_at timestamptz NULL,
     card_no varchar(50) NOT NULL DEFAULT '',
     points integer NOT NULL DEFAULT 0,
     balance numeric(10,2) NOT NULL DEFAULT 0,

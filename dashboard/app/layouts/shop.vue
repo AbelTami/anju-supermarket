@@ -9,7 +9,6 @@ const slug = computed(() => route.params.slug as string)
 const searchQuery = ref('')
 const showMobileSearch = ref(false)
 const showMobileMenu = ref(false)
-const showAnnouncement = ref(true)
 const showBackToTop = ref(false)
 const searchSuggestions = ref<string[]>([])
 const showSuggestions = ref(false)
@@ -96,6 +95,8 @@ watch(debouncedSearch, async (val) => {
   }
 })
 
+function hideSuggestions() { showSuggestions.value = false }
+
 function selectSuggestion(text: string) {
   searchQuery.value = text
   showSuggestions.value = false
@@ -108,10 +109,6 @@ const activeCategoryId = computed(() => {
   return q ? Number(q) : undefined
 })
 
-// Announcement
-const announcementText = ''
-const announcementLink = `/${slug.value}`
-
 const storeName = computed(() => slug.value)
 
 // Favorite in layout — just need the toggle composable available
@@ -120,22 +117,6 @@ const { isFavorited } = useFavorite()
 
 <template>
   <div class="min-h-screen flex flex-col bg-gradient-to-b from-(--ui-bg) to-(--ui-bg-muted)/20">
-    <!-- Announcement bar -->
-    <div
-      v-if="showAnnouncement && announcementText"
-      class="shop-announcement relative z-50"
-    >
-      <NuxtLink :to="announcementLink" class="flex items-center justify-center h-8 px-4 gap-1.5 cursor-pointer hover:opacity-90 transition">
-        <span class="truncate">{{ announcementText }}</span>
-      </NuxtLink>
-      <button
-        class="absolute right-2 top-1/2 -translate-y-1/2 size-5 flex items-center justify-center rounded-full hover:bg-white/10 transition text-white/60 hover:text-white"
-        @click="showAnnouncement = false"
-      >
-        <UIcon name="i-lucide-x" class="size-3" />
-      </button>
-    </div>
-
     <!-- Header with glass effect -->
     <header class="shop-header sticky z-40 text-white shadow-lg">
       <div class="flex items-center justify-between h-14 px-4 lg:px-6 max-w-7xl mx-auto w-full">
@@ -185,7 +166,7 @@ const { isFavorited } = useFavorite()
                 class="h-9 w-48 lg:w-56 rounded-lg bg-white/15 border border-white/10 pl-9 pr-3 text-sm text-white placeholder:text-white/40 outline-none focus:bg-white/20 focus:border-white/30 transition"
                 @keyup.enter="handleSearch"
                 @focus="debouncedSearch.length > 0 && (showSuggestions = true)"
-                @blur="setTimeout(() => showSuggestions = false, 200)"
+                @blur="setTimeout(hideSuggestions, 200)"
               />
             </div>
             <!-- Search suggestions dropdown -->

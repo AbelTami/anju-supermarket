@@ -4,6 +4,7 @@ import type { DropdownMenuItem } from '@nuxt/ui'
 import type { Period, Range } from '~/types'
 
 const { isNotificationsSlideoverOpen } = useDashboard()
+const { unreadCount } = useRealtimeOrders()
 
 const items = [[{
   label: '新增商品',
@@ -38,9 +39,10 @@ const period = ref<Period>('daily')
               square
               @click="isNotificationsSlideoverOpen = true"
             >
-              <UChip color="error" inset>
+              <UChip v-if="unreadCount > 0" color="error" inset>
                 <UIcon name="i-lucide-bell" class="size-5 shrink-0" />
               </UChip>
+              <UIcon v-else name="i-lucide-bell" class="size-5 shrink-0" />
             </UButton>
           </UTooltip>
 

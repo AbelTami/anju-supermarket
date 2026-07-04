@@ -1,6 +1,9 @@
 """DRF permissions for multi-tenant API."""
 from rest_framework import permissions
 
+from apps.accounts.models import UserTenant
+from common.token_utils import get_member_from_request
+
 
 class IsTenantUser(permissions.BasePermission):
     """Require request to have a resolved tenant."""
@@ -37,16 +40,7 @@ class HasMemberToken(permissions.BasePermission):
     def has_permission(self, request, view):
         if not request.tenant:
             return False
-        from apps.members.models import Member
-        auth = request.headers.get('Authorization', '')
-        if not auth.startswith('Token '):
-            return False
-        token = auth[6:]
-        try:
-            Member.objects.get(token=token, tenant=request.tenant)
-            return True
-        except Member.DoesNotExist:
-            return False
+        return get_member_from_request(request) is not None
 
 
 class IsSuperAdminOrManager(permissions.BasePermission):
@@ -57,7 +51,6 @@ class IsSuperAdminOrManager(permissions.BasePermission):
             return False
         if not request.tenant:
             return False
-        from apps.accounts.models import UserTenant
         role = (
             UserTenant.objects
             .filter(user=request.user, tenant=request.tenant)

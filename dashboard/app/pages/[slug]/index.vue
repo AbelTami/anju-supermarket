@@ -41,7 +41,7 @@ const { data: productsData, status } = useAsyncData(
     page: currentPage.value,
     page_size: pageSize,
   }),
-  { watch: [activeCategory, searchQuery, currentPage] }
+  { watch: [activeCategory, searchQuery, sortBy, currentPage] }
 )
 
 const allProducts = computed<ProductInfo[]>(() => {
@@ -366,17 +366,19 @@ const sortOptions = [
             class="shop-card group block shop-stagger-enter relative"
             :style="{ animation: `fade-in-up 0.3s ease-out ${idx * 40}ms both` }"
           >
-            <!-- Favorite button -->
-            <button
-              class="absolute top-2 right-2 z-20 size-8 flex items-center justify-center rounded-full bg-white/70 dark:bg-zinc-800/70 backdrop-blur shadow-sm hover:scale-110 transition"
-              @click="toggleFav(product, $event)"
-            >
-              <UIcon
-                :name="isFavorited(product.id) ? 'i-lucide-heart' : 'i-lucide-heart-off'"
-                class="size-4"
-                :class="isFavorited(product.id) ? 'text-rose-500' : 'text-(--ui-text-muted)'"
-              />
-            </button>
+            <!-- Favorite button — ClientOnly to avoid SSR hydration mismatch -->
+            <ClientOnly>
+              <button
+                class="absolute top-2 right-2 z-20 size-8 flex items-center justify-center rounded-full bg-white/70 dark:bg-zinc-800/70 backdrop-blur shadow-sm hover:scale-110 transition"
+                @click="toggleFav(product, $event)"
+              >
+                <UIcon
+                  :name="isFavorited(product.id) ? 'i-lucide-heart' : 'i-lucide-heart-off'"
+                  class="size-4"
+                  :class="isFavorited(product.id) ? 'text-rose-500' : 'text-(--ui-text-muted)'"
+                />
+              </button>
+            </ClientOnly>
 
             <!-- Image container -->
             <div

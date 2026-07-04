@@ -10,7 +10,7 @@ const tenantSlug = computed(() => (auth.currentTenant.value as any)?.slug || '')
 
 const type = ref('purchase_in')
 const skuId = ref<number | null>(null)
-const quantity = ref(0)
+const quantity = ref<number | null>(null)
 const remark = ref('')
 
 // Search products to find SKU
@@ -18,7 +18,7 @@ const searchQuery = ref('')
 const searchUrl = computed(() =>
   searchQuery.value
     ? `/api/tenant/${tenantSlug.value}/products?search=${encodeURIComponent(searchQuery.value)}`
-    : null
+    : undefined
 )
 const { data: searchData } = useFetch(searchUrl, { lazy: true, watch: [searchUrl], debounce: 300 })
 
@@ -42,7 +42,14 @@ const typeOptions = [
 ]
 
 async function submit() {
-  if (!skuId.value || quantity.value <= 0) return
+  if (!skuId.value) {
+    toast.add({ title: '请先选择商品SKU', color: 'warning' })
+    return
+  }
+  if (!quantity.value || quantity.value <= 0) {
+    toast.add({ title: '请输入有效数量', color: 'warning' })
+    return
+  }
   try {
     await $fetch(`/api/tenant/${tenantSlug.value}/inventory-records/`, {
       method: 'POST',
@@ -51,9 +58,9 @@ async function submit() {
     toast.add({ title: '库存操作成功', color: 'success' })
     open.value = false
     emit('created')
-    skuId.value = null; quantity.value = 0; remark.value = ''; searchQuery.value = ''
+    skuId.value = null; quantity.value = null; remark.value = ''; searchQuery.value = ''
   } catch (e: any) {
-    toast.add({ title: '操作失败', description: e?.message, color: 'error' })
+    toast.add({ title: '操作失败', description: e?.data?.detail || e?.message || '请重试', color: 'error' })
   }
 }
 </script>
@@ -73,11 +80,12 @@ async function submit() {
         </UFormField>
 
         <UFormField v-if="skuOptions.length" label="选择SKU">
-          <USelect v-model="skuId" :items="skuOptions" placeholder="选择规格" />
+          <USelect v-model="skuId" :items="skuOptions" placeholder="请选择具体规格" />
         </UFormField>
+        <p v-else-if="searchQuery && searchData" class="text-xs text-dimmed">未找到匹配商品</p>
 
         <UFormField label="数量">
-          <UInput v-model.number="quantity" type="number" placeholder="变动数量" />
+          <UInput v-model.number="quantity" type="number" placeholder="变动数量（正数）" />
         </UFormField>
 
         <UFormField label="备注">

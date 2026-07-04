@@ -112,6 +112,7 @@ const items = computed<DropdownMenuItem[][]>(() => ([[{
 </script>
 
 <template>
+  <ClientOnly>
   <UDropdownMenu
     :key="(auth.user.value as any)?.id"
     :items="items"
@@ -144,4 +145,5 @@ const items = computed<DropdownMenuItem[][]>(() => ([[{
       </div>
     </template>
   </UDropdownMenu>
+  </ClientOnly>
 </template>

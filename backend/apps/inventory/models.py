@@ -42,3 +42,19 @@ class StockCheck(TenantAwareModel):
     class Meta:
         db_table = 'stock_check'
         verbose_name = '盘点单'
+
+
+class StockCheckItem(TenantAwareModel):
+    """盘点单明细行 — 每行对应一个 SKU 的实际清点结果."""
+
+    stock_check = models.ForeignKey(StockCheck, on_delete=models.CASCADE, related_name='items', verbose_name='盘点单')
+    sku = models.ForeignKey('products.ProductSKU', on_delete=models.PROTECT, verbose_name='商品SKU')
+    system_quantity = models.DecimalField(max_digits=12, decimal_places=3, default=0, verbose_name='系统库存')
+    actual_quantity = models.DecimalField(max_digits=12, decimal_places=3, verbose_name='实盘数量')
+    diff_quantity = models.DecimalField(max_digits=12, decimal_places=3, default=0, verbose_name='差异')
+    remark = models.CharField(max_length=200, blank=True, default='', verbose_name='备注')
+
+    class Meta:
+        db_table = 'stock_check_item'
+        verbose_name = '盘点明细'
+        unique_together = [['stock_check', 'sku']]

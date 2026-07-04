@@ -139,6 +139,8 @@ function originalPrice(): string | null {
 function discountPercent(): number { return product.value?.discount ? Number(product.value.discount) : 0 }
 function productUnit(): string { return product.value?.unit || '' }
 
+function sanitize(html: string) { return html?.replace(/<[^>]*>/g, '') || '' }
+
 function renderStars(rating: number): string[] {
   const stars: string[] = []
   for (let i = 1; i <= 5; i++) {
@@ -178,15 +180,17 @@ const isOutOfStock = computed(() => {
 // Mobile bottom bar visibility
 const showMobileBar = ref(true)
 let lastScrollY = 0
+function onScroll() {
+  const currentY = window.scrollY
+  showMobileBar.value = currentY < lastScrollY || currentY < 100
+  lastScrollY = currentY
+}
 onMounted(() => {
   if (typeof window !== 'undefined') {
-    window.addEventListener('scroll', () => {
-      const currentY = window.scrollY
-      showMobileBar.value = currentY < lastScrollY || currentY < 100
-      lastScrollY = currentY
-    }, { passive: true })
+    window.addEventListener('scroll', onScroll, { passive: true })
   }
 })
+onUnmounted(() => window.removeEventListener('scroll', onScroll))
 </script>
 
 <template>
@@ -428,7 +432,7 @@ onMounted(() => {
             <UIcon name="i-lucide-file-text" class="size-4 text-(--ui-primary)" />
             <p class="text-sm font-medium text-(--ui-text)">商品详情</p>
           </div>
-          <div class="text-sm text-(--ui-text-muted) leading-relaxed prose prose-sm max-w-none" v-html="product.description" />
+          <div class="text-sm text-(--ui-text-muted) leading-relaxed prose prose-sm max-w-none" v-html="sanitize(product.description)" />
         </div>
 
         <!-- Product attributes -->

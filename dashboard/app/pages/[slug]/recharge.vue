@@ -6,8 +6,8 @@ const router = useRouter()
 const toast = useToast()
 const slug = computed(() => route.params.slug as string)
 
-const memberToken = useCookie('member-token')
-const token = computed(() => memberToken.value || null)
+const memberAuth = useMemberAuth()
+const token = computed(() => memberAuth.token.value)
 
 const profile = ref<any>(null)
 const isLoading = ref(false)
@@ -28,8 +28,7 @@ const totalAmount = computed(() => effectiveAmount.value + bonusAmount.value)
 async function loadProfile() {
   if (!token.value) return
   try {
-    const { fetchMemberProfile } = useShopApi()
-    profile.value = await fetchMemberProfile(slug.value, token.value)
+    profile.value = await memberAuth.fetchProfile(slug.value)
   } catch { /* ignore */ }
 }
 
@@ -56,6 +55,7 @@ function handleRecharge() {
     return
   }
 
+  isLoading.value = true
   $fetch(`/api/shop/${slug.value}/members/recharge/`, {
     method: 'POST',
     headers: { Authorization: `Token ${token.value}` },
@@ -83,6 +83,7 @@ function handleRecharge() {
         ui: { container: 'shop-toast' },
       })
     })
+    .finally(() => { isLoading.value = false })
 }
 </script>
 
@@ -145,9 +146,8 @@ function handleRecharge() {
           <span class="absolute left-3 top-1/2 -translate-y-1/2 text-sm font-bold text-(--ui-text-muted)">¥</span>
           <input
             v-model="customAmount"
-            type="number"
-            min="1"
-            step="1"
+            type="text"
+            inputmode="numeric"
             placeholder="输入金额"
             class="w-full h-11 pl-7 pr-3 rounded-xl border border-(--ui-primary) bg-(--ui-bg) text-lg font-bold text-(--ui-text) tabular-nums outline-none"
             @input="customAmount = customAmount.replace(/\D/g, '')"

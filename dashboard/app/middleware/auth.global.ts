@@ -7,10 +7,16 @@ export default defineNuxtRouteMiddleware(async (to) => {
   if (to.path.startsWith('/admin/auth/')) return
 
   const auth = useAuth()
+  // Skip profile fetch if already authenticated (e.g. just logged in)
+  if (auth.user.value) return
   try {
     await auth.fetchProfile()
     if (!auth.user.value) throw new Error('Not authenticated')
-  } catch {
-    return navigateTo('/admin/auth/login')
+  } catch (err: any) {
+    // Only redirect to login on auth errors (401/403), not on network errors
+    if (err?.statusCode === 401 || err?.statusCode === 403 || err?.response?.status === 401 || err?.response?.status === 403) {
+      return navigateTo('/admin/auth/login')
+    }
+    return
   }
 })

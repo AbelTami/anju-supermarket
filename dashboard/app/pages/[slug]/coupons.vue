@@ -8,9 +8,8 @@ const router = useRouter()
 const toast = useToast()
 const slug = computed(() => route.params.slug as string)
 
-const memberToken = useCookie('member-token')
-const token = computed(() => memberToken.value || null)
-const profile = ref<any>(null)
+const memberAuth = useMemberAuth()
+const token = computed(() => memberAuth.token.value)
 
 // Coupon data from API
 const availableCoupons = ref<CouponInfo[]>([])
@@ -35,16 +34,7 @@ async function loadCoupons() {
   finally { isLoading.value = false }
 }
 
-async function loadProfile() {
-  if (!token.value) return
-  try {
-    const { fetchMemberProfile } = useShopApi()
-    profile.value = await fetchMemberProfile(slug.value, token.value)
-  } catch { /* ignore */ }
-}
-
 onMounted(() => {
-  loadProfile()
   loadCoupons()
 })
 

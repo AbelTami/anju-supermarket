@@ -2,6 +2,7 @@
 import secrets
 
 from common.permissions import IsTenantUser
+from common.token_utils import hash_token, get_member_from_request
 from django.utils import timezone
 from rest_framework import status
 from rest_framework.response import Response
@@ -29,13 +30,13 @@ class MemberLoginView(APIView):
         serializer.is_valid(raise_exception=True)
 
         member = serializer.validated_data['member']
-        token = secrets.token_hex(32)
-        member.token = token
+        raw_token = secrets.token_hex(32)
+        member.token = hash_token(raw_token)
         member.token_created_at = timezone.now()
         member.save(update_fields=['token', 'token_created_at'])
 
         return Response({
-            'token': token,
+            'token': raw_token,
             'member': serializer.data,
         }, status=status.HTTP_200_OK)
 
@@ -47,16 +48,9 @@ class MemberProfileView(APIView):
     authentication_classes = []
 
     def get(self, request, *args, **kwargs):
-        auth_header = request.headers.get('Authorization', '')
-        if not auth_header.startswith('Token '):
-            return Response({'error': '未提供认证令牌'}, status=status.HTTP_401_UNAUTHORIZED)
-
-        token = auth_header[6:]
-
-        try:
-            member = Member.objects.get(token=token, tenant=request.tenant)
-        except Member.DoesNotExist:
-            return Response({'error': '令牌无效或已过期'}, status=status.HTTP_401_UNAUTHORIZED)
+        member = get_member_from_request(request)
+        if not member:
+            return Response({'error': '未提供认证令牌或令牌无效'}, status=status.HTTP_401_UNAUTHORIZED)
 
         if not member.is_token_valid():
             return Response({'error': '令牌已过期，请重新登录'}, status=status.HTTP_401_UNAUTHORIZED)

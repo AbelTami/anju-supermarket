@@ -3,11 +3,12 @@ import type { NavigationMenuItem } from '@nuxt/ui'
 
 const route = useRoute()
 const toast = useToast()
+const { unreadCount } = useRealtimeOrders()
 
 const open = ref(false)
 
 // 安居超市管理系统导航
-const links = [[{
+const links = computed(() => [[{
   label: '首页仪表盘',
   icon: 'i-lucide-house',
   to: '/admin',
@@ -52,7 +53,7 @@ const links = [[{
   label: '订单记录',
   icon: 'i-lucide-bell',
   to: '/admin/inbox',
-  badge: '0',
+  badge: String(unreadCount.value),
   onSelect: () => { open.value = false }
 }], [{
   label: '系统设置',
@@ -78,12 +79,12 @@ const links = [[{
     to: '/admin/settings/security',
     onSelect: () => { open.value = false }
   }]
-}]] satisfies NavigationMenuItem[][]
+}]]) as NavigationMenuItem[][]
 
 const groups = computed(() => [{
   id: 'links',
   label: '页面导航',
-  items: links.flat()
+  items: links.value.flat()
 }])
 
 onMounted(async () => {
@@ -106,7 +107,10 @@ onMounted(async () => {
     }, {
       label: 'Opt out',
       color: 'neutral',
-      variant: 'ghost'
+      variant: 'ghost',
+      onClick: () => {
+        cookie.value = 'opted-out'
+      }
     }]
   })
 })

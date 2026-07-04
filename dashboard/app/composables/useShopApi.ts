@@ -3,13 +3,10 @@
  */
 import type { PaginatedResponse, ProductInfo, CategoryInfo, OrderInfo, OrderData, OrderItemData } from '~/types'
 
-export function getDjangoBase() {
-  return ''
-}
-
 /** Base URL for media files served by Django (images still load directly from Django, not BFF). */
 export function getMediaBase() {
-  return 'http://localhost:8000'
+  const config = useRuntimeConfig()
+  return config.public.apiBase || 'http://localhost:8000'
 }
 
 /**

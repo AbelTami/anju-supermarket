@@ -1,24 +1,20 @@
 """POS views."""
 from common.permissions import HasMemberToken, IsTenantUser
+from common.token_utils import get_member_from_request
+from django.db import transaction
 from rest_framework import viewsets
+from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.filters import OrderingFilter
 from rest_framework.permissions import IsAuthenticated
 
+from apps.members.models import Member as MemberModel
 from .models import Order
 from .serializers import OrderCreateSerializer, OrderDetailSerializer, OrderListSerializer
 
 
 def _get_member_from_token(request):
     """Extract member from Authorization: Token header, or return None."""
-    from apps.members.models import Member
-    auth = request.headers.get('Authorization', '')
-    if auth.startswith('Token '):
-        token = auth[6:]
-        try:
-            return Member.objects.get(token=token, tenant=request.tenant)
-        except Member.DoesNotExist:
-            pass
-    return None
+    return get_member_from_request(request)
 
 
 class OrderViewSet(viewsets.ModelViewSet):
@@ -27,9 +23,10 @@ class OrderViewSet(viewsets.ModelViewSet):
 
     def get_permissions(self):
         if self.action == 'create':
-            return [IsTenantUser(), (HasMemberToken | IsAuthenticated)()]
+            # Allow both admin JWT and member token (member self-checkout)
+            return [IsTenantUser(), (IsAuthenticated | HasMemberToken)()]
         if self.action == 'list':
-            return [IsTenantUser()]
+            return [IsTenantUser(), (IsAuthenticated | HasMemberToken)()]
         return [IsAuthenticated(), IsTenantUser()]
 
     def get_queryset(self):
@@ -47,17 +44,22 @@ class OrderViewSet(viewsets.ModelViewSet):
             return OrderListSerializer
         return OrderDetailSerializer
 
+    @transaction.atomic
     def perform_create(self, serializer):
-        from apps.accounts.models import User
-        from rest_framework.exceptions import AuthenticationFailed
-        fallback_user = User.objects.filter(is_superuser=True).first()
-
         # Validate member token if provided — reject invalid tokens
         auth = self.request.headers.get('Authorization', '')
         member = None
+        cashier = self.request.user if self.request.user.is_authenticated else None
         if auth.startswith('Token '):
             member = _get_member_from_token(self.request)
             if not member:
                 raise AuthenticationFailed('无效的会员令牌')
 
-        serializer.save(cashier=fallback_user, tenant=self.request.tenant, member=member)
+        order = serializer.save(cashier=cashier, tenant=self.request.tenant, member=member)
+
+        # ponytail: award points and update total_spent for non-member_card payments
+        if member and order.payment_method != 'member_card':
+            member_model = MemberModel.objects.select_for_update().get(pk=member.pk)
+            member_model.total_spent += order.paid_amount
+            member_model.points += int(round(order.paid_amount))
+            member_model.save(update_fields=['total_spent', 'points'])

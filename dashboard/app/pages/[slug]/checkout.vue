@@ -61,15 +61,14 @@ const paymentMethods = ref([
 ])
 
 // Member balance info (if logged in)
-const memberToken = useCookie('member-token')
+const memberAuth = useMemberAuth()
 const memberBalance = ref(0)
 const useBalanceMixed = ref(false)
 
 onMounted(async () => {
-  if (memberToken.value) {
+  if (memberAuth.token.value) {
     try {
-      const { fetchMemberProfile } = useShopApi()
-      const profile = await fetchMemberProfile(slug.value, memberToken.value)
+      const profile = await memberAuth.fetchProfile(slug.value)
       memberBalance.value = Number(profile.balance) || 0
     } catch { /* guest checkout — ignore */ }
   }
@@ -87,8 +86,6 @@ const finalPaymentMethod = computed(() =>
     ? `${paymentMethod.value}_after_balance`
     : paymentMethod.value,
 )
-
-// Coupon (mock)
 
 // Coupon (mock)
 const availableCoupons = ref([
@@ -141,7 +138,7 @@ async function handlePlaceOrder() {
       items
     }
 
-    const token = memberToken.value || undefined
+    const token = memberAuth.token.value || undefined
     await placeOrder(slug.value, orderData, token)
 
     // Deduct balance (full or partial)
@@ -517,7 +514,7 @@ async function handlePlaceOrder() {
             size="lg"
             class="h-12 rounded-xl text-sm font-bold px-6 shrink-0"
             :loading="isSubmitting"
-            :disabled="selectedItems.length === 0"
+            :disabled="selectedItems.length === 0 || isSubmitting"
             @click="handlePlaceOrder"
           >
             <template v-if="isSubmitting">

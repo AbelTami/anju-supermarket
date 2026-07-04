@@ -23,10 +23,20 @@ async function loadFavorites() {
   }
   isLoading.value = true
   try {
-    // Fetch all products (page_size=100) and filter by fav IDs
-    const data = await fetchProducts(slug.value, { page_size: 100 })
-    const all = Array.isArray(data) ? data : (data as PaginatedResponse<ProductInfo>)?.results || []
-    products.value = all.filter(p => favoriteIds.value.includes(p.id))
+    // Loop pages to collect all products to avoid page_size truncation
+    const allProducts: ProductInfo[] = []
+    let page = 1
+    const pageSize = 100
+    let safety = 0
+    while (safety < 20) {
+      safety++
+      const data = await fetchProducts(slug.value, { page_size: pageSize, page })
+      const results = Array.isArray(data) ? data : (data as PaginatedResponse<ProductInfo>)?.results || []
+      allProducts.push(...results)
+      if (results.length < pageSize) break
+      page++
+    }
+    products.value = allProducts.filter(p => favoriteIds.value.includes(p.id))
   } catch {
     toast.add({ title: '加载收藏失败', color: 'error', duration: 2000, ui: { container: 'shop-toast' } })
   } finally {
@@ -34,10 +44,10 @@ async function loadFavorites() {
   }
 }
 
-// Watch for favorite changes — re-filter
+// Watch for favorite changes — re-filter immediately
 watch(favoriteIds, () => {
   products.value = products.value.filter(p => favoriteIds.value.includes(p.id))
-})
+}, { deep: true })
 
 onMounted(() => loadFavorites())
 
@@ -77,7 +87,7 @@ function renderStars(rating: number): string[] {
       <div>
         <h1 class="text-2xl font-bold text-(--ui-text) tracking-tight">我的收藏</h1>
         <p class="text-xs text-(--ui-text-muted) mt-0.5">
-          共 <span class="font-medium">{{ count }}</span> 件收藏商品
+          共 <ClientOnly><span class="font-medium">{{ count }}</span><template #fallback><span class="font-medium">0</span></template></ClientOnly> 件收藏商品
         </p>
       </div>
     </div>

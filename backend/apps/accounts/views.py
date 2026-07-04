@@ -1,4 +1,6 @@
 """Auth views — login, register, token refresh."""
+from django.contrib.auth.password_validation import validate_password
+from django.core.exceptions import ValidationError
 from rest_framework import status
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
@@ -83,8 +85,11 @@ class ChangePasswordView(APIView):
 
         if not request.user.check_password(current):
             return Response({'error': '当前密码不正确'}, status=status.HTTP_400_BAD_REQUEST)
-        if len(new) < 6:
-            return Response({'error': '新密码至少6位'}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            validate_password(new, user=request.user)
+        except ValidationError as e:
+            return Response({'error': '; '.join(e.messages)}, status=status.HTTP_400_BAD_REQUEST)
 
         request.user.set_password(new)
         request.user.save()

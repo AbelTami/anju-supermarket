@@ -1,5 +1,5 @@
 /** Product wishlist — persisted in localStorage via useLocalStorage */
-import type { ProductInfo } from '~/types'
+import type { ProductInfo } from '~~/app/types'
 
 const FAVORITE_STORAGE_KEY = 'shop-favorites'
 
@@ -11,29 +11,30 @@ export function useFavorite() {
   }
 
   function toggle(productId: number) {
-    const idx = favoriteIds.value.indexOf(productId)
-    if (idx >= 0) {
-      favoriteIds.value.splice(idx, 1)
+    // ponytail: replace entire array to trigger reactivity for watchers
+    if (favoriteIds.value.includes(productId)) {
+      favoriteIds.value = favoriteIds.value.filter(id => id !== productId)
     } else {
-      // Limit to prevent localStorage bloat
       if (favoriteIds.value.length >= 200) {
-        favoriteIds.value.shift()
+        favoriteIds.value = [...favoriteIds.value.slice(1), productId]
+      } else {
+        favoriteIds.value = [...favoriteIds.value, productId]
       }
-      favoriteIds.value.push(productId)
     }
   }
 
   function add(productId: number) {
     if (!favoriteIds.value.includes(productId)) {
-      favoriteIds.value.push(productId)
+      if (favoriteIds.value.length >= 200) {
+        favoriteIds.value = [...favoriteIds.value.slice(1), productId]
+      } else {
+        favoriteIds.value = [...favoriteIds.value, productId]
+      }
     }
   }
 
   function remove(productId: number) {
-    const idx = favoriteIds.value.indexOf(productId)
-    if (idx >= 0) {
-      favoriteIds.value.splice(idx, 1)
-    }
+    favoriteIds.value = favoriteIds.value.filter(id => id !== productId)
   }
 
   function clear() {

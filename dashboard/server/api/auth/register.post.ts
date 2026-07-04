@@ -12,6 +12,7 @@ export default defineEventHandler(async (event) => {
     method: 'POST',
     body,
     headers: { 'Content-Type': 'application/json' },
+    ignoreResponseError: true,
   })
 
   setCookie(event, 'access_token', resp.access, {
@@ -29,5 +30,5 @@ export default defineEventHandler(async (event) => {
     maxAge: 60 * 60 * 24 * 7,
   })
 
-  return resp
+  return { user: resp.user, tenant: resp.tenant }
 })

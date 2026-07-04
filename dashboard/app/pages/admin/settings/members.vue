@@ -16,6 +16,48 @@ const filtered = computed(() => {
     !q.value || (e.name || e.username).includes(q.value)
   )
 })
+
+const editOpen = ref(false)
+const editTarget = ref<any>(null)
+const editRole = ref('')
+
+function openEditModal(emp: any) {
+  editTarget.value = emp
+  editRole.value = emp.role || 'cashier'
+  editOpen.value = true
+}
+
+async function updateRole() {
+  if (!editTarget.value) return
+  try {
+    await $fetch(`/api/tenant/${tenantSlug.value}/employees/${editTarget.value.id}/`, {
+      method: 'PATCH',
+      body: { role: editRole.value },
+    })
+    toast.add({ title: '角色更新成功', color: 'success' })
+    editOpen.value = false
+    refresh()
+  } catch (e: any) {
+    toast.add({ title: '更新失败', color: 'error' })
+  }
+}
+
+async function toggleEmployee(emp: any) {
+  if (emp.id === auth.user.value?.id) {
+    toast.add({ title: '不能停用自己的账号', color: 'warning' })
+    return
+  }
+  try {
+    await $fetch(`/api/tenant/${tenantSlug.value}/employees/${emp.id}/`, {
+      method: 'PATCH',
+      body: { is_active: !emp.is_active },
+    })
+    toast.add({ title: emp.is_active ? '已停用' : '已启用', color: 'success' })
+    refresh()
+  } catch (e: any) {
+    toast.add({ title: '操作失败', color: 'error' })
+  }
+}
 </script>
 
 <template>
@@ -40,10 +82,35 @@ const filtered = computed(() => {
             <UBadge :color="emp.is_active ? 'success' : 'neutral'" variant="subtle">
               {{ emp.is_active ? '在职' : '离职' }}
             </UBadge>
-            <UButton icon="i-lucide-ellipsis-vertical" size="xs" color="neutral" variant="ghost" />
+            <UDropdownMenu :items="[
+              [{ label: '编辑角色', icon: 'i-lucide-pencil', onSelect: () => openEditModal(emp) }],
+              [{ label: emp.is_active ? '停用账号' : '启用账号', icon: emp.is_active ? 'i-lucide-user-x' : 'i-lucide-user-check', onSelect: () => toggleEmployee(emp) }],
+            ]">
+              <UButton icon="i-lucide-ellipsis-vertical" size="xs" color="neutral" variant="ghost" />
+            </UDropdownMenu>
           </div>
         </div>
       </div>
     </UPageCard>
+
+    <!-- Edit role modal -->
+    <UModal v-model:open="editOpen" title="编辑员工角色">
+      <template #body>
+        <div v-if="editTarget" class="space-y-4">
+          <p class="text-sm text-dimmed">{{ editTarget.name || editTarget.username }}</p>
+          <USelect v-model="editRole" :items="[
+            { label: '超级管理员', value: 'super_admin' },
+            { label: '店长', value: 'manager' },
+            { label: '收银员', value: 'cashier' },
+            { label: '库管', value: 'warehouse' },
+            { label: '财务', value: 'accountant' },
+          ]" />
+          <div class="flex justify-end gap-2">
+            <UButton label="取消" color="neutral" variant="subtle" @click="editOpen = false" />
+            <UButton label="保存" color="primary" @click="updateRole" />
+          </div>
+        </div>
+      </template>
+    </UModal>
   </div>
 </template>

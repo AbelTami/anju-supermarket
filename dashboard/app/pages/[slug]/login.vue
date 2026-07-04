@@ -7,7 +7,7 @@ const toast = useToast()
 const slug = computed(() => route.params.slug as string)
 const { memberLogin } = useShopApi()
 
-const memberToken = useCookie('member-token', { maxAge: 60 * 60 * 24 * 7, sameSite: 'lax', secure: false })
+const memberAuth = useMemberAuth()
 
 const phone = ref('')
 const password = ref('')
@@ -31,7 +31,7 @@ async function handleLogin() {
     const result = await memberLogin(slug.value, phone.value.trim(), password.value)
     const token = result.token || result.key
     if (token) {
-      memberToken.value = token
+      memberAuth.login(token)
       toast.add({ title: '登录成功', color: 'success', duration: 2000, ui: { container: 'shop-toast' } })
       router.push(`/${slug.value}`)
     } else {

@@ -7,7 +7,7 @@ const auth = useAuth()
 const tenantSlug = computed(() => (auth.currentTenant.value as any)?.slug || '')
 const ordersUrl = computed(() => `/api/tenant/${tenantSlug.value}/orders?ordering=-paid_at&page_size=30`)
 
-const { data: ordersData } = useFetch(ordersUrl, { lazy: true, watch: [tenantSlug] })
+const { data: ordersData, refresh } = useFetch(ordersUrl, { lazy: true, server: false, immediate: true, watch: [tenantSlug] })
 
 const items = computed(() => {
   const orders = (ordersData.value as any)?.results || []
