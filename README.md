@@ -24,8 +24,8 @@ anju-supermarket/
 │   │   │   ├── [slug]/     # 顾客前台 (门店)
 │   │   │   │   ├── index.vue           # 商品列表
 │   │   │   │   ├── product/[id].vue    # 商品详情
-│   │   │   │   ├── cart.vue            # 购物车
-│   │   │   │   ├── checkout.vue        # 结算
+│   │   │   │   ├── cart.vue            # 购物车 (全选联动+划线原价+库存预警+左滑删除+为你推荐)
+│   │   │   │   ├── checkout.vue        # 结算 (余额抵扣+优惠券+下单确认+打印小票)
 │   │   │   │   ├── orders.vue          # 我的订单
 │   │   │   │   ├── member.vue          # 会员中心
 │   │   │   │   ├── login.vue           # 顾客登录
@@ -35,7 +35,7 @@ anju-supermarket/
 │   │   │   │   └── recharge.vue        # 充值中心
 │   │   │   └── admin/      # 管理后台
 │   │   │       ├── index.vue           # 仪表盘 (实时订单推送)
-│   │   │       ├── pos.vue             # 收银台
+│   │   │       ├── pos.vue             # 收银台 (结算+打印小票)
 │   │   │       ├── products.vue        # 商品管理
 │   │   │       ├── inventory.vue       # 库存管理 (低库存预警)
 │   │   │       ├── customers.vue       # 会员管理
@@ -44,16 +44,36 @@ anju-supermarket/
 │   │   │       ├── finance.vue         # 财务/报表
 │   │   │       ├── inbox.vue           # 消息通知
 │   │   │       └── settings/           # 系统设置
-│   │   ├── components/     # Vue 组件 (通知面板、图表等)
-│   │   ├── composables/    # useAuth, useMemberAuth, useRealtimeOrders 等
-│   │   └── layouts/        # dashboard.vue, shop.vue, auth.vue
+│   │   │           ├── index.vue       # 超市信息+运营广播
+│   │   │           ├── members.vue     # 员工账号
+│   │   │           ├── roles.vue       # 角色权限 (权限矩阵+成员分配)
+│   │   │           ├── printer.vue     # 打印模板 (纸张格式+页眉页脚+条码开关)
+│   │   │           └── coupons.vue     # 优惠券管理
+│   │   ├── components/
+│   │   │   ├── role/                   # 角色管理组件 (RoleCard/RoleMatrix/RoleMembers)
+│   │   │   ├── BroadcastBanner.vue     # 运营广播横幅
+│   │   │   ├── NotificationsSlideover.vue  # 实时订单侧边栏
+│   │   │   └── UserMenu.vue            # 用户菜单 (修改密码Modal)
+│   │   ├── composables/
+│   │   │   ├── useAuth.ts              # 管理端认证
+│   │   │   ├── useRoles.ts             # 角色权限状态管理
+│   │   │   ├── useShopCart.ts          # 购物车 (不可变更新)
+│   │   │   ├── useReceiptPrint.ts      # 小票打印 (HTML生成+浏览器打印)
+│   │   │   ├── useRealtimeOrders.ts    # SSE实时订单
+│   │   │   ├── useMemberAuth.ts        # 会员认证
+│   │   │   ├── useCurrentTenant.ts     # 当前租户上下文
+│   │   │   └── usePermissions.ts       # 权限检查
+│   │   └── layouts/
+│   │       ├── dashboard.vue           # 管理后台布局
+│   │       ├── shop.vue                # 顾客前台布局
+│   │       └── auth.vue                # 登录/注册布局
 │   └── server/api/
 │       ├── auth/           # 管理端 BFF 代理 (JWT Cookie)
 │       ├── tenant/         # 管理端租户 API 代理
 │       └── shop/           # 顾客端 BFF 代理 (Token 透传)
 ├── backend/                # Django 后端
 │   ├── apps/
-│   │   ├── tenants/        # 租户管理
+│   │   ├── tenants/        # 租户管理 (超市信息+广播+打印模板)
 │   │   ├── accounts/       # 用户与认证 (密码强度校验)
 │   │   ├── products/       # 商品管理 (SPU+SKU + 条码查询)
 │   │   ├── inventory/      # 库存管理 + 盘点 (StockCheck)
@@ -61,11 +81,13 @@ anju-supermarket/
 │   │   ├── members/        # 会员管理 (含顾客登录/充值/扣减)
 │   │   ├── suppliers/      # 供应商管理
 │   │   ├── employees/      # 员工管理 (角色 + 超管保护)
+│   │   ├── coupons/        # 优惠券 (品类限制+首单+校验链)
 │   │   └── finance/        # 财务/报表
 │   ├── common/             # 多租户中间件、权限、Token 工具、SSE 总线
-│   ├── seed_data.json      # 开发种子数据 (Django fixture)
-│   ├── enable_rls.sql      # PostgreSQL 行级安全策略
-│   └── config/settings/    # base.py + prod.py
+│   ├── config/settings/    # base.py + prod.py
+│   ├── seed_data_utf8.json # 开发种子数据 (UTF-8)
+│   ├── anju_db_dump.sql    # PostgreSQL 完整备份
+│   └── setup_db.py         # 数据库初始化脚本
 └── README.md
 ```
 
@@ -88,6 +110,8 @@ anju-supermarket/
 | `/admin` | 仪表盘 | `dashboard` | 管理员 |
 | `/admin/pos` | 收银台 | `dashboard` | 管理员 |
 | `/admin/products` | 商品管理 | `dashboard` | 管理员 |
+| `/admin/settings/roles` | 角色权限 | `dashboard` | 管理员 |
+| `/admin/settings/printer` | 打印模板 | `dashboard` | 管理员 |
 | `/admin/*` | 其他管理页面 | `dashboard` | 管理员 |
 
 ## 功能模块
@@ -98,12 +122,12 @@ anju-supermarket/
 |---|---|
 | 商品浏览 | 分类筛选、关键词搜索、排序 |
 | 商品详情 | 图片、规格选择、加购 |
-| 购物车 | 加减商品、实时计价 |
-| 结算 | 到店支付 + 会员储值抵扣 |
+| 购物车 | 全选联动、划线原价、库存预警、左滑删除、为你推荐 |
+| 结算 | 余额抵扣、优惠券、下单确认、**打印小票** |
 | 订单追踪 | 订单列表、展开明细 |
 | 会员中心 | 积分、余额、消费记录、等级 |
 | 会员登录 | 手机号 + 密码 |
-| 优惠券 | 领券中心、我的优惠券 |
+| 优惠券 | 领券中心、品类限制、首单优惠 |
 | 消费分析 | 消费趋势、月度图表 |
 | 收藏 | 收藏商品、即时取消 |
 | 充值中心 | 储值充值 (预设金额+自定义) |
@@ -112,7 +136,7 @@ anju-supermarket/
 
 | 模块 | 功能 |
 |---|---|
-| 收银/POS | 扫码/搜索商品、购物车、四种支付方式 |
+| 收银/POS | 扫码/搜索商品、购物车、四种支付方式、**结算后打印小票** |
 | 商品管理 | 分类、SPU/SKU、条码 (租户级唯一)、图片上传、扫码录入 |
 | 库存管理 | 入库/出库流水、**低库存预警**、**盘点单 (创建+明细+自动完成)** |
 | 消息通知 | **实时订单推送** (SSE)、铃铛红点、侧边栏 badge |
@@ -120,8 +144,10 @@ anju-supermarket/
 | **优惠券管理** | **创建/分配/删除优惠券、品类限制 (文具券↛食品)、会员搜索分配、使用校验链** |
 | 供应商管理 | 供应商信息 |
 | 员工管理 | 员工账号、**角色编辑**、**停用保护 (禁止停用自己和最后一位超管)** |
+| **角色权限** | **预定义角色、权限矩阵、成员分配、角色切换** |
+| **打印模板** | **纸张格式 (58/80mm)、页眉信息、Logo/条码开关、页脚文字** |
 | 财务/报表 | 日/周/月营业额统计 |
-| 系统设置 | 超市信息、账号管理 |
+| 系统设置 | 超市信息、运营广播、修改密码 |
 
 ## 快速启动
 
@@ -145,37 +171,29 @@ cd anju-supermarket
 cp backend/.env.example backend/.env
 # 编辑 backend/.env 填入数据库密码和密钥
 
-# 3. 创建数据库 & 导入数据
+# 3. 创建数据库
 createdb -U postgres anju_db
+
+# 4. 导入数据库 (二选一)
+# 方式 A: pg_dump 完整恢复 (推荐，含所有数据和Schema)
+psql -U postgres anju_db < backend/anju_db_dump.sql
+
+# 方式 B: Django migrate + seed
 cd backend
 python -m pip install -r requirements/base.txt
 python manage.py migrate
-python manage.py loaddata seed_data.json  # 导入测试数据
+python manage.py loaddata seed_data_utf8.json
 
-# 4. 启动后端
+# 5. 启动后端
+cd backend
 python manage.py runserver 8000
 
-# 5. 启动前端 (新终端)
+# 6. 启动前端 (新终端)
 cd dashboard
 pnpm install
 pnpm dev
 # → 打开 http://localhost:3000
 ```
-
-### 导入测试数据
-
-**方式 1: Django fixture (推荐，跨环境兼容)**
-```bash
-cd backend
-python manage.py loaddata seed_data.json
-```
-
-**方式 2: pg_dump 完整恢复**
-```bash
-psql -U postgres anju_db < backend/anju_db_dump.sql
-```
-
-导入后包含：1 个超市 + 50+ 条码商品 + 会员 (含积分和余额) + 50+ 订单历史 + 库存流水。
 
 ## 测试账号
 
@@ -204,60 +222,13 @@ psql -U postgres anju_db < backend/anju_db_dump.sql
 
 ## 安全
 
-### 认证与授权
-- **管理端:** JWT httpOnly Cookie（`SameSite=Strict`，生产环境 `Secure`），不返回 body
-- **会员端:** Member Token SHA-256 哈希存储，30 天过期，登录刷新
-- **密码:** Django `validate_password`（最少 8 位 + 常见密码黑名单 + 不能纯数字）
-- **权限:** 订单创建需认证 (IsAuthenticated | HasMemberToken)；员工管理仅超管/经理可写；财务仅超管/经理可查看
-
-### 防护措施
-- DRF 限流（匿名 30/分钟，用户 100/分钟，登录 5/分钟）
-- 请求体 5MB 上限（防止 DoS）
-- CORS 白名单仅允许受信来源
-- 会员手机号自动脱敏（非员工看到 `138****0001`）
-- 外部 API 响应校验（URL scheme 检查 + HTML 转义）
-- 租户 Slug 正则校验，无效请求返回 404
-- `v-html` 前端 sanitize (XSS 防护)
-- 路径穿越防护 (BFF proxy `..` 拒绝 + `%` 编码拦截)
-- PostgreSQL RLS 行级安全策略
-- 库存操作 `select_for_update` 防竞态
-- 余额扣减 TOCTOU 防护 (检查在 atomic 内)
-- 超级管理员停用保护 (禁止停用最后一位)
-
-### 安全头（生产环境）
-- `HSTS` + `includeSubDomains` + `preload`
-- `SECURE_SSL_REDIRECT` / `SESSION_COOKIE_SECURE` / `CSRF_COOKIE_SECURE`
-- `Content-Type: nosniff` / `X-XSS-Protection`
-- `SECRET_KEY` / `DB_PASSWORD` 环境变量强制，无硬编码默认值
-- 生产 `DEBUG=False`，Django admin 仅 DEBUG 模式启用
-
-## 环境变量
-
-### 后端 `.env`
-
-```env
-DB_NAME=anju_db
-DB_USER=postgres
-DB_PASSWORD=your_password_here
-DB_HOST=localhost
-DB_PORT=5432
-DJANGO_SECRET_KEY=change-this-in-production
-DJANGO_DEBUG=True
-```
-
-## AI 辅助开发
-
-项目集成了 OpenHarness 和 65 个 Agent Skills：
-
-| Skills 来源 | 数量 | 用途 |
-|---|---|---|
-| karpathy-skill | 1 | Karpathy 思维框架 |
-| antfu/skills | 19 | Vue/Nuxt/Vite/Unocss 最佳实践 |
-| mattpocock/skills | 38 | 工程化开发流程 |
-| ponytail | 6 | YAGNI 极简代码 |
-| nuxt-ui | 1 | Nuxt UI v4 组件文档 |
-
-MCP: Nuxt UI 文档服务器 (`https://ui.nuxt.com/mcp`)
+- **管理端:** JWT httpOnly Cookie (`SameSite=Strict`)，不返回 body
+- **会员端:** Member Token SHA-256 哈希存储，30 天过期
+- **权限:** 5 级角色 (收银员/库管/财务/店长/超管) + 10 模块权限矩阵
+- **限流:** 匿名 120/分钟，用户 100/分钟，登录 5/分钟
+- **防护:** CORS 白名单、请求体 5MB 上限、Slug 正则校验、路径穿越防护
+- **数据库:** PostgreSQL RLS 行级安全、库存 `select_for_update` 防竞态、余额 TOCTOU 防护
+- **超管保护:** 禁止停用最后一位超级管理员
 
 ## License
 
