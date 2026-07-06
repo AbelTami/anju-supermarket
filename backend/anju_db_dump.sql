@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
-\restrict wLtzRVJpWt3JcNOqTrcXWKhY885G1WrBizHAFzY6gH1eDdHB2C60neaaWcHa6zO
+\restrict NP9WroZNafCmi55xsNKotlFxvdt28bRl1W4jb1BxZSChq8Occl0oeyLYAkFR4NH
 
 -- Dumped from database version 18.4
 -- Dumped by pg_dump version 18.4
@@ -19,145 +19,6 @@ SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
 
-ALTER TABLE ONLY public.user_user_permissions DROP CONSTRAINT user_user_permissions_user_id_ed4a47ea_fk_user_id;
-ALTER TABLE ONLY public.user_user_permissions DROP CONSTRAINT user_user_permission_permission_id_9deb68a3_fk_auth_perm;
-ALTER TABLE ONLY public.user_tenant DROP CONSTRAINT user_tenant_user_id_e4d2580a_fk_user_id;
-ALTER TABLE ONLY public.user_tenant DROP CONSTRAINT user_tenant_tenant_id_ea6c5f74_fk_tenant_id;
-ALTER TABLE ONLY public.user_groups DROP CONSTRAINT user_groups_user_id_abaea130_fk_user_id;
-ALTER TABLE ONLY public.user_groups DROP CONSTRAINT user_groups_group_id_b76f8aba_fk_auth_group_id;
-ALTER TABLE ONLY public.supplier DROP CONSTRAINT supplier_tenant_id_8a35a691_fk_tenant_id;
-ALTER TABLE ONLY public.stock_check DROP CONSTRAINT stock_check_tenant_id_2c1968d7_fk_tenant_id;
-ALTER TABLE ONLY public.stock_check_item DROP CONSTRAINT stock_check_item_tenant_id_12d5e3db_fk_tenant_id;
-ALTER TABLE ONLY public.stock_check_item DROP CONSTRAINT stock_check_item_stock_check_id_09bba7d2_fk_stock_check_id;
-ALTER TABLE ONLY public.stock_check_item DROP CONSTRAINT stock_check_item_sku_id_620df826_fk_product_sku_id;
-ALTER TABLE ONLY public.stock_check DROP CONSTRAINT stock_check_created_by_id_83ff223f_fk_user_id;
-ALTER TABLE ONLY public.product DROP CONSTRAINT product_tenant_id_957f8279_fk_tenant_id;
-ALTER TABLE ONLY public.product_sku DROP CONSTRAINT product_sku_tenant_id_7e9c5687_fk_tenant_id;
-ALTER TABLE ONLY public.product_sku DROP CONSTRAINT product_sku_product_id_ecb13de3_fk_product_id;
-ALTER TABLE ONLY public.product_category DROP CONSTRAINT product_category_tenant_id_137164b9_fk_tenant_id;
-ALTER TABLE ONLY public.product_category DROP CONSTRAINT product_category_parent_id_f6860923_fk_product_category_id;
-ALTER TABLE ONLY public.product DROP CONSTRAINT product_category_id_640030a0_fk_product_category_id;
-ALTER TABLE ONLY public.pos_order DROP CONSTRAINT pos_order_tenant_id_13a991ec_fk_tenant_id;
-ALTER TABLE ONLY public.pos_order DROP CONSTRAINT pos_order_member_id_4f7e71f7_fk_member_id;
-ALTER TABLE ONLY public.pos_order_item DROP CONSTRAINT pos_order_item_tenant_id_20bba519_fk_tenant_id;
-ALTER TABLE ONLY public.pos_order_item DROP CONSTRAINT pos_order_item_sku_id_5e26bb77_fk_product_sku_id;
-ALTER TABLE ONLY public.pos_order_item DROP CONSTRAINT pos_order_item_order_id_6a977ad5_fk_pos_order_id;
-ALTER TABLE ONLY public.pos_order DROP CONSTRAINT pos_order_cashier_id_0d96b16a_fk_user_id;
-ALTER TABLE ONLY public.member DROP CONSTRAINT member_tenant_id_94eee4ea_fk_tenant_id;
-ALTER TABLE ONLY public.inventory_record DROP CONSTRAINT inventory_record_tenant_id_b2250982_fk_tenant_id;
-ALTER TABLE ONLY public.inventory_record DROP CONSTRAINT inventory_record_sku_id_046543aa_fk_product_sku_id;
-ALTER TABLE ONLY public.inventory_record DROP CONSTRAINT inventory_record_operator_id_60220831_fk_user_id;
-ALTER TABLE ONLY public.finance_daily_summary DROP CONSTRAINT finance_daily_summary_tenant_id_b2e91384_fk_tenant_id;
-ALTER TABLE ONLY public.employee_shift DROP CONSTRAINT employee_shift_user_id_cb49ebd8_fk_user_id;
-ALTER TABLE ONLY public.employee_shift DROP CONSTRAINT employee_shift_tenant_id_988ca8c3_fk_tenant_id;
-ALTER TABLE ONLY public.django_admin_log DROP CONSTRAINT django_admin_log_user_id_c564eba6_fk_user_id;
-ALTER TABLE ONLY public.django_admin_log DROP CONSTRAINT django_admin_log_content_type_id_c4bce8eb_fk_django_co;
-ALTER TABLE ONLY public.auth_permission DROP CONSTRAINT auth_permission_content_type_id_2f476e4b_fk_django_co;
-ALTER TABLE ONLY public.auth_group_permissions DROP CONSTRAINT auth_group_permissions_group_id_b120cbf9_fk_auth_group_id;
-ALTER TABLE ONLY public.auth_group_permissions DROP CONSTRAINT auth_group_permissio_permission_id_84c5c92e_fk_auth_perm;
-DROP INDEX public.user_username_cf016618_like;
-DROP INDEX public.user_user_permissions_user_id_ed4a47ea;
-DROP INDEX public.user_user_permissions_permission_id_9deb68a3;
-DROP INDEX public.user_tenant_user_id_e4d2580a;
-DROP INDEX public.user_tenant_tenant_id_ea6c5f74;
-DROP INDEX public.user_groups_user_id_abaea130;
-DROP INDEX public.user_groups_group_id_b76f8aba;
-DROP INDEX public.tenant_slug_812ad82d_like;
-DROP INDEX public.supplier_tenant_id_8a35a691;
-DROP INDEX public.stock_check_tenant_id_2c1968d7;
-DROP INDEX public.stock_check_item_tenant_id_12d5e3db;
-DROP INDEX public.stock_check_item_stock_check_id_09bba7d2;
-DROP INDEX public.stock_check_item_sku_id_620df826;
-DROP INDEX public.stock_check_created_by_id_83ff223f;
-DROP INDEX public.product_tenant_id_957f8279;
-DROP INDEX public.product_sku_tenant_id_7e9c5687;
-DROP INDEX public.product_sku_product_id_ecb13de3;
-DROP INDEX public.product_category_tenant_id_137164b9;
-DROP INDEX public.product_category_parent_id_f6860923;
-DROP INDEX public.product_category_id_640030a0;
-DROP INDEX public.pos_order_tenant_id_13a991ec;
-DROP INDEX public.pos_order_order_no_1f17503d_like;
-DROP INDEX public.pos_order_member_id_4f7e71f7;
-DROP INDEX public.pos_order_item_tenant_id_20bba519;
-DROP INDEX public.pos_order_item_sku_id_5e26bb77;
-DROP INDEX public.pos_order_item_order_id_6a977ad5;
-DROP INDEX public.pos_order_cashier_id_0d96b16a;
-DROP INDEX public.member_tenant_id_94eee4ea;
-DROP INDEX public.inventory_record_tenant_id_b2250982;
-DROP INDEX public.inventory_record_sku_id_046543aa;
-DROP INDEX public.inventory_record_operator_id_60220831;
-DROP INDEX public.finance_daily_summary_tenant_id_b2e91384;
-DROP INDEX public.employee_shift_user_id_cb49ebd8;
-DROP INDEX public.employee_shift_tenant_id_988ca8c3;
-DROP INDEX public.django_session_session_key_c0390e0f_like;
-DROP INDEX public.django_session_expire_date_a5c62663;
-DROP INDEX public.django_admin_log_user_id_c564eba6;
-DROP INDEX public.django_admin_log_content_type_id_c4bce8eb;
-DROP INDEX public.auth_permission_content_type_id_2f476e4b;
-DROP INDEX public.auth_group_permissions_permission_id_84c5c92e;
-DROP INDEX public.auth_group_permissions_group_id_b120cbf9;
-DROP INDEX public.auth_group_name_a6ea08ec_like;
-ALTER TABLE ONLY public."user" DROP CONSTRAINT user_username_key;
-ALTER TABLE ONLY public.user_user_permissions DROP CONSTRAINT user_user_permissions_user_id_permission_id_7dc6e2e0_uniq;
-ALTER TABLE ONLY public.user_user_permissions DROP CONSTRAINT user_user_permissions_pkey;
-ALTER TABLE ONLY public.user_tenant DROP CONSTRAINT user_tenant_user_id_tenant_id_36fd9a85_uniq;
-ALTER TABLE ONLY public.user_tenant DROP CONSTRAINT user_tenant_pkey;
-ALTER TABLE ONLY public."user" DROP CONSTRAINT user_pkey;
-ALTER TABLE ONLY public.user_groups DROP CONSTRAINT user_groups_user_id_group_id_40beef00_uniq;
-ALTER TABLE ONLY public.user_groups DROP CONSTRAINT user_groups_pkey;
-ALTER TABLE ONLY public.product_sku DROP CONSTRAINT uq_tenant_barcode;
-ALTER TABLE ONLY public.tenant DROP CONSTRAINT tenant_slug_key;
-ALTER TABLE ONLY public.tenant DROP CONSTRAINT tenant_pkey;
-ALTER TABLE ONLY public.supplier DROP CONSTRAINT supplier_pkey;
-ALTER TABLE ONLY public.stock_check DROP CONSTRAINT stock_check_pkey;
-ALTER TABLE ONLY public.stock_check_item DROP CONSTRAINT stock_check_item_stock_check_id_sku_id_79b9bfc8_uniq;
-ALTER TABLE ONLY public.stock_check_item DROP CONSTRAINT stock_check_item_pkey;
-ALTER TABLE ONLY public.product_sku DROP CONSTRAINT product_sku_pkey;
-ALTER TABLE ONLY public.product DROP CONSTRAINT product_pkey;
-ALTER TABLE ONLY public.product_category DROP CONSTRAINT product_category_pkey;
-ALTER TABLE ONLY public.pos_order DROP CONSTRAINT pos_order_pkey;
-ALTER TABLE ONLY public.pos_order DROP CONSTRAINT pos_order_order_no_key;
-ALTER TABLE ONLY public.pos_order_item DROP CONSTRAINT pos_order_item_pkey;
-ALTER TABLE ONLY public.member DROP CONSTRAINT member_pkey;
-ALTER TABLE ONLY public.inventory_record DROP CONSTRAINT inventory_record_pkey;
-ALTER TABLE ONLY public.finance_daily_summary DROP CONSTRAINT finance_daily_summary_tenant_id_date_6e1879a8_uniq;
-ALTER TABLE ONLY public.finance_daily_summary DROP CONSTRAINT finance_daily_summary_pkey;
-ALTER TABLE ONLY public.employee_shift DROP CONSTRAINT employee_shift_pkey;
-ALTER TABLE ONLY public.django_session DROP CONSTRAINT django_session_pkey;
-ALTER TABLE ONLY public.django_migrations DROP CONSTRAINT django_migrations_pkey;
-ALTER TABLE ONLY public.django_content_type DROP CONSTRAINT django_content_type_pkey;
-ALTER TABLE ONLY public.django_content_type DROP CONSTRAINT django_content_type_app_label_model_76bd3d3b_uniq;
-ALTER TABLE ONLY public.django_admin_log DROP CONSTRAINT django_admin_log_pkey;
-ALTER TABLE ONLY public.auth_permission DROP CONSTRAINT auth_permission_pkey;
-ALTER TABLE ONLY public.auth_permission DROP CONSTRAINT auth_permission_content_type_id_codename_01ab375a_uniq;
-ALTER TABLE ONLY public.auth_group DROP CONSTRAINT auth_group_pkey;
-ALTER TABLE ONLY public.auth_group_permissions DROP CONSTRAINT auth_group_permissions_pkey;
-ALTER TABLE ONLY public.auth_group_permissions DROP CONSTRAINT auth_group_permissions_group_id_permission_id_0cd325b0_uniq;
-ALTER TABLE ONLY public.auth_group DROP CONSTRAINT auth_group_name_key;
-DROP TABLE public.user_user_permissions;
-DROP TABLE public.user_tenant;
-DROP TABLE public.user_groups;
-DROP TABLE public."user";
-DROP TABLE public.tenant;
-DROP TABLE public.supplier;
-DROP TABLE public.stock_check_item;
-DROP TABLE public.stock_check;
-DROP TABLE public.product_sku;
-DROP TABLE public.product_category;
-DROP TABLE public.product;
-DROP TABLE public.pos_order_item;
-DROP TABLE public.pos_order;
-DROP TABLE public.member;
-DROP TABLE public.inventory_record;
-DROP TABLE public.finance_daily_summary;
-DROP TABLE public.employee_shift;
-DROP TABLE public.django_session;
-DROP TABLE public.django_migrations;
-DROP TABLE public.django_content_type;
-DROP TABLE public.django_admin_log;
-DROP TABLE public.auth_permission;
-DROP TABLE public.auth_group_permissions;
-DROP TABLE public.auth_group;
 SET default_tablespace = '';
 
 SET default_table_access_method = heap;
@@ -229,6 +90,67 @@ CREATE TABLE public.auth_permission (
 
 ALTER TABLE public.auth_permission ALTER COLUMN id ADD GENERATED BY DEFAULT AS IDENTITY (
     SEQUENCE NAME public.auth_permission_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+
+--
+-- Name: coupon; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.coupon (
+    id bigint NOT NULL,
+    created_at timestamp with time zone NOT NULL,
+    updated_at timestamp with time zone NOT NULL,
+    title character varying(100) NOT NULL,
+    discount_type character varying(10) NOT NULL,
+    discount_value numeric(10,2) NOT NULL,
+    min_amount numeric(10,2) NOT NULL,
+    total_count integer NOT NULL,
+    used_count integer NOT NULL,
+    valid_from timestamp with time zone,
+    valid_until timestamp with time zone,
+    is_active boolean NOT NULL,
+    tenant_id bigint NOT NULL,
+    first_order_only boolean NOT NULL
+);
+
+
+--
+-- Name: coupon_categories; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.coupon_categories (
+    id bigint NOT NULL,
+    coupon_id bigint NOT NULL,
+    category_id bigint NOT NULL
+);
+
+
+--
+-- Name: coupon_categories_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+ALTER TABLE public.coupon_categories ALTER COLUMN id ADD GENERATED BY DEFAULT AS IDENTITY (
+    SEQUENCE NAME public.coupon_categories_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+
+--
+-- Name: coupon_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+ALTER TABLE public.coupon ALTER COLUMN id ADD GENERATED BY DEFAULT AS IDENTITY (
+    SEQUENCE NAME public.coupon_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -448,6 +370,37 @@ CREATE TABLE public.member (
 
 
 --
+-- Name: member_coupon; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.member_coupon (
+    id bigint NOT NULL,
+    created_at timestamp with time zone NOT NULL,
+    updated_at timestamp with time zone NOT NULL,
+    code character varying(50) NOT NULL,
+    used boolean NOT NULL,
+    used_at timestamp with time zone,
+    coupon_id bigint NOT NULL,
+    member_id bigint NOT NULL,
+    tenant_id bigint NOT NULL
+);
+
+
+--
+-- Name: member_coupon_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+ALTER TABLE public.member_coupon ALTER COLUMN id ADD GENERATED BY DEFAULT AS IDENTITY (
+    SEQUENCE NAME public.member_coupon_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+
+--
 -- Name: member_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -478,7 +431,10 @@ CREATE TABLE public.pos_order (
     paid_at timestamp with time zone NOT NULL,
     cashier_id bigint,
     member_id bigint,
-    tenant_id bigint NOT NULL
+    tenant_id bigint NOT NULL,
+    CONSTRAINT chk_order_discount_nonneg CHECK ((discount_amount >= (0)::numeric)),
+    CONSTRAINT chk_order_paid_nonneg CHECK ((paid_amount >= (0)::numeric)),
+    CONSTRAINT chk_order_total_nonneg CHECK ((total_amount >= (0)::numeric))
 );
 
 
@@ -607,7 +563,11 @@ CREATE TABLE public.product_sku (
     stock_quantity numeric(12,3) NOT NULL,
     stock_alert numeric(12,3) NOT NULL,
     product_id bigint NOT NULL,
-    tenant_id bigint NOT NULL
+    tenant_id bigint NOT NULL,
+    CONSTRAINT chk_sku_alert_nonneg CHECK ((stock_alert >= (0)::numeric)),
+    CONSTRAINT chk_sku_purchase_nonneg CHECK ((purchase_price >= (0)::numeric)),
+    CONSTRAINT chk_sku_selling_nonneg CHECK ((selling_price >= (0)::numeric)),
+    CONSTRAINT chk_sku_stock_nonneg CHECK ((stock_quantity >= (0)::numeric))
 );
 
 
@@ -730,7 +690,14 @@ CREATE TABLE public.tenant (
     phone character varying(20) NOT NULL,
     business_hours character varying(100) NOT NULL,
     is_active boolean NOT NULL,
-    created_at timestamp with time zone NOT NULL
+    created_at timestamp with time zone NOT NULL,
+    broadcast_active boolean NOT NULL,
+    broadcast_message character varying(200) NOT NULL,
+    broadcast_severity character varying(10) NOT NULL,
+    footer_text text NOT NULL,
+    paper_width character varying(3) NOT NULL,
+    print_barcode boolean NOT NULL,
+    print_logo boolean NOT NULL
 );
 
 
@@ -740,6 +707,59 @@ CREATE TABLE public.tenant (
 
 ALTER TABLE public.tenant ALTER COLUMN id ADD GENERATED BY DEFAULT AS IDENTITY (
     SEQUENCE NAME public.tenant_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+
+--
+-- Name: token_blacklist_blacklistedtoken; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.token_blacklist_blacklistedtoken (
+    id bigint NOT NULL,
+    blacklisted_at timestamp with time zone NOT NULL,
+    token_id bigint NOT NULL
+);
+
+
+--
+-- Name: token_blacklist_blacklistedtoken_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+ALTER TABLE public.token_blacklist_blacklistedtoken ALTER COLUMN id ADD GENERATED BY DEFAULT AS IDENTITY (
+    SEQUENCE NAME public.token_blacklist_blacklistedtoken_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+
+--
+-- Name: token_blacklist_outstandingtoken; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.token_blacklist_outstandingtoken (
+    id bigint NOT NULL,
+    token text NOT NULL,
+    created_at timestamp with time zone,
+    expires_at timestamp with time zone NOT NULL,
+    user_id bigint,
+    jti character varying(255) CONSTRAINT token_blacklist_outstandingtoken_jti_hex_not_null NOT NULL
+);
+
+
+--
+-- Name: token_blacklist_outstandingtoken_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+ALTER TABLE public.token_blacklist_outstandingtoken ALTER COLUMN id ADD GENERATED BY DEFAULT AS IDENTITY (
+    SEQUENCE NAME public.token_blacklist_outstandingtoken_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -881,6 +901,22 @@ COPY public.auth_group_permissions (id, group_id, permission_id) FROM stdin;
 --
 
 COPY public.auth_permission (id, name, content_type_id, codename) FROM stdin;
+93	Can add Blacklisted Token	24	add_blacklistedtoken
+94	Can change Blacklisted Token	24	change_blacklistedtoken
+95	Can delete Blacklisted Token	24	delete_blacklistedtoken
+96	Can view Blacklisted Token	24	view_blacklistedtoken
+97	Can add Outstanding Token	25	add_outstandingtoken
+98	Can change Outstanding Token	25	change_outstandingtoken
+99	Can delete Outstanding Token	25	delete_outstandingtoken
+100	Can view Outstanding Token	25	view_outstandingtoken
+81	Can add 优惠券	21	add_coupon
+82	Can change 优惠券	21	change_coupon
+83	Can delete 优惠券	21	delete_coupon
+84	Can view 优惠券	21	view_coupon
+85	Can add 会员优惠券	22	add_membercoupon
+86	Can change 会员优惠券	22	change_membercoupon
+87	Can delete 会员优惠券	22	delete_membercoupon
+88	Can view 会员优惠券	22	view_membercoupon
 1	Can add log entry	1	add_logentry
 2	Can change log entry	1	change_logentry
 3	Can delete log entry	1	delete_logentry
@@ -933,38 +969,61 @@ COPY public.auth_permission (id, name, content_type_id, codename) FROM stdin;
 50	Can change 盘点单	13	change_stockcheck
 51	Can delete 盘点单	13	delete_stockcheck
 52	Can view 盘点单	13	view_stockcheck
-53	Can add 收银订单	14	add_order
-54	Can change 收银订单	14	change_order
-55	Can delete 收银订单	14	delete_order
-56	Can view 收银订单	14	view_order
-57	Can add 订单明细	15	add_orderitem
-58	Can change 订单明细	15	change_orderitem
-59	Can delete 订单明细	15	delete_orderitem
-60	Can view 订单明细	15	view_orderitem
-61	Can add 会员	16	add_member
-62	Can change 会员	16	change_member
-63	Can delete 会员	16	delete_member
-64	Can view 会员	16	view_member
-65	Can add 供应商	17	add_supplier
-66	Can change 供应商	17	change_supplier
-67	Can delete 供应商	17	delete_supplier
-68	Can view 供应商	17	view_supplier
-69	Can add 排班	18	add_shift
-70	Can change 排班	18	change_shift
-71	Can delete 排班	18	delete_shift
-72	Can view 排班	18	view_shift
-73	Can add 日结汇总	19	add_dailysummary
-74	Can change 日结汇总	19	change_dailysummary
-75	Can delete 日结汇总	19	delete_dailysummary
-76	Can view 日结汇总	19	view_dailysummary
-77	Can add 充值记录	20	add_rechargerecord
-78	Can change 充值记录	20	change_rechargerecord
-79	Can delete 充值记录	20	delete_rechargerecord
-80	Can view 充值记录	20	view_rechargerecord
-81	Can add 盘点明细	21	add_stockcheckitem
-82	Can change 盘点明细	21	change_stockcheckitem
-83	Can delete 盘点明细	21	delete_stockcheckitem
-84	Can view 盘点明细	21	view_stockcheckitem
+57	Can add 收银订单	15	add_order
+58	Can change 收银订单	15	change_order
+59	Can delete 收银订单	15	delete_order
+60	Can view 收银订单	15	view_order
+61	Can add 订单明细	16	add_orderitem
+62	Can change 订单明细	16	change_orderitem
+63	Can delete 订单明细	16	delete_orderitem
+64	Can view 订单明细	16	view_orderitem
+65	Can add 会员	17	add_member
+66	Can change 会员	17	change_member
+67	Can delete 会员	17	delete_member
+68	Can view 会员	17	view_member
+69	Can add 供应商	18	add_supplier
+70	Can change 供应商	18	change_supplier
+71	Can delete 供应商	18	delete_supplier
+72	Can view 供应商	18	view_supplier
+73	Can add 排班	19	add_shift
+74	Can change 排班	19	change_shift
+75	Can delete 排班	19	delete_shift
+76	Can view 排班	19	view_shift
+77	Can add 日结汇总	20	add_dailysummary
+78	Can change 日结汇总	20	change_dailysummary
+79	Can delete 日结汇总	20	delete_dailysummary
+80	Can view 日结汇总	20	view_dailysummary
+89	Can add 充值记录	23	add_rechargerecord
+90	Can change 充值记录	23	change_rechargerecord
+91	Can delete 充值记录	23	delete_rechargerecord
+92	Can view 充值记录	23	view_rechargerecord
+53	Can add 盘点明细	14	add_stockcheckitem
+54	Can change 盘点明细	14	change_stockcheckitem
+55	Can delete 盘点明细	14	delete_stockcheckitem
+56	Can view 盘点明细	14	view_stockcheckitem
+\.
+
+
+--
+-- Data for Name: coupon; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY public.coupon (id, created_at, updated_at, title, discount_type, discount_value, min_amount, total_count, used_count, valid_from, valid_until, is_active, tenant_id, first_order_only) FROM stdin;
+1	2026-07-05 20:53:23.891739+08	2026-07-05 20:53:23.891748+08	新人满减券	fixed	10.00	100.00	100	1	2026-07-05 00:00:00+08	2026-07-06 23:59:59+08	t	1	f
+3	2026-07-06 03:19:58.666225+08	2026-07-06 03:19:58.668887+08	大单满减·满100减20	fixed	20.00	100.00	1000	0	2026-07-06 03:19:58.651002+08	2026-08-05 03:19:58.651002+08	t	1	f
+4	2026-07-06 03:19:58.672993+08	2026-07-06 03:19:58.678401+08	饮料专区·满50减8	fixed	8.00	50.00	1000	0	2026-07-06 03:19:58.651002+08	2026-08-05 03:19:58.651002+08	t	1	f
+5	2026-07-06 03:19:58.682148+08	2026-07-06 03:19:58.68437+08	全场9折券·至多减50	percent	10.00	60.00	1000	0	2026-07-06 03:19:58.651002+08	2026-08-05 03:19:58.651002+08	t	1	f
+6	2026-07-06 03:19:58.687861+08	2026-07-06 03:19:58.690026+08	无门槛5元现金券	fixed	5.00	0.00	1000	0	2026-07-06 03:19:58.651002+08	2026-08-05 03:19:58.651002+08	t	1	f
+2	2026-07-06 03:19:58.65402+08	2026-07-06 03:19:58.659333+08	新人专享·满30减10	fixed	10.00	30.00	1000	0	2026-07-06 03:19:58.651002+08	2026-08-05 03:19:58.651002+08	t	1	t
+\.
+
+
+--
+-- Data for Name: coupon_categories; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY public.coupon_categories (id, coupon_id, category_id) FROM stdin;
+1	4	1
 \.
 
 
@@ -981,6 +1040,8 @@ COPY public.django_admin_log (id, action_time, object_id, object_repr, action_fl
 --
 
 COPY public.django_content_type (id, app_label, model) FROM stdin;
+21	coupons	coupon
+22	coupons	membercoupon
 1	admin	logentry
 2	auth	group
 3	auth	permission
@@ -994,14 +1055,16 @@ COPY public.django_content_type (id, app_label, model) FROM stdin;
 11	products	productsku
 12	inventory	inventoryrecord
 13	inventory	stockcheck
-14	pos	order
-15	pos	orderitem
-16	members	member
-17	suppliers	supplier
-18	employees	shift
-19	finance	dailysummary
-20	members	rechargerecord
-21	inventory	stockcheckitem
+15	pos	order
+16	pos	orderitem
+17	members	member
+18	suppliers	supplier
+19	employees	shift
+20	finance	dailysummary
+23	members	rechargerecord
+14	inventory	stockcheckitem
+24	token_blacklist	blacklistedtoken
+25	token_blacklist	outstandingtoken
 \.
 
 
@@ -1010,42 +1073,63 @@ COPY public.django_content_type (id, app_label, model) FROM stdin;
 --
 
 COPY public.django_migrations (id, app, name, applied) FROM stdin;
-1	tenants	0001_initial	2026-07-04 16:45:56.448912+08
-2	contenttypes	0001_initial	2026-07-04 16:45:56.454653+08
-3	contenttypes	0002_remove_content_type_name	2026-07-04 16:45:56.457319+08
-4	auth	0001_initial	2026-07-04 16:45:56.474675+08
-5	auth	0002_alter_permission_name_max_length	2026-07-04 16:45:56.479322+08
-6	auth	0003_alter_user_email_max_length	2026-07-04 16:45:56.481037+08
-7	auth	0004_alter_user_username_opts	2026-07-04 16:45:56.48259+08
-8	auth	0005_alter_user_last_login_null	2026-07-04 16:45:56.484273+08
-9	auth	0006_require_contenttypes_0002	2026-07-04 16:45:56.484857+08
-10	auth	0007_alter_validators_add_error_messages	2026-07-04 16:45:56.486553+08
-11	auth	0008_alter_user_username_max_length	2026-07-04 16:45:56.488408+08
-12	auth	0009_alter_user_last_name_max_length	2026-07-04 16:45:56.490256+08
-13	auth	0010_alter_group_name_max_length	2026-07-04 16:45:56.493037+08
-14	auth	0011_update_proxy_permissions	2026-07-04 16:45:56.494803+08
-15	auth	0012_alter_user_first_name_max_length	2026-07-04 16:45:56.496464+08
-16	accounts	0001_initial	2026-07-04 16:45:56.524588+08
-17	admin	0001_initial	2026-07-04 16:45:56.539606+08
-18	admin	0002_logentry_remove_auto_add	2026-07-04 16:45:56.548909+08
-19	admin	0003_logentry_add_action_flag_choices	2026-07-04 16:45:56.551803+08
-20	employees	0001_initial	2026-07-04 16:45:56.560006+08
-21	finance	0001_initial	2026-07-04 16:45:56.568496+08
-22	products	0001_initial	2026-07-04 16:45:56.596475+08
-23	inventory	0001_initial	2026-07-04 16:45:56.623289+08
-24	members	0001_initial	2026-07-04 16:45:56.633851+08
-25	members	0002_member_password	2026-07-04 16:45:56.639244+08
-26	members	0003_member_token	2026-07-04 16:45:56.643714+08
-27	members	0004_member_token_created_at	2026-07-04 16:45:56.647607+08
-28	members	0005_hash_existing_passwords	2026-07-04 16:45:56.653885+08
-29	pos	0001_initial	2026-07-04 16:45:56.678623+08
-30	pos	0002_alter_orderitem_spec_name	2026-07-04 16:45:56.690791+08
-31	products	0002_product_image_url	2026-07-04 16:45:56.697577+08
-32	sessions	0001_initial	2026-07-04 16:45:56.703484+08
-33	suppliers	0001_initial	2026-07-04 16:45:56.717946+08
-34	inventory	0002_stockcheckitem	2026-07-04 17:33:38.854395+08
-35	products	0003_alter_productsku_barcode_and_more	2026-07-04 17:33:38.870171+08
-36	pos	0003_alter_order_cashier	2026-07-04 18:13:49.376229+08
+1	tenants	0001_initial	2026-07-05 20:32:19.798559+08
+2	contenttypes	0001_initial	2026-07-05 20:32:19.804108+08
+3	contenttypes	0002_remove_content_type_name	2026-07-05 20:32:19.807721+08
+4	auth	0001_initial	2026-07-05 20:32:19.831692+08
+5	auth	0002_alter_permission_name_max_length	2026-07-05 20:32:19.834954+08
+6	auth	0003_alter_user_email_max_length	2026-07-05 20:32:19.837932+08
+7	auth	0004_alter_user_username_opts	2026-07-05 20:32:19.841162+08
+8	auth	0005_alter_user_last_login_null	2026-07-05 20:32:19.844086+08
+9	auth	0006_require_contenttypes_0002	2026-07-05 20:32:19.844794+08
+10	auth	0007_alter_validators_add_error_messages	2026-07-05 20:32:19.849165+08
+11	auth	0008_alter_user_username_max_length	2026-07-05 20:32:19.853456+08
+12	auth	0009_alter_user_last_name_max_length	2026-07-05 20:32:19.856834+08
+13	auth	0010_alter_group_name_max_length	2026-07-05 20:32:19.863485+08
+14	auth	0011_update_proxy_permissions	2026-07-05 20:32:19.866939+08
+15	auth	0012_alter_user_first_name_max_length	2026-07-05 20:32:19.870062+08
+16	accounts	0001_initial	2026-07-05 20:32:19.908675+08
+17	admin	0001_initial	2026-07-05 20:32:19.920055+08
+18	admin	0002_logentry_remove_auto_add	2026-07-05 20:32:19.926649+08
+19	admin	0003_logentry_add_action_flag_choices	2026-07-05 20:32:19.933978+08
+20	products	0001_initial	2026-07-05 20:32:19.972423+08
+21	products	0002_product_image_url	2026-07-05 20:32:19.984608+08
+22	products	0003_alter_productsku_barcode_and_more	2026-07-05 20:32:19.99992+08
+23	members	0001_initial	2026-07-05 20:32:20.013623+08
+24	members	0002_member_password	2026-07-05 20:32:20.020145+08
+25	members	0003_member_token	2026-07-05 20:32:20.027175+08
+26	members	0004_member_token_created_at	2026-07-05 20:32:20.033411+08
+27	members	0005_hash_existing_passwords	2026-07-05 20:32:20.044217+08
+28	coupons	0001_initial	2026-07-05 20:32:20.079243+08
+29	coupons	0002_coupon_categories	2026-07-05 20:32:20.097738+08
+30	employees	0001_initial	2026-07-05 20:32:20.115105+08
+31	finance	0001_initial	2026-07-05 20:32:20.131728+08
+32	inventory	0001_initial	2026-07-05 20:32:20.175898+08
+33	inventory	0002_stockcheckitem	2026-07-05 20:32:20.198816+08
+34	pos	0001_initial	2026-07-05 20:32:20.249639+08
+35	pos	0002_alter_orderitem_spec_name	2026-07-05 20:32:20.26249+08
+36	pos	0003_alter_order_cashier	2026-07-05 20:32:20.284143+08
+37	sessions	0001_initial	2026-07-05 20:32:20.292066+08
+38	suppliers	0001_initial	2026-07-05 20:32:20.315723+08
+39	inventory	0003_inventoryrecord_idx_invrec_tenant_sku_and_more	2026-07-06 02:57:22.268468+08
+40	members	0006_alter_member_password_alter_member_token_and_more	2026-07-06 02:57:22.328521+08
+41	pos	0004_order_idx_order_tenant_paid_and_more	2026-07-06 02:57:22.450412+08
+42	products	0004_category_idx_category_tenant_parent_and_more	2026-07-06 02:57:22.524749+08
+43	token_blacklist	0001_initial	2026-07-06 02:57:22.592489+08
+44	token_blacklist	0002_outstandingtoken_jti_hex	2026-07-06 02:57:22.602675+08
+45	token_blacklist	0003_auto_20171017_2007	2026-07-06 02:57:22.622941+08
+46	token_blacklist	0004_auto_20171017_2013	2026-07-06 02:57:22.638048+08
+47	token_blacklist	0005_remove_outstandingtoken_jti	2026-07-06 02:57:22.653361+08
+48	token_blacklist	0006_auto_20171017_2113	2026-07-06 02:57:22.664874+08
+49	token_blacklist	0007_auto_20171017_2214	2026-07-06 02:57:22.703589+08
+50	token_blacklist	0008_migrate_to_bigautofield	2026-07-06 02:57:22.751537+08
+51	token_blacklist	0010_fix_migrate_to_bigautofield	2026-07-06 02:57:22.776093+08
+52	token_blacklist	0011_linearizes_history	2026-07-06 02:57:22.777434+08
+53	token_blacklist	0012_alter_outstandingtoken_user	2026-07-06 02:57:22.798365+08
+54	token_blacklist	0013_alter_blacklistedtoken_options_and_more	2026-07-06 02:57:22.811122+08
+55	coupons	0003_coupon_first_order_only	2026-07-06 03:27:49.940526+08
+56	tenants	0002_tenant_broadcast_active_tenant_broadcast_message_and_more	2026-07-06 04:06:05.265178+08
+57	tenants	0003_tenant_footer_text_tenant_paper_width_and_more	2026-07-06 17:58:37.107141+08
 \.
 
 
@@ -1054,7 +1138,7 @@ COPY public.django_migrations (id, app, name, applied) FROM stdin;
 --
 
 COPY public.django_session (session_key, session_data, expire_date) FROM stdin;
-lt3dtn86np6l4frmg0272no49103q1m2	.eJxVjMsOgjAQAP-lZ9PQ0gfr0Tvf0Ox2F4uaklA4Gf_dkHDQ68xk3irhvpW0N1nTzOqqjLr8MsL8lHoIfmC9LzovdVtn0keiT9v0uLC8bmf7NyjYyrHtHTKBQ0sYnAEvZvJAZqBMeepDBPbeiAuugz6zHUA6CBEDdz5aiurzBeE2N3s:1wfwJT:8bQyn0F2U-ActuQCPeM2OcqVeJOSMsqHVWZg3FZaiuc	2026-07-18 17:05:27.825993+08
+lt3dtn86np6l4frmg0272no49103q1m2	.eJxVjMsOgjAQAP-lZ9PQ0gfr0Tvf0Ox2F4uaklA4Gf_dkHDQ68xk3irhvpW0N1nTzOqqjLr8MsL8lHoIfmC9LzovdVtn0keiT9v0uLC8bmf7NyjYyrHtHTKBQ0sYnAEvZvJAZqBMeepDBPbeiAuugz6zHUA6CBEDdz5aiurzBeE2N3s:1wfwJT:8bQyn0F2U-ActuQCPeM2OcqVeJOSMsqHVWZg3FZaiuc	2026-07-18 17:05:27.825+08
 \.
 
 
@@ -1079,16 +1163,16 @@ COPY public.finance_daily_summary (id, created_at, updated_at, date, total_order
 --
 
 COPY public.inventory_record (id, created_at, updated_at, type, quantity, before_quantity, after_quantity, remark, operator_id, sku_id, tenant_id) FROM stdin;
-1	2026-06-30 17:53:05.277511+08	2026-06-30 17:53:05.277521+08	purchase_in	50.000	150.000	200.000	test	2	1	1
-2	2026-07-04 17:35:39.835181+08	2026-07-04 17:35:39.83519+08	check_out	2.000	100.000	98.000	盘点单 #2 自动生成	1	13	1
-3	2026-07-04 17:37:55.163393+08	2026-07-04 17:37:55.1634+08	return_in	1.000	98.000	99.000	customer return	1	13	1
-4	2026-07-04 17:38:02.61734+08	2026-07-04 17:38:02.617346+08	return_in	1.000	99.000	100.000	customer return	1	13	1
-5	2026-07-04 17:39:14.888881+08	2026-07-04 17:39:14.888888+08	purchase_in	10.000	100.000	110.000	test-purchase_in	1	13	1
-6	2026-07-04 17:39:15.318475+08	2026-07-04 17:39:15.318483+08	return_in	3.000	110.000	113.000	test-return_in	1	13	1
-7	2026-07-04 17:39:15.791061+08	2026-07-04 17:39:15.791071+08	check_in	2.000	113.000	115.000	test-check_in	1	13	1
-8	2026-07-04 17:39:16.228503+08	2026-07-04 17:39:16.22851+08	sale_out	5.000	115.000	110.000	test-sale_out	1	13	1
-9	2026-07-04 17:39:16.68974+08	2026-07-04 17:39:16.689746+08	damage_out	1.000	110.000	109.000	test-damage_out	1	13	1
-10	2026-07-04 17:39:17.115802+08	2026-07-04 17:39:17.115808+08	check_out	2.000	109.000	107.000	test-check_out	1	13	1
+1	2026-06-30 17:53:05.277+08	2026-06-30 17:53:05.277+08	purchase_in	50.000	150.000	200.000	test	2	1	1
+2	2026-07-04 17:35:39.835+08	2026-07-04 17:35:39.835+08	check_out	2.000	100.000	98.000	盘点单 #2 自动生成	1	13	1
+3	2026-07-04 17:37:55.163+08	2026-07-04 17:37:55.163+08	return_in	1.000	98.000	99.000	customer return	1	13	1
+4	2026-07-04 17:38:02.617+08	2026-07-04 17:38:02.617+08	return_in	1.000	99.000	100.000	customer return	1	13	1
+5	2026-07-04 17:39:14.888+08	2026-07-04 17:39:14.888+08	purchase_in	10.000	100.000	110.000	test-purchase_in	1	13	1
+6	2026-07-04 17:39:15.318+08	2026-07-04 17:39:15.318+08	return_in	3.000	110.000	113.000	test-return_in	1	13	1
+7	2026-07-04 17:39:15.791+08	2026-07-04 17:39:15.791+08	check_in	2.000	113.000	115.000	test-check_in	1	13	1
+8	2026-07-04 17:39:16.228+08	2026-07-04 17:39:16.228+08	sale_out	5.000	115.000	110.000	test-sale_out	1	13	1
+9	2026-07-04 17:39:16.689+08	2026-07-04 17:39:16.689+08	damage_out	1.000	110.000	109.000	test-damage_out	1	13	1
+10	2026-07-04 17:39:17.115+08	2026-07-04 17:39:17.115+08	check_out	2.000	109.000	107.000	test-check_out	1	13	1
 \.
 
 
@@ -1097,8 +1181,22 @@ COPY public.inventory_record (id, created_at, updated_at, type, quantity, before
 --
 
 COPY public.member (id, created_at, updated_at, name, phone, card_no, points, balance, total_spent, remark, tenant_id, password, token, token_created_at) FROM stdin;
-3	2026-07-01 18:54:57.033056+08	2026-07-03 18:39:50.744703+08	张三	13800001001	M001	234	367.20	234.80		1	pbkdf2_sha256$1200000$q3hK8l21XmXvO5HJEGrIV7$+zfp4vnoCrwlwE5IYJ7Ag9byOZkHpu3XLVdnCgWBzII=	fccb791a2c0a17eaa44fc71b6b323fc634ab43fae35828b4676131465e51d120	\N
-5	2026-07-04 17:55:29.598317+08	2026-07-04 17:55:29.598327+08	ZhangSan	13800000001	M001	246	362.00	146.00		1	pbkdf2_sha256$1200000$A8u58shc3yjtKYU9HRzxXA$MlxkQ3kjizeggWJHGQ6sZxM+iYP4LnZA7v9Z5Gzt2zE=	c1d0c4787907ac224e23f87c867c63f181ebfe09bdda65f0e6eb00e49f16ab7d	2026-07-04 18:19:56.528023+08
+3	2026-07-01 18:54:57.033+08	2026-07-03 18:39:50.744+08	张三	13800001001	M001	234	367.20	234.80		1	pbkdf2_sha256$1200000$q3hK8l21XmXvO5HJEGrIV7$+zfp4vnoCrwlwE5IYJ7Ag9byOZkHpu3XLVdnCgWBzII=	fccb791a2c0a17eaa44fc71b6b323fc634ab43fae35828b4676131465e51d120	\N
+5	2026-07-04 17:55:29.598+08	2026-07-04 17:55:29.598+08	ZhangSan	13800000001	M001	613	235.90	513.60		1	pbkdf2_sha256$1200000$A8u58shc3yjtKYU9HRzxXA$MlxkQ3kjizeggWJHGQ6sZxM+iYP4LnZA7v9Z5Gzt2zE=	74e45c94e9078b26e58b9da9cfe2ce242b064f289e0a4a8c7b8d6d7938e8fd2f	2026-07-06 18:16:47.711694+08
+\.
+
+
+--
+-- Data for Name: member_coupon; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY public.member_coupon (id, created_at, updated_at, code, used, used_at, coupon_id, member_id, tenant_id) FROM stdin;
+1	2026-07-05 20:53:43.314709+08	2026-07-05 20:53:43.314718+08	COUPON-727A9ADB	f	\N	1	5	1
+2	2026-07-06 03:19:58.662873+08	2026-07-06 03:19:58.662883+08	AJEF005CBF2CC0	f	\N	2	5	1
+3	2026-07-06 03:19:58.670842+08	2026-07-06 03:19:58.670854+08	AJD9E5B079EFAF	f	\N	3	5	1
+4	2026-07-06 03:19:58.68016+08	2026-07-06 03:19:58.680167+08	AJEFB22E88C1E0	f	\N	4	5	1
+5	2026-07-06 03:19:58.68595+08	2026-07-06 03:19:58.685956+08	AJ6F509374B9C8	f	\N	5	5	1
+6	2026-07-06 03:19:58.692479+08	2026-07-06 03:19:58.692489+08	AJ770CF4405AAA	f	\N	6	5	1
 \.
 
 
@@ -1107,58 +1205,69 @@ COPY public.member (id, created_at, updated_at, name, phone, card_no, points, ba
 --
 
 COPY public.pos_order (id, created_at, updated_at, order_no, total_amount, discount_amount, paid_amount, payment_method, status, paid_at, cashier_id, member_id, tenant_id) FROM stdin;
-37	2026-06-30 19:27:52.683836+08	2026-06-30 19:30:32.439243+08	POS1782818872224	4.00	0.00	4.00	member_card	completed	2026-06-19 08:20:00+08	2	\N	1
-36	2026-06-30 19:27:52.671918+08	2026-06-30 19:30:32.440663+08	POS1782818872786	27.50	0.00	27.50	cash	completed	2026-06-17 10:31:00+08	2	\N	1
-35	2026-06-30 19:27:52.65988+08	2026-06-30 19:30:32.441396+08	POS1782818872413	31.00	0.00	31.00	cash	completed	2026-06-29 19:24:00+08	2	\N	1
-34	2026-06-30 19:27:52.647162+08	2026-06-30 19:30:32.442044+08	POS1782818872257	50.40	0.00	50.40	alipay	completed	2026-06-27 17:25:00+08	2	\N	1
-33	2026-06-30 19:27:52.635371+08	2026-06-30 19:30:32.442619+08	POS1782818872231	51.90	0.00	51.90	member_card	completed	2026-06-19 12:03:00+08	2	\N	1
-32	2026-06-30 19:27:52.624261+08	2026-06-30 19:30:32.443168+08	POS1782818872252	12.00	0.00	12.00	cash	completed	2026-06-30 19:32:00+08	2	\N	1
-31	2026-06-30 19:27:52.611693+08	2026-06-30 19:30:32.443614+08	POS1782818872245	35.50	0.00	35.50	wechat	completed	2026-06-29 15:00:00+08	2	\N	1
-30	2026-06-30 19:27:52.599711+08	2026-06-30 19:30:32.444116+08	POS1782818872282	54.90	0.00	54.90	cash	completed	2026-06-23 16:10:00+08	2	\N	1
-29	2026-06-30 19:27:52.587306+08	2026-06-30 19:30:32.444581+08	POS1782818872989	9.00	0.00	9.00	member_card	completed	2026-06-24 13:34:00+08	2	\N	1
-28	2026-06-30 19:27:52.575474+08	2026-06-30 19:30:32.444976+08	POS1782818872618	6.00	0.00	6.00	cash	completed	2026-06-19 10:30:00+08	2	\N	1
-27	2026-06-30 19:27:52.564108+08	2026-06-30 19:30:32.445343+08	POS1782818872214	6.00	0.00	6.00	alipay	completed	2026-06-26 13:54:00+08	2	\N	1
-26	2026-06-30 19:27:52.551348+08	2026-06-30 19:30:32.445705+08	POS1782818872320	23.00	0.00	23.00	alipay	completed	2026-06-19 18:19:00+08	2	\N	1
-25	2026-06-30 19:27:52.540084+08	2026-06-30 19:30:32.446057+08	POS1782818872982	16.50	0.00	16.50	cash	completed	2026-06-21 09:13:00+08	2	\N	1
-24	2026-06-30 19:27:52.528564+08	2026-06-30 19:30:32.446447+08	POS1782818872405	9.00	0.00	9.00	alipay	completed	2026-06-26 20:39:00+08	2	\N	1
-23	2026-06-30 19:27:52.516052+08	2026-06-30 19:30:32.446802+08	POS1782818872256	47.90	0.00	47.90	wechat	completed	2026-06-20 20:19:00+08	2	\N	1
-22	2026-06-30 19:27:52.502801+08	2026-06-30 19:30:32.447272+08	POS1782818872334	37.50	0.00	37.50	wechat	completed	2026-06-27 13:03:00+08	2	\N	1
-21	2026-06-30 19:27:52.489487+08	2026-06-30 19:30:32.447738+08	POS1782818872545	27.00	0.00	27.00	alipay	completed	2026-06-30 12:23:00+08	2	\N	1
-20	2026-06-30 19:27:52.476184+08	2026-06-30 19:30:32.448165+08	POS1782818872806	36.00	0.00	36.00	cash	completed	2026-06-28 20:50:00+08	2	\N	1
-19	2026-06-30 19:27:52.462098+08	2026-06-30 19:30:32.448699+08	POS1782818872423	27.50	0.00	27.50	wechat	completed	2026-06-23 21:29:00+08	2	\N	1
-18	2026-06-30 19:27:52.449084+08	2026-06-30 19:30:32.449236+08	POS1782818872617	12.00	0.00	12.00	member_card	completed	2026-06-30 09:07:00+08	2	\N	1
-17	2026-06-30 19:27:52.4374+08	2026-06-30 19:30:32.449746+08	POS1782818872622	9.00	0.00	9.00	member_card	completed	2026-06-27 15:36:00+08	2	\N	1
-16	2026-06-30 19:27:52.425578+08	2026-06-30 19:30:32.450266+08	POS1782818872997	12.00	0.00	12.00	member_card	completed	2026-06-29 13:06:00+08	2	\N	1
-15	2026-06-30 19:27:52.413517+08	2026-06-30 19:30:32.450788+08	POS1782818872387	25.80	0.00	25.80	alipay	completed	2026-06-23 21:23:00+08	2	\N	1
-14	2026-06-30 19:27:52.402322+08	2026-06-30 19:30:32.451311+08	POS1782818872611	6.00	0.00	6.00	alipay	completed	2026-06-19 10:24:00+08	2	\N	1
-13	2026-06-30 19:27:52.389935+08	2026-06-30 19:30:32.451839+08	POS1782818872978	40.50	0.00	40.50	alipay	completed	2026-06-22 12:39:00+08	2	\N	1
-12	2026-06-30 19:27:52.377905+08	2026-06-30 19:30:32.452373+08	POS1782818872507	13.00	0.00	13.00	cash	completed	2026-06-24 14:22:00+08	2	\N	1
-11	2026-06-30 19:27:52.366367+08	2026-06-30 19:30:32.452897+08	POS1782818872598	2.00	0.00	2.00	wechat	completed	2026-06-21 21:18:00+08	2	\N	1
-10	2026-06-30 19:27:52.352904+08	2026-06-30 19:30:32.453394+08	POS1782818872566	42.60	0.00	42.60	member_card	completed	2026-06-30 18:46:00+08	2	\N	1
-9	2026-06-30 19:27:52.340503+08	2026-06-30 19:30:32.453903+08	POS1782818872467	43.90	0.00	43.90	alipay	completed	2026-06-24 08:45:00+08	2	\N	1
-8	2026-06-30 19:27:52.328071+08	2026-06-30 19:30:32.454415+08	POS1782818872139	9.50	0.00	9.50	member_card	completed	2026-06-21 16:16:00+08	2	\N	1
-7	2026-06-30 19:27:52.311934+08	2026-06-30 19:30:32.454926+08	POS1782818872880	21.00	0.00	21.00	member_card	completed	2026-06-26 10:03:00+08	2	\N	1
-6	2026-06-30 19:27:52.299218+08	2026-06-30 19:30:32.455465+08	POS1782818872556	37.50	0.00	37.50	alipay	completed	2026-06-23 17:14:00+08	2	\N	1
-5	2026-06-30 19:27:52.286637+08	2026-06-30 19:30:32.456018+08	POS1782818872324	40.40	0.00	40.40	cash	completed	2026-06-29 13:23:00+08	2	\N	1
-4	2026-06-30 19:27:52.274427+08	2026-06-30 19:30:32.456571+08	POS1782818872854	30.80	0.00	30.80	member_card	completed	2026-06-27 16:25:00+08	2	\N	1
-3	2026-06-30 19:27:52.259568+08	2026-06-30 19:30:32.457128+08	POS1782818872424	21.80	0.00	21.80	alipay	completed	2026-06-19 12:28:00+08	2	\N	1
-2	2026-06-30 17:46:44.071492+08	2026-06-30 19:30:32.45802+08	POS1782812804862	10.50	0.00	10.50	wechat	completed	2026-06-18 12:18:00+08	2	\N	1
-1	2026-06-30 17:45:39.214605+08	2026-06-30 19:30:32.458555+08	POS1782812739548	10.50	0.00	10.50	wechat	completed	2026-06-26 09:25:00+08	2	\N	1
-38	2026-06-30 19:47:18.229739+08	2026-06-30 19:47:18.229749+08	POS1782820038875	5.50	0.00	5.50	alipay	completed	2026-06-30 19:47:18.229773+08	1	\N	1
-39	2026-07-01 19:11:13.657587+08	2026-07-01 19:11:13.657601+08	POS1782904273499	3.00	0.00	3.00	member_card	completed	2026-07-01 19:11:13.65763+08	1	\N	1
-40	2026-07-01 19:47:38.416012+08	2026-07-01 19:47:38.416022+08	POS1782906458463	28.00	0.00	28.00	cash	completed	2026-07-01 19:47:38.416046+08	1	\N	1
-41	2026-07-01 19:47:38.893808+08	2026-07-01 19:47:38.893814+08	POS1782906458189	28.00	0.00	28.00	cash	completed	2026-07-01 19:47:38.893834+08	1	3	1
-42	2026-07-01 19:48:38.346069+08	2026-07-01 19:48:38.346076+08	POS1782906518214	34.00	0.00	34.00	cash	completed	2026-07-01 19:48:38.346094+08	1	3	1
-43	2026-07-01 19:53:24.813771+08	2026-07-01 19:53:24.81378+08	POS1782906804101	50.00	0.00	50.00	cash	completed	2026-07-01 19:53:24.813803+08	1	3	1
-44	2026-07-01 19:59:36.34521+08	2026-07-01 19:59:36.34522+08	POS1782907176211	22.00	0.00	22.00	cash	completed	2026-07-01 19:59:36.345244+08	1	3	1
-45	2026-07-03 18:45:14.919506+08	2026-07-03 18:45:14.919515+08	POS1783075514231	68.00	0.00	68.00	wechat	completed	2026-07-03 18:45:14.919542+08	1	3	1
-46	2026-07-03 19:00:31.784699+08	2026-07-03 19:00:31.784708+08	POS1783076431385	32.80	0.00	32.80	member_card	completed	2026-07-03 19:00:31.784732+08	1	3	1
-47	2026-07-04 17:27:19.718943+08	2026-07-04 17:27:19.718952+08	POS1783157239956	12.50	0.00	12.50	wechat	completed	2026-07-04 17:27:19.718974+08	1	\N	1
-48	2026-07-04 17:27:38.518596+08	2026-07-04 17:27:38.518603+08	POS1783157258342	25.00	0.00	25.00	cash	completed	2026-07-04 17:27:38.518621+08	1	\N	1
-49	2026-07-04 18:14:36.747658+08	2026-07-04 18:14:36.747665+08	POS1783160076910	12.50	0.00	12.50	member_card	completed	2026-07-04 18:14:36.747687+08	\N	5	1
-50	2026-07-04 18:15:21.883877+08	2026-07-04 18:15:21.883883+08	POS1783160121118	43.00	0.00	43.00	cash	completed	2026-07-04 18:15:21.883899+08	\N	5	1
-51	2026-07-04 18:19:48.919225+08	2026-07-04 18:19:48.919233+08	POS1783160388258	30.00	0.00	30.00	wechat	completed	2026-07-04 18:19:48.919254+08	\N	5	1
-52	2026-07-04 18:21:29.511481+08	2026-07-04 18:21:29.511488+08	POS1783160489173	58.00	0.00	58.00	cash	completed	2026-07-04 18:21:29.511506+08	\N	5	1
+1	2026-06-30 17:45:39.214+08	2026-06-30 19:30:32.458+08	POS1782812739548	10.50	0.00	10.50	wechat	completed	2026-06-26 09:25:00+08	2	\N	1
+2	2026-06-30 17:46:44.071+08	2026-06-30 19:30:32.458+08	POS1782812804862	10.50	0.00	10.50	wechat	completed	2026-06-18 12:18:00+08	2	\N	1
+3	2026-06-30 19:27:52.259+08	2026-06-30 19:30:32.457+08	POS1782818872424	21.80	0.00	21.80	alipay	completed	2026-06-19 12:28:00+08	2	\N	1
+4	2026-06-30 19:27:52.274+08	2026-06-30 19:30:32.456+08	POS1782818872854	30.80	0.00	30.80	member_card	completed	2026-06-27 16:25:00+08	2	\N	1
+5	2026-06-30 19:27:52.286+08	2026-06-30 19:30:32.456+08	POS1782818872324	40.40	0.00	40.40	cash	completed	2026-06-29 13:23:00+08	2	\N	1
+6	2026-06-30 19:27:52.299+08	2026-06-30 19:30:32.455+08	POS1782818872556	37.50	0.00	37.50	alipay	completed	2026-06-23 17:14:00+08	2	\N	1
+7	2026-06-30 19:27:52.311+08	2026-06-30 19:30:32.454+08	POS1782818872880	21.00	0.00	21.00	member_card	completed	2026-06-26 10:03:00+08	2	\N	1
+8	2026-06-30 19:27:52.328+08	2026-06-30 19:30:32.454+08	POS1782818872139	9.50	0.00	9.50	member_card	completed	2026-06-21 16:16:00+08	2	\N	1
+9	2026-06-30 19:27:52.34+08	2026-06-30 19:30:32.453+08	POS1782818872467	43.90	0.00	43.90	alipay	completed	2026-06-24 08:45:00+08	2	\N	1
+10	2026-06-30 19:27:52.352+08	2026-06-30 19:30:32.453+08	POS1782818872566	42.60	0.00	42.60	member_card	completed	2026-06-30 18:46:00+08	2	\N	1
+11	2026-06-30 19:27:52.366+08	2026-06-30 19:30:32.452+08	POS1782818872598	2.00	0.00	2.00	wechat	completed	2026-06-21 21:18:00+08	2	\N	1
+12	2026-06-30 19:27:52.377+08	2026-06-30 19:30:32.452+08	POS1782818872507	13.00	0.00	13.00	cash	completed	2026-06-24 14:22:00+08	2	\N	1
+13	2026-06-30 19:27:52.389+08	2026-06-30 19:30:32.451+08	POS1782818872978	40.50	0.00	40.50	alipay	completed	2026-06-22 12:39:00+08	2	\N	1
+14	2026-06-30 19:27:52.402+08	2026-06-30 19:30:32.451+08	POS1782818872611	6.00	0.00	6.00	alipay	completed	2026-06-19 10:24:00+08	2	\N	1
+15	2026-06-30 19:27:52.413+08	2026-06-30 19:30:32.45+08	POS1782818872387	25.80	0.00	25.80	alipay	completed	2026-06-23 21:23:00+08	2	\N	1
+16	2026-06-30 19:27:52.425+08	2026-06-30 19:30:32.45+08	POS1782818872997	12.00	0.00	12.00	member_card	completed	2026-06-29 13:06:00+08	2	\N	1
+17	2026-06-30 19:27:52.437+08	2026-06-30 19:30:32.449+08	POS1782818872622	9.00	0.00	9.00	member_card	completed	2026-06-27 15:36:00+08	2	\N	1
+18	2026-06-30 19:27:52.449+08	2026-06-30 19:30:32.449+08	POS1782818872617	12.00	0.00	12.00	member_card	completed	2026-06-30 09:07:00+08	2	\N	1
+19	2026-06-30 19:27:52.462+08	2026-06-30 19:30:32.448+08	POS1782818872423	27.50	0.00	27.50	wechat	completed	2026-06-23 21:29:00+08	2	\N	1
+20	2026-06-30 19:27:52.476+08	2026-06-30 19:30:32.448+08	POS1782818872806	36.00	0.00	36.00	cash	completed	2026-06-28 20:50:00+08	2	\N	1
+21	2026-06-30 19:27:52.489+08	2026-06-30 19:30:32.447+08	POS1782818872545	27.00	0.00	27.00	alipay	completed	2026-06-30 12:23:00+08	2	\N	1
+22	2026-06-30 19:27:52.502+08	2026-06-30 19:30:32.447+08	POS1782818872334	37.50	0.00	37.50	wechat	completed	2026-06-27 13:03:00+08	2	\N	1
+23	2026-06-30 19:27:52.516+08	2026-06-30 19:30:32.446+08	POS1782818872256	47.90	0.00	47.90	wechat	completed	2026-06-20 20:19:00+08	2	\N	1
+24	2026-06-30 19:27:52.528+08	2026-06-30 19:30:32.446+08	POS1782818872405	9.00	0.00	9.00	alipay	completed	2026-06-26 20:39:00+08	2	\N	1
+25	2026-06-30 19:27:52.54+08	2026-06-30 19:30:32.446+08	POS1782818872982	16.50	0.00	16.50	cash	completed	2026-06-21 09:13:00+08	2	\N	1
+26	2026-06-30 19:27:52.551+08	2026-06-30 19:30:32.445+08	POS1782818872320	23.00	0.00	23.00	alipay	completed	2026-06-19 18:19:00+08	2	\N	1
+27	2026-06-30 19:27:52.564+08	2026-06-30 19:30:32.445+08	POS1782818872214	6.00	0.00	6.00	alipay	completed	2026-06-26 13:54:00+08	2	\N	1
+28	2026-06-30 19:27:52.575+08	2026-06-30 19:30:32.444+08	POS1782818872618	6.00	0.00	6.00	cash	completed	2026-06-19 10:30:00+08	2	\N	1
+29	2026-06-30 19:27:52.587+08	2026-06-30 19:30:32.444+08	POS1782818872989	9.00	0.00	9.00	member_card	completed	2026-06-24 13:34:00+08	2	\N	1
+30	2026-06-30 19:27:52.599+08	2026-06-30 19:30:32.444+08	POS1782818872282	54.90	0.00	54.90	cash	completed	2026-06-23 16:10:00+08	2	\N	1
+31	2026-06-30 19:27:52.611+08	2026-06-30 19:30:32.443+08	POS1782818872245	35.50	0.00	35.50	wechat	completed	2026-06-29 15:00:00+08	2	\N	1
+32	2026-06-30 19:27:52.624+08	2026-06-30 19:30:32.443+08	POS1782818872252	12.00	0.00	12.00	cash	completed	2026-06-30 19:32:00+08	2	\N	1
+33	2026-06-30 19:27:52.635+08	2026-06-30 19:30:32.442+08	POS1782818872231	51.90	0.00	51.90	member_card	completed	2026-06-19 12:03:00+08	2	\N	1
+34	2026-06-30 19:27:52.647+08	2026-06-30 19:30:32.442+08	POS1782818872257	50.40	0.00	50.40	alipay	completed	2026-06-27 17:25:00+08	2	\N	1
+35	2026-06-30 19:27:52.659+08	2026-06-30 19:30:32.441+08	POS1782818872413	31.00	0.00	31.00	cash	completed	2026-06-29 19:24:00+08	2	\N	1
+36	2026-06-30 19:27:52.671+08	2026-06-30 19:30:32.44+08	POS1782818872786	27.50	0.00	27.50	cash	completed	2026-06-17 10:31:00+08	2	\N	1
+37	2026-06-30 19:27:52.683+08	2026-06-30 19:30:32.439+08	POS1782818872224	4.00	0.00	4.00	member_card	completed	2026-06-19 08:20:00+08	2	\N	1
+38	2026-06-30 19:47:18.229+08	2026-06-30 19:47:18.229+08	POS1782820038875	5.50	0.00	5.50	alipay	completed	2026-06-30 19:47:18.229+08	1	\N	1
+39	2026-07-01 19:11:13.657+08	2026-07-01 19:11:13.657+08	POS1782904273499	3.00	0.00	3.00	member_card	completed	2026-07-01 19:11:13.657+08	1	\N	1
+40	2026-07-01 19:47:38.416+08	2026-07-01 19:47:38.416+08	POS1782906458463	28.00	0.00	28.00	cash	completed	2026-07-01 19:47:38.416+08	1	\N	1
+41	2026-07-01 19:47:38.893+08	2026-07-01 19:47:38.893+08	POS1782906458189	28.00	0.00	28.00	cash	completed	2026-07-01 19:47:38.893+08	1	3	1
+42	2026-07-01 19:48:38.346+08	2026-07-01 19:48:38.346+08	POS1782906518214	34.00	0.00	34.00	cash	completed	2026-07-01 19:48:38.346+08	1	3	1
+43	2026-07-01 19:53:24.813+08	2026-07-01 19:53:24.813+08	POS1782906804101	50.00	0.00	50.00	cash	completed	2026-07-01 19:53:24.813+08	1	3	1
+44	2026-07-01 19:59:36.345+08	2026-07-01 19:59:36.345+08	POS1782907176211	22.00	0.00	22.00	cash	completed	2026-07-01 19:59:36.345+08	1	3	1
+45	2026-07-03 18:45:14.919+08	2026-07-03 18:45:14.919+08	POS1783075514231	68.00	0.00	68.00	wechat	completed	2026-07-03 18:45:14.919+08	1	3	1
+46	2026-07-03 19:00:31.784+08	2026-07-03 19:00:31.784+08	POS1783076431385	32.80	0.00	32.80	member_card	completed	2026-07-03 19:00:31.784+08	1	3	1
+47	2026-07-04 17:27:19.718+08	2026-07-04 17:27:19.718+08	POS1783157239956	12.50	0.00	12.50	wechat	completed	2026-07-04 17:27:19.718+08	1	\N	1
+48	2026-07-04 17:27:38.518+08	2026-07-04 17:27:38.518+08	POS1783157258342	25.00	0.00	25.00	cash	completed	2026-07-04 17:27:38.518+08	1	\N	1
+49	2026-07-04 18:14:36.747+08	2026-07-04 18:14:36.747+08	POS1783160076910	12.50	0.00	12.50	member_card	completed	2026-07-04 18:14:36.747+08	\N	5	1
+50	2026-07-04 18:15:21.883+08	2026-07-04 18:15:21.883+08	POS1783160121118	43.00	0.00	43.00	cash	completed	2026-07-04 18:15:21.883+08	\N	5	1
+51	2026-07-04 18:19:48.919+08	2026-07-04 18:19:48.919+08	POS1783160388258	30.00	0.00	30.00	wechat	completed	2026-07-04 18:19:48.919+08	\N	5	1
+52	2026-07-04 18:21:29.511+08	2026-07-04 18:21:29.511+08	POS1783160489173	58.00	0.00	58.00	cash	completed	2026-07-04 18:21:29.511+08	\N	5	1
+53	2026-07-05 20:51:09.421426+08	2026-07-05 20:51:09.421438+08	POS1783255869380	68.00	0.00	68.00	cash	completed	2026-07-05 20:51:09.421487+08	\N	5	1
+54	2026-07-06 03:10:49.824537+08	2026-07-06 03:10:49.824547+08	POSC55BAB473BBC	3.00	0.00	3.00	cash	completed	2026-07-06 03:10:49.8246+08	1	\N	1
+55	2026-07-06 03:13:28.35464+08	2026-07-06 03:13:28.354648+08	POS0B58ABEF1A58	3.00	0.00	3.00	cash	completed	2026-07-06 03:13:28.354676+08	1	\N	1
+56	2026-07-06 03:16:06.741447+08	2026-07-06 03:16:06.741456+08	POSD1B96C7DF5B6	3.00	0.00	3.00	cash	completed	2026-07-06 03:16:06.74149+08	1	\N	1
+57	2026-07-06 03:23:15.673223+08	2026-07-06 03:23:15.673232+08	POS7704617C0629	60.00	0.00	60.00	cash	completed	2026-07-06 03:23:15.673262+08	\N	5	1
+61	2026-07-06 04:02:20.20769+08	2026-07-06 04:02:20.207701+08	POSC844637D0018	3.50	0.00	3.50	cash	completed	2026-07-06 04:02:20.207739+08	\N	5	1
+62	2026-07-06 18:17:10.311911+08	2026-07-06 18:17:10.31192+08	POS765CC6283AEE	53.30	0.00	53.30	member_card	completed	2026-07-06 18:17:10.311954+08	\N	5	1
+63	2026-07-06 18:19:11.533971+08	2026-07-06 18:19:11.53398+08	POSD596F6B8A154	15.50	0.00	15.50	cash	completed	2026-07-06 18:19:11.534009+08	1	\N	1
+64	2026-07-06 18:25:28.915872+08	2026-07-06 18:25:28.915898+08	POS6F0B8AD77D2D	72.30	0.00	72.30	member_card	completed	2026-07-06 18:25:28.916004+08	\N	5	1
+65	2026-07-06 18:52:57.925471+08	2026-07-06 18:52:57.925508+08	POS631E6A4C79C3	30.50	0.00	30.50	member_card	completed	2026-07-06 18:52:57.925626+08	\N	5	1
+66	2026-07-06 18:55:28.736021+08	2026-07-06 18:55:28.736039+08	POS04A97B10E6D7	12.00	0.00	12.00	member_card	completed	2026-07-06 18:55:28.736101+08	\N	5	1
 \.
 
 
@@ -1167,111 +1276,146 @@ COPY public.pos_order (id, created_at, updated_at, order_no, total_amount, disco
 --
 
 COPY public.pos_order_item (id, created_at, updated_at, product_name, spec_name, quantity, price, subtotal, order_id, sku_id, tenant_id) FROM stdin;
-1	2026-06-30 17:45:39.216592+08	2026-06-30 17:45:39.216596+08	可口可乐	330ml	2.000	3.00	6.00	1	1	1
-2	2026-06-30 17:46:44.072766+08	2026-06-30 17:46:44.072769+08	可口可乐	330ml	2.000	3.00	6.00	2	1	1
-3	2026-06-30 19:27:52.262191+08	2026-06-30 19:27:52.262196+08	康师傅方便面	红烧牛肉	3.000	4.50	13.50	3	4	1
-4	2026-06-30 19:27:52.263594+08	2026-06-30 19:27:52.263599+08	旺旺雪饼	520g	1.000	12.80	12.80	3	2	1
-5	2026-06-30 19:27:52.275248+08	2026-06-30 19:27:52.275255+08	青岛啤酒	500ml	3.000	6.00	18.00	4	3	1
-6	2026-06-30 19:27:52.275879+08	2026-06-30 19:27:52.275883+08	旺旺雪饼	520g	2.000	12.80	25.60	4	6	1
-7	2026-06-30 19:27:52.287438+08	2026-06-30 19:27:52.287445+08	农夫山泉	550ml	2.000	2.00	4.00	5	3	1
-8	2026-06-30 19:27:52.288111+08	2026-06-30 19:27:52.288115+08	旺旺雪饼	520g	3.000	12.80	38.40	5	3	1
-9	2026-06-30 19:27:52.300024+08	2026-06-30 19:27:52.30003+08	康师傅方便面	红烧牛肉	1.000	4.50	4.50	6	1	1
-10	2026-06-30 19:27:52.300667+08	2026-06-30 19:27:52.300671+08	可口可乐	330ml	3.000	3.00	9.00	6	2	1
-11	2026-06-30 19:27:52.30124+08	2026-06-30 19:27:52.301244+08	青岛啤酒	500ml	1.000	6.00	6.00	6	6	1
-12	2026-06-30 19:27:52.315628+08	2026-06-30 19:27:52.315633+08	康师傅方便面	红烧牛肉	1.000	4.50	4.50	7	1	1
-13	2026-06-30 19:27:52.316304+08	2026-06-30 19:27:52.316308+08	伊利纯牛奶	250ml	3.000	5.50	16.50	7	4	1
-14	2026-06-30 19:27:52.329101+08	2026-06-30 19:27:52.329106+08	伊利纯牛奶	250ml	1.000	5.50	5.50	8	1	1
-15	2026-06-30 19:27:52.329738+08	2026-06-30 19:27:52.329742+08	农夫山泉	550ml	2.000	2.00	4.00	8	2	1
-16	2026-06-30 19:27:52.341409+08	2026-06-30 19:27:52.341414+08	旺旺雪饼	520g	1.000	12.80	12.80	9	6	1
-17	2026-06-30 19:27:52.342079+08	2026-06-30 19:27:52.342083+08	伊利纯牛奶	250ml	3.000	5.50	16.50	9	3	1
-18	2026-06-30 19:27:52.353699+08	2026-06-30 19:27:52.353703+08	伊利纯牛奶	250ml	3.000	5.50	16.50	10	6	1
-19	2026-06-30 19:27:52.354608+08	2026-06-30 19:27:52.354613+08	可口可乐	330ml	1.000	3.00	3.00	10	2	1
-20	2026-06-30 19:27:52.355194+08	2026-06-30 19:27:52.355198+08	旺旺雪饼	520g	3.000	12.80	38.40	10	2	1
-21	2026-06-30 19:27:52.367036+08	2026-06-30 19:27:52.36704+08	农夫山泉	550ml	3.000	2.00	6.00	11	6	1
-22	2026-06-30 19:27:52.378493+08	2026-06-30 19:27:52.378497+08	伊利纯牛奶	250ml	3.000	5.50	16.50	12	1	1
-23	2026-06-30 19:27:52.379008+08	2026-06-30 19:27:52.379013+08	农夫山泉	550ml	1.000	2.00	2.00	12	1	1
-24	2026-06-30 19:27:52.390616+08	2026-06-30 19:27:52.390621+08	青岛啤酒	500ml	1.000	6.00	6.00	13	6	1
-25	2026-06-30 19:27:52.391177+08	2026-06-30 19:27:52.391182+08	可口可乐	330ml	2.000	3.00	6.00	13	3	1
-26	2026-06-30 19:27:52.391709+08	2026-06-30 19:27:52.391713+08	康师傅方便面	红烧牛肉	2.000	4.50	9.00	13	3	1
-27	2026-06-30 19:27:52.402913+08	2026-06-30 19:27:52.402917+08	青岛啤酒	500ml	2.000	6.00	12.00	14	4	1
-28	2026-06-30 19:27:52.414066+08	2026-06-30 19:27:52.414069+08	农夫山泉	550ml	2.000	2.00	4.00	15	1	1
-29	2026-06-30 19:27:52.414485+08	2026-06-30 19:27:52.414488+08	可口可乐	330ml	2.000	3.00	6.00	15	3	1
-30	2026-06-30 19:27:52.414883+08	2026-06-30 19:27:52.414888+08	旺旺雪饼	520g	3.000	12.80	38.40	15	2	1
-31	2026-06-30 19:27:52.426387+08	2026-06-30 19:27:52.426391+08	青岛啤酒	500ml	2.000	6.00	12.00	16	2	1
-32	2026-06-30 19:27:52.438206+08	2026-06-30 19:27:52.43821+08	可口可乐	330ml	3.000	3.00	9.00	17	1	1
-33	2026-06-30 19:27:52.45007+08	2026-06-30 19:27:52.450077+08	青岛啤酒	500ml	3.000	6.00	18.00	18	4	1
-34	2026-06-30 19:27:52.450884+08	2026-06-30 19:27:52.45089+08	农夫山泉	550ml	3.000	2.00	6.00	18	2	1
-35	2026-06-30 19:27:52.463152+08	2026-06-30 19:27:52.463158+08	康师傅方便面	红烧牛肉	1.000	4.50	4.50	19	3	1
-36	2026-06-30 19:27:52.463905+08	2026-06-30 19:27:52.46391+08	农夫山泉	550ml	2.000	2.00	4.00	19	6	1
-37	2026-06-30 19:27:52.46475+08	2026-06-30 19:27:52.464755+08	青岛啤酒	500ml	1.000	6.00	6.00	19	2	1
-38	2026-06-30 19:27:52.4772+08	2026-06-30 19:27:52.477205+08	伊利纯牛奶	250ml	2.000	5.50	11.00	20	2	1
-39	2026-06-30 19:27:52.477952+08	2026-06-30 19:27:52.477958+08	康师傅方便面	红烧牛肉	2.000	4.50	9.00	20	4	1
-40	2026-06-30 19:27:52.478606+08	2026-06-30 19:27:52.478612+08	农夫山泉	550ml	1.000	2.00	2.00	20	6	1
-41	2026-06-30 19:27:52.490439+08	2026-06-30 19:27:52.490445+08	康师傅方便面	红烧牛肉	2.000	4.50	9.00	21	1	1
-42	2026-06-30 19:27:52.491188+08	2026-06-30 19:27:52.491192+08	农夫山泉	550ml	1.000	2.00	2.00	21	2	1
-43	2026-06-30 19:27:52.49182+08	2026-06-30 19:27:52.491824+08	青岛啤酒	500ml	1.000	6.00	6.00	21	3	1
-44	2026-06-30 19:27:52.503726+08	2026-06-30 19:27:52.503731+08	青岛啤酒	500ml	3.000	6.00	18.00	22	6	1
-45	2026-06-30 19:27:52.504461+08	2026-06-30 19:27:52.504467+08	农夫山泉	550ml	2.000	2.00	4.00	22	5	1
-46	2026-06-30 19:27:52.505146+08	2026-06-30 19:27:52.505152+08	康师傅方便面	红烧牛肉	2.000	4.50	9.00	22	6	1
-47	2026-06-30 19:27:52.516788+08	2026-06-30 19:27:52.516793+08	伊利纯牛奶	250ml	1.000	5.50	5.50	23	4	1
-48	2026-06-30 19:27:52.517408+08	2026-06-30 19:27:52.517413+08	旺旺雪饼	520g	3.000	12.80	38.40	23	3	1
-49	2026-06-30 19:27:52.517955+08	2026-06-30 19:27:52.517959+08	农夫山泉	550ml	2.000	2.00	4.00	23	1	1
-50	2026-06-30 19:27:52.529122+08	2026-06-30 19:27:52.529126+08	康师傅方便面	红烧牛肉	2.000	4.50	9.00	24	6	1
-51	2026-06-30 19:27:52.540629+08	2026-06-30 19:27:52.540633+08	伊利纯牛奶	250ml	3.000	5.50	16.50	25	5	1
-52	2026-06-30 19:27:52.551956+08	2026-06-30 19:27:52.55196+08	青岛啤酒	500ml	2.000	6.00	12.00	26	4	1
-53	2026-06-30 19:27:52.552478+08	2026-06-30 19:27:52.552482+08	可口可乐	330ml	1.000	3.00	3.00	26	6	1
-54	2026-06-30 19:27:52.553219+08	2026-06-30 19:27:52.553223+08	伊利纯牛奶	250ml	1.000	5.50	5.50	26	1	1
-55	2026-06-30 19:27:52.564658+08	2026-06-30 19:27:52.564662+08	农夫山泉	550ml	2.000	2.00	4.00	27	3	1
-56	2026-06-30 19:27:52.576315+08	2026-06-30 19:27:52.57632+08	青岛啤酒	500ml	3.000	6.00	18.00	28	3	1
-57	2026-06-30 19:27:52.588079+08	2026-06-30 19:27:52.588084+08	可口可乐	330ml	2.000	3.00	6.00	29	3	1
-58	2026-06-30 19:27:52.588662+08	2026-06-30 19:27:52.588666+08	农夫山泉	550ml	2.000	2.00	4.00	29	1	1
-59	2026-06-30 19:27:52.60045+08	2026-06-30 19:27:52.600454+08	伊利纯牛奶	250ml	3.000	5.50	16.50	30	1	1
-60	2026-06-30 19:27:52.601033+08	2026-06-30 19:27:52.601037+08	旺旺雪饼	520g	2.000	12.80	25.60	30	3	1
-61	2026-06-30 19:27:52.612558+08	2026-06-30 19:27:52.612564+08	青岛啤酒	500ml	2.000	6.00	12.00	31	4	1
-62	2026-06-30 19:27:52.613146+08	2026-06-30 19:27:52.61315+08	农夫山泉	550ml	3.000	2.00	6.00	31	6	1
-63	2026-06-30 19:27:52.613579+08	2026-06-30 19:27:52.613583+08	康师傅方便面	红烧牛肉	2.000	4.50	9.00	31	1	1
-64	2026-06-30 19:27:52.624814+08	2026-06-30 19:27:52.624819+08	青岛啤酒	500ml	3.000	6.00	18.00	32	5	1
-65	2026-06-30 19:27:52.635995+08	2026-06-30 19:27:52.636+08	旺旺雪饼	520g	3.000	12.80	38.40	33	5	1
-66	2026-06-30 19:27:52.636597+08	2026-06-30 19:27:52.636601+08	康师傅方便面	红烧牛肉	3.000	4.50	13.50	33	4	1
-67	2026-06-30 19:27:52.647708+08	2026-06-30 19:27:52.647712+08	康师傅方便面	红烧牛肉	3.000	4.50	13.50	34	3	1
-68	2026-06-30 19:27:52.648152+08	2026-06-30 19:27:52.648155+08	可口可乐	330ml	2.000	3.00	6.00	34	5	1
-69	2026-06-30 19:27:52.648497+08	2026-06-30 19:27:52.6485+08	旺旺雪饼	520g	2.000	12.80	25.60	34	2	1
-70	2026-06-30 19:27:52.660524+08	2026-06-30 19:27:52.660529+08	康师傅方便面	红烧牛肉	3.000	4.50	13.50	35	1	1
-71	2026-06-30 19:27:52.66094+08	2026-06-30 19:27:52.660943+08	青岛啤酒	500ml	3.000	6.00	18.00	35	2	1
-72	2026-06-30 19:27:52.661263+08	2026-06-30 19:27:52.661266+08	伊利纯牛奶	250ml	3.000	5.50	16.50	35	2	1
-73	2026-06-30 19:27:52.672557+08	2026-06-30 19:27:52.672563+08	农夫山泉	550ml	3.000	2.00	6.00	36	4	1
-74	2026-06-30 19:27:52.672973+08	2026-06-30 19:27:52.672976+08	可口可乐	330ml	3.000	3.00	9.00	36	4	1
-75	2026-06-30 19:27:52.673313+08	2026-06-30 19:27:52.673316+08	伊利纯牛奶	250ml	2.000	5.50	11.00	36	5	1
-76	2026-06-30 19:27:52.684431+08	2026-06-30 19:27:52.684434+08	农夫山泉	550ml	2.000	2.00	4.00	37	6	1
-77	2026-06-30 19:47:18.231722+08	2026-06-30 19:47:18.231727+08	伊利纯牛奶	250ml	1.000	5.50	5.50	38	4	1
-78	2026-07-01 19:11:13.658773+08	2026-07-01 19:11:13.658778+08	可口可乐(大瓶)	330ml	1.000	3.00	3.00	39	1	1
-79	2026-07-01 19:47:38.417626+08	2026-07-01 19:47:38.417632+08	测试	默认	1.000	10.00	10.00	40	7	1
-80	2026-07-01 19:47:38.894923+08	2026-07-01 19:47:38.894927+08	测试	默认	1.000	10.00	10.00	41	7	1
-81	2026-07-01 19:48:38.347005+08	2026-07-01 19:48:38.347009+08	妙卡巧克力	100g	1.000	12.00	12.00	42	12	1
-82	2026-07-01 19:48:38.347655+08	2026-07-01 19:48:38.347658+08	亨氏番茄酱	650g	1.000	22.00	22.00	42	10	1
-83	2026-07-01 19:53:24.81478+08	2026-07-01 19:53:24.814784+08	雀巢巧伴伴	430g	1.000	28.00	28.00	43	11	1
-84	2026-07-01 19:53:24.815459+08	2026-07-01 19:53:24.815462+08	亨氏番茄酱	650g	1.000	22.00	22.00	43	10	1
-85	2026-07-01 19:59:36.346253+08	2026-07-01 19:59:36.346257+08	亨氏番茄酱	650g	1.000	22.00	22.00	44	10	1
-86	2026-07-03 18:45:14.921196+08	2026-07-03 18:45:14.921201+08	零度可乐		1.000	3.00	3.00	45	13	1
-87	2026-07-03 18:45:14.922594+08	2026-07-03 18:45:14.922599+08	妙卡巧克力		1.000	12.00	12.00	45	12	1
-88	2026-07-03 18:45:14.92323+08	2026-07-03 18:45:14.923234+08	雀巢巧伴伴		1.000	28.00	28.00	45	11	1
-89	2026-07-03 18:45:14.923762+08	2026-07-03 18:45:14.923766+08	亨氏番茄酱		1.000	22.00	22.00	45	10	1
-90	2026-07-03 18:45:14.924328+08	2026-07-03 18:45:14.924332+08	可口可乐		1.000	3.00	3.00	45	9	1
-91	2026-07-03 19:00:31.786447+08	2026-07-03 19:00:31.786453+08	农夫山泉		1.000	2.00	2.00	46	8	1
-92	2026-07-03 19:00:31.787777+08	2026-07-03 19:00:31.787782+08	青岛啤酒		3.000	6.00	18.00	46	6	1
-93	2026-07-03 19:00:31.788325+08	2026-07-03 19:00:31.788329+08	旺旺雪饼		1.000	12.80	12.80	46	5	1
-94	2026-07-04 17:27:19.720534+08	2026-07-04 17:27:19.72054+08	Test	default	1.000	12.50	12.50	47	13	1
-95	2026-07-04 17:27:38.519935+08	2026-07-04 17:27:38.519939+08	TestItem	default	2.000	12.50	25.00	48	13	1
-96	2026-07-04 18:14:36.749329+08	2026-07-04 18:14:36.749333+08	Test	default	1.000	12.50	12.50	49	13	1
-97	2026-07-04 18:15:21.885522+08	2026-07-04 18:15:21.885527+08	零度可乐		1.000	3.00	3.00	50	13	1
-98	2026-07-04 18:15:21.88672+08	2026-07-04 18:15:21.886725+08	妙卡巧克力		1.000	12.00	12.00	50	12	1
-99	2026-07-04 18:15:21.887354+08	2026-07-04 18:15:21.887358+08	雀巢巧伴伴		1.000	28.00	28.00	50	11	1
-100	2026-07-04 18:19:48.920117+08	2026-07-04 18:19:48.920122+08	Test	default	2.000	15.00	30.00	51	13	1
-101	2026-07-04 18:21:29.512322+08	2026-07-04 18:21:29.512325+08	雀巢巧伴伴		1.000	28.00	28.00	52	11	1
-102	2026-07-04 18:21:29.51294+08	2026-07-04 18:21:29.512945+08	亨氏番茄酱		1.000	22.00	22.00	52	10	1
-103	2026-07-04 18:21:29.513264+08	2026-07-04 18:21:29.513268+08	可口可乐		1.000	3.00	3.00	52	9	1
-104	2026-07-04 18:21:29.513521+08	2026-07-04 18:21:29.513526+08	百事可乐		1.000	3.00	3.00	52	7	1
-105	2026-07-04 18:21:29.513807+08	2026-07-04 18:21:29.513811+08	农夫山泉		1.000	2.00	2.00	52	8	1
+1	2026-06-30 17:45:39.216+08	2026-06-30 17:45:39.216+08	可口可乐	330ml	2.000	3.00	6.00	1	1	1
+2	2026-06-30 17:46:44.072+08	2026-06-30 17:46:44.072+08	可口可乐	330ml	2.000	3.00	6.00	2	1	1
+3	2026-06-30 19:27:52.262+08	2026-06-30 19:27:52.262+08	康师傅方便面	红烧牛肉	3.000	4.50	13.50	3	4	1
+4	2026-06-30 19:27:52.263+08	2026-06-30 19:27:52.263+08	旺旺雪饼	520g	1.000	12.80	12.80	3	2	1
+5	2026-06-30 19:27:52.275+08	2026-06-30 19:27:52.275+08	青岛啤酒	500ml	3.000	6.00	18.00	4	3	1
+6	2026-06-30 19:27:52.275+08	2026-06-30 19:27:52.275+08	旺旺雪饼	520g	2.000	12.80	25.60	4	6	1
+7	2026-06-30 19:27:52.287+08	2026-06-30 19:27:52.287+08	农夫山泉	550ml	2.000	2.00	4.00	5	3	1
+8	2026-06-30 19:27:52.288+08	2026-06-30 19:27:52.288+08	旺旺雪饼	520g	3.000	12.80	38.40	5	3	1
+9	2026-06-30 19:27:52.3+08	2026-06-30 19:27:52.3+08	康师傅方便面	红烧牛肉	1.000	4.50	4.50	6	1	1
+10	2026-06-30 19:27:52.3+08	2026-06-30 19:27:52.3+08	可口可乐	330ml	3.000	3.00	9.00	6	2	1
+11	2026-06-30 19:27:52.301+08	2026-06-30 19:27:52.301+08	青岛啤酒	500ml	1.000	6.00	6.00	6	6	1
+12	2026-06-30 19:27:52.315+08	2026-06-30 19:27:52.315+08	康师傅方便面	红烧牛肉	1.000	4.50	4.50	7	1	1
+13	2026-06-30 19:27:52.316+08	2026-06-30 19:27:52.316+08	伊利纯牛奶	250ml	3.000	5.50	16.50	7	4	1
+14	2026-06-30 19:27:52.329+08	2026-06-30 19:27:52.329+08	伊利纯牛奶	250ml	1.000	5.50	5.50	8	1	1
+15	2026-06-30 19:27:52.329+08	2026-06-30 19:27:52.329+08	农夫山泉	550ml	2.000	2.00	4.00	8	2	1
+16	2026-06-30 19:27:52.341+08	2026-06-30 19:27:52.341+08	旺旺雪饼	520g	1.000	12.80	12.80	9	6	1
+17	2026-06-30 19:27:52.342+08	2026-06-30 19:27:52.342+08	伊利纯牛奶	250ml	3.000	5.50	16.50	9	3	1
+18	2026-06-30 19:27:52.353+08	2026-06-30 19:27:52.353+08	伊利纯牛奶	250ml	3.000	5.50	16.50	10	6	1
+19	2026-06-30 19:27:52.354+08	2026-06-30 19:27:52.354+08	可口可乐	330ml	1.000	3.00	3.00	10	2	1
+20	2026-06-30 19:27:52.355+08	2026-06-30 19:27:52.355+08	旺旺雪饼	520g	3.000	12.80	38.40	10	2	1
+21	2026-06-30 19:27:52.367+08	2026-06-30 19:27:52.367+08	农夫山泉	550ml	3.000	2.00	6.00	11	6	1
+22	2026-06-30 19:27:52.378+08	2026-06-30 19:27:52.378+08	伊利纯牛奶	250ml	3.000	5.50	16.50	12	1	1
+23	2026-06-30 19:27:52.379+08	2026-06-30 19:27:52.379+08	农夫山泉	550ml	1.000	2.00	2.00	12	1	1
+24	2026-06-30 19:27:52.39+08	2026-06-30 19:27:52.39+08	青岛啤酒	500ml	1.000	6.00	6.00	13	6	1
+25	2026-06-30 19:27:52.391+08	2026-06-30 19:27:52.391+08	可口可乐	330ml	2.000	3.00	6.00	13	3	1
+26	2026-06-30 19:27:52.391+08	2026-06-30 19:27:52.391+08	康师傅方便面	红烧牛肉	2.000	4.50	9.00	13	3	1
+27	2026-06-30 19:27:52.402+08	2026-06-30 19:27:52.402+08	青岛啤酒	500ml	2.000	6.00	12.00	14	4	1
+28	2026-06-30 19:27:52.414+08	2026-06-30 19:27:52.414+08	农夫山泉	550ml	2.000	2.00	4.00	15	1	1
+29	2026-06-30 19:27:52.414+08	2026-06-30 19:27:52.414+08	可口可乐	330ml	2.000	3.00	6.00	15	3	1
+30	2026-06-30 19:27:52.414+08	2026-06-30 19:27:52.414+08	旺旺雪饼	520g	3.000	12.80	38.40	15	2	1
+31	2026-06-30 19:27:52.426+08	2026-06-30 19:27:52.426+08	青岛啤酒	500ml	2.000	6.00	12.00	16	2	1
+32	2026-06-30 19:27:52.438+08	2026-06-30 19:27:52.438+08	可口可乐	330ml	3.000	3.00	9.00	17	1	1
+33	2026-06-30 19:27:52.45+08	2026-06-30 19:27:52.45+08	青岛啤酒	500ml	3.000	6.00	18.00	18	4	1
+34	2026-06-30 19:27:52.45+08	2026-06-30 19:27:52.45+08	农夫山泉	550ml	3.000	2.00	6.00	18	2	1
+35	2026-06-30 19:27:52.463+08	2026-06-30 19:27:52.463+08	康师傅方便面	红烧牛肉	1.000	4.50	4.50	19	3	1
+36	2026-06-30 19:27:52.463+08	2026-06-30 19:27:52.463+08	农夫山泉	550ml	2.000	2.00	4.00	19	6	1
+37	2026-06-30 19:27:52.464+08	2026-06-30 19:27:52.464+08	青岛啤酒	500ml	1.000	6.00	6.00	19	2	1
+38	2026-06-30 19:27:52.477+08	2026-06-30 19:27:52.477+08	伊利纯牛奶	250ml	2.000	5.50	11.00	20	2	1
+39	2026-06-30 19:27:52.477+08	2026-06-30 19:27:52.477+08	康师傅方便面	红烧牛肉	2.000	4.50	9.00	20	4	1
+40	2026-06-30 19:27:52.478+08	2026-06-30 19:27:52.478+08	农夫山泉	550ml	1.000	2.00	2.00	20	6	1
+41	2026-06-30 19:27:52.49+08	2026-06-30 19:27:52.49+08	康师傅方便面	红烧牛肉	2.000	4.50	9.00	21	1	1
+42	2026-06-30 19:27:52.491+08	2026-06-30 19:27:52.491+08	农夫山泉	550ml	1.000	2.00	2.00	21	2	1
+43	2026-06-30 19:27:52.491+08	2026-06-30 19:27:52.491+08	青岛啤酒	500ml	1.000	6.00	6.00	21	3	1
+44	2026-06-30 19:27:52.503+08	2026-06-30 19:27:52.503+08	青岛啤酒	500ml	3.000	6.00	18.00	22	6	1
+45	2026-06-30 19:27:52.504+08	2026-06-30 19:27:52.504+08	农夫山泉	550ml	2.000	2.00	4.00	22	5	1
+46	2026-06-30 19:27:52.505+08	2026-06-30 19:27:52.505+08	康师傅方便面	红烧牛肉	2.000	4.50	9.00	22	6	1
+47	2026-06-30 19:27:52.516+08	2026-06-30 19:27:52.516+08	伊利纯牛奶	250ml	1.000	5.50	5.50	23	4	1
+48	2026-06-30 19:27:52.517+08	2026-06-30 19:27:52.517+08	旺旺雪饼	520g	3.000	12.80	38.40	23	3	1
+49	2026-06-30 19:27:52.517+08	2026-06-30 19:27:52.517+08	农夫山泉	550ml	2.000	2.00	4.00	23	1	1
+50	2026-06-30 19:27:52.529+08	2026-06-30 19:27:52.529+08	康师傅方便面	红烧牛肉	2.000	4.50	9.00	24	6	1
+51	2026-06-30 19:27:52.54+08	2026-06-30 19:27:52.54+08	伊利纯牛奶	250ml	3.000	5.50	16.50	25	5	1
+52	2026-06-30 19:27:52.551+08	2026-06-30 19:27:52.551+08	青岛啤酒	500ml	2.000	6.00	12.00	26	4	1
+53	2026-06-30 19:27:52.552+08	2026-06-30 19:27:52.552+08	可口可乐	330ml	1.000	3.00	3.00	26	6	1
+54	2026-06-30 19:27:52.553+08	2026-06-30 19:27:52.553+08	伊利纯牛奶	250ml	1.000	5.50	5.50	26	1	1
+55	2026-06-30 19:27:52.564+08	2026-06-30 19:27:52.564+08	农夫山泉	550ml	2.000	2.00	4.00	27	3	1
+56	2026-06-30 19:27:52.576+08	2026-06-30 19:27:52.576+08	青岛啤酒	500ml	3.000	6.00	18.00	28	3	1
+57	2026-06-30 19:27:52.588+08	2026-06-30 19:27:52.588+08	可口可乐	330ml	2.000	3.00	6.00	29	3	1
+58	2026-06-30 19:27:52.588+08	2026-06-30 19:27:52.588+08	农夫山泉	550ml	2.000	2.00	4.00	29	1	1
+59	2026-06-30 19:27:52.6+08	2026-06-30 19:27:52.6+08	伊利纯牛奶	250ml	3.000	5.50	16.50	30	1	1
+60	2026-06-30 19:27:52.601+08	2026-06-30 19:27:52.601+08	旺旺雪饼	520g	2.000	12.80	25.60	30	3	1
+61	2026-06-30 19:27:52.612+08	2026-06-30 19:27:52.612+08	青岛啤酒	500ml	2.000	6.00	12.00	31	4	1
+62	2026-06-30 19:27:52.613+08	2026-06-30 19:27:52.613+08	农夫山泉	550ml	3.000	2.00	6.00	31	6	1
+63	2026-06-30 19:27:52.613+08	2026-06-30 19:27:52.613+08	康师傅方便面	红烧牛肉	2.000	4.50	9.00	31	1	1
+64	2026-06-30 19:27:52.624+08	2026-06-30 19:27:52.624+08	青岛啤酒	500ml	3.000	6.00	18.00	32	5	1
+65	2026-06-30 19:27:52.635+08	2026-06-30 19:27:52.636+08	旺旺雪饼	520g	3.000	12.80	38.40	33	5	1
+66	2026-06-30 19:27:52.636+08	2026-06-30 19:27:52.636+08	康师傅方便面	红烧牛肉	3.000	4.50	13.50	33	4	1
+67	2026-06-30 19:27:52.647+08	2026-06-30 19:27:52.647+08	康师傅方便面	红烧牛肉	3.000	4.50	13.50	34	3	1
+68	2026-06-30 19:27:52.648+08	2026-06-30 19:27:52.648+08	可口可乐	330ml	2.000	3.00	6.00	34	5	1
+69	2026-06-30 19:27:52.648+08	2026-06-30 19:27:52.648+08	旺旺雪饼	520g	2.000	12.80	25.60	34	2	1
+70	2026-06-30 19:27:52.66+08	2026-06-30 19:27:52.66+08	康师傅方便面	红烧牛肉	3.000	4.50	13.50	35	1	1
+71	2026-06-30 19:27:52.66+08	2026-06-30 19:27:52.66+08	青岛啤酒	500ml	3.000	6.00	18.00	35	2	1
+72	2026-06-30 19:27:52.661+08	2026-06-30 19:27:52.661+08	伊利纯牛奶	250ml	3.000	5.50	16.50	35	2	1
+73	2026-06-30 19:27:52.672+08	2026-06-30 19:27:52.672+08	农夫山泉	550ml	3.000	2.00	6.00	36	4	1
+74	2026-06-30 19:27:52.672+08	2026-06-30 19:27:52.672+08	可口可乐	330ml	3.000	3.00	9.00	36	4	1
+75	2026-06-30 19:27:52.673+08	2026-06-30 19:27:52.673+08	伊利纯牛奶	250ml	2.000	5.50	11.00	36	5	1
+76	2026-06-30 19:27:52.684+08	2026-06-30 19:27:52.684+08	农夫山泉	550ml	2.000	2.00	4.00	37	6	1
+77	2026-06-30 19:47:18.231+08	2026-06-30 19:47:18.231+08	伊利纯牛奶	250ml	1.000	5.50	5.50	38	4	1
+78	2026-07-01 19:11:13.658+08	2026-07-01 19:11:13.658+08	可口可乐(大瓶)	330ml	1.000	3.00	3.00	39	1	1
+79	2026-07-01 19:47:38.417+08	2026-07-01 19:47:38.417+08	测试	默认	1.000	10.00	10.00	40	7	1
+80	2026-07-01 19:47:38.894+08	2026-07-01 19:47:38.894+08	测试	默认	1.000	10.00	10.00	41	7	1
+81	2026-07-01 19:48:38.347+08	2026-07-01 19:48:38.347+08	妙卡巧克力	100g	1.000	12.00	12.00	42	12	1
+82	2026-07-01 19:48:38.347+08	2026-07-01 19:48:38.347+08	亨氏番茄酱	650g	1.000	22.00	22.00	42	10	1
+83	2026-07-01 19:53:24.814+08	2026-07-01 19:53:24.814+08	雀巢巧伴伴	430g	1.000	28.00	28.00	43	11	1
+84	2026-07-01 19:53:24.815+08	2026-07-01 19:53:24.815+08	亨氏番茄酱	650g	1.000	22.00	22.00	43	10	1
+85	2026-07-01 19:59:36.346+08	2026-07-01 19:59:36.346+08	亨氏番茄酱	650g	1.000	22.00	22.00	44	10	1
+86	2026-07-03 18:45:14.921+08	2026-07-03 18:45:14.921+08	零度可乐		1.000	3.00	3.00	45	13	1
+87	2026-07-03 18:45:14.922+08	2026-07-03 18:45:14.922+08	妙卡巧克力		1.000	12.00	12.00	45	12	1
+88	2026-07-03 18:45:14.923+08	2026-07-03 18:45:14.923+08	雀巢巧伴伴		1.000	28.00	28.00	45	11	1
+89	2026-07-03 18:45:14.923+08	2026-07-03 18:45:14.923+08	亨氏番茄酱		1.000	22.00	22.00	45	10	1
+90	2026-07-03 18:45:14.924+08	2026-07-03 18:45:14.924+08	可口可乐		1.000	3.00	3.00	45	9	1
+91	2026-07-03 19:00:31.786+08	2026-07-03 19:00:31.786+08	农夫山泉		1.000	2.00	2.00	46	8	1
+92	2026-07-03 19:00:31.787+08	2026-07-03 19:00:31.787+08	青岛啤酒		3.000	6.00	18.00	46	6	1
+93	2026-07-03 19:00:31.788+08	2026-07-03 19:00:31.788+08	旺旺雪饼		1.000	12.80	12.80	46	5	1
+94	2026-07-04 17:27:19.72+08	2026-07-04 17:27:19.72+08	Test	default	1.000	12.50	12.50	47	13	1
+95	2026-07-04 17:27:38.519+08	2026-07-04 17:27:38.519+08	TestItem	default	2.000	12.50	25.00	48	13	1
+96	2026-07-04 18:14:36.749+08	2026-07-04 18:14:36.749+08	Test	default	1.000	12.50	12.50	49	13	1
+97	2026-07-04 18:15:21.885+08	2026-07-04 18:15:21.885+08	零度可乐		1.000	3.00	3.00	50	13	1
+98	2026-07-04 18:15:21.886+08	2026-07-04 18:15:21.886+08	妙卡巧克力		1.000	12.00	12.00	50	12	1
+99	2026-07-04 18:15:21.887+08	2026-07-04 18:15:21.887+08	雀巢巧伴伴		1.000	28.00	28.00	50	11	1
+100	2026-07-04 18:19:48.92+08	2026-07-04 18:19:48.92+08	Test	default	2.000	15.00	30.00	51	13	1
+101	2026-07-04 18:21:29.512+08	2026-07-04 18:21:29.512+08	雀巢巧伴伴		1.000	28.00	28.00	52	11	1
+102	2026-07-04 18:21:29.512+08	2026-07-04 18:21:29.512+08	亨氏番茄酱		1.000	22.00	22.00	52	10	1
+103	2026-07-04 18:21:29.513+08	2026-07-04 18:21:29.513+08	可口可乐		1.000	3.00	3.00	52	9	1
+104	2026-07-04 18:21:29.513+08	2026-07-04 18:21:29.513+08	百事可乐		1.000	3.00	3.00	52	7	1
+105	2026-07-04 18:21:29.513+08	2026-07-04 18:21:29.513+08	农夫山泉		1.000	2.00	2.00	52	8	1
+106	2026-07-05 20:51:09.423167+08	2026-07-05 20:51:09.423177+08	零度可乐		1.000	3.00	3.00	53	13	1
+107	2026-07-05 20:51:09.42431+08	2026-07-05 20:51:09.424316+08	妙卡巧克力		1.000	12.00	12.00	53	12	1
+108	2026-07-05 20:51:09.424707+08	2026-07-05 20:51:09.424713+08	雀巢巧伴伴		1.000	28.00	28.00	53	11	1
+109	2026-07-05 20:51:09.425102+08	2026-07-05 20:51:09.425119+08	亨氏番茄酱		1.000	22.00	22.00	53	10	1
+110	2026-07-05 20:51:09.425844+08	2026-07-05 20:51:09.425859+08	可口可乐		1.000	3.00	3.00	53	9	1
+111	2026-07-06 03:10:49.828873+08	2026-07-06 03:10:49.828882+08	零度可乐	330ml	1.000	3.00	3.00	54	13	1
+112	2026-07-06 03:13:28.356745+08	2026-07-06 03:13:28.356753+08	零度可乐	330ml	1.000	3.00	3.00	55	13	1
+113	2026-07-06 03:16:06.744172+08	2026-07-06 03:16:06.744186+08	零度可乐	330ml	1.000	3.00	3.00	56	13	1
+114	2026-07-06 03:23:15.675664+08	2026-07-06 03:23:15.675672+08	妙卡巧克力	100g	5.000	12.00	60.00	57	12	1
+118	2026-07-06 04:02:20.209894+08	2026-07-06 04:02:20.209903+08	可口可乐(大瓶)	330ml	1.000	3.50	3.50	61	1	1
+119	2026-07-06 18:17:10.319124+08	2026-07-06 18:17:10.319133+08	康师傅方便面	红烧牛肉	1.000	4.50	4.50	62	3	1
+120	2026-07-06 18:17:10.324276+08	2026-07-06 18:17:10.324283+08	农夫山泉	550ml	1.000	2.00	2.00	62	2	1
+121	2026-07-06 18:17:10.325803+08	2026-07-06 18:17:10.325811+08	可口可乐(大瓶)	330ml	1.000	3.50	3.50	62	1	1
+122	2026-07-06 18:17:10.327233+08	2026-07-06 18:17:10.327239+08	伊利纯牛奶	250ml	1.000	5.50	5.50	62	4	1
+123	2026-07-06 18:17:10.328707+08	2026-07-06 18:17:10.328713+08	旺旺雪饼	520g	1.000	12.80	12.80	62	5	1
+124	2026-07-06 18:17:10.334016+08	2026-07-06 18:17:10.334054+08	亨氏番茄酱	650g	1.000	22.00	22.00	62	10	1
+125	2026-07-06 18:17:10.33833+08	2026-07-06 18:17:10.338354+08	可口可乐	330ml	1.000	3.00	3.00	62	9	1
+126	2026-07-06 18:19:11.536102+08	2026-07-06 18:19:11.53611+08	可口可乐(大瓶)	330ml	1.000	3.50	3.50	63	1	1
+127	2026-07-06 18:19:11.540143+08	2026-07-06 18:19:11.540165+08	农夫山泉	550ml	1.000	2.00	2.00	63	2	1
+128	2026-07-06 18:19:11.544235+08	2026-07-06 18:19:11.544243+08	康师傅方便面	红烧牛肉	1.000	4.50	4.50	63	3	1
+129	2026-07-06 18:19:11.547149+08	2026-07-06 18:19:11.547157+08	伊利纯牛奶	250ml	1.000	5.50	5.50	63	4	1
+130	2026-07-06 18:25:28.923742+08	2026-07-06 18:25:28.92375+08	可口可乐(大瓶)	330ml	1.000	3.50	3.50	64	1	1
+131	2026-07-06 18:25:28.943628+08	2026-07-06 18:25:28.943667+08	农夫山泉	550ml	1.000	2.00	2.00	64	2	1
+132	2026-07-06 18:25:28.950652+08	2026-07-06 18:25:28.950675+08	康师傅方便面	红烧牛肉	1.000	4.50	4.50	64	3	1
+133	2026-07-06 18:25:28.955294+08	2026-07-06 18:25:28.955308+08	伊利纯牛奶	250ml	1.000	5.50	5.50	64	4	1
+134	2026-07-06 18:25:28.957643+08	2026-07-06 18:25:28.957657+08	旺旺雪饼	520g	1.000	12.80	12.80	64	5	1
+135	2026-07-06 18:25:28.960198+08	2026-07-06 18:25:28.960214+08	亨氏番茄酱	650g	2.000	22.00	44.00	64	10	1
+136	2026-07-06 18:52:57.932934+08	2026-07-06 18:52:57.932942+08	农夫山泉	550ml	5.000	2.00	10.00	65	2	1
+137	2026-07-06 18:52:57.940905+08	2026-07-06 18:52:57.940915+08	康师傅方便面	红烧牛肉	1.000	4.50	4.50	65	3	1
+138	2026-07-06 18:52:57.94605+08	2026-07-06 18:52:57.946058+08	青岛啤酒	500ml	1.000	6.00	6.00	65	6	1
+139	2026-07-06 18:52:57.9484+08	2026-07-06 18:52:57.948408+08	百事可乐	330ml	2.000	3.00	6.00	65	7	1
+140	2026-07-06 18:52:57.954434+08	2026-07-06 18:52:57.954447+08	农夫山泉	550ml	2.000	2.00	4.00	65	8	1
+141	2026-07-06 18:55:28.742988+08	2026-07-06 18:55:28.742996+08	农夫山泉	550ml	1.000	2.00	2.00	66	2	1
+142	2026-07-06 18:55:28.750008+08	2026-07-06 18:55:28.750015+08	康师傅方便面	红烧牛肉	1.000	4.50	4.50	66	3	1
+143	2026-07-06 18:55:28.752776+08	2026-07-06 18:55:28.752787+08	伊利纯牛奶	250ml	1.000	5.50	5.50	66	4	1
 \.
 
 
@@ -1280,19 +1424,19 @@ COPY public.pos_order_item (id, created_at, updated_at, product_name, spec_name,
 --
 
 COPY public.product (id, created_at, updated_at, name, image, unit, is_weighted, is_active, category_id, tenant_id, image_url) FROM stdin;
-2	2026-06-30 17:44:06.163334+08	2026-06-30 17:44:06.163338+08	农夫山泉		瓶	f	t	1	1	
-3	2026-06-30 17:44:06.164151+08	2026-06-30 17:44:06.164154+08	康师傅方便面		袋	f	t	2	1	
-4	2026-06-30 17:44:06.164907+08	2026-06-30 17:44:06.16491+08	伊利纯牛奶		盒	f	t	3	1	
-5	2026-06-30 17:44:06.165857+08	2026-06-30 17:44:06.165861+08	旺旺雪饼		袋	f	t	2	1	
-6	2026-06-30 17:44:06.166837+08	2026-06-30 17:44:06.16684+08	青岛啤酒		瓶	f	t	1	1	
-8	2026-07-01 19:32:50.619434+08	2026-07-01 19:32:50.619443+08	农夫山泉		瓶	f	t	1	1	https://images.openfoodfacts.org/images/products/692/116/850/9256/front_en.3.400.jpg
-9	2026-07-01 19:32:55.311548+08	2026-07-01 19:32:55.311559+08	可口可乐		罐	f	t	1	1	https://images.openfoodfacts.org/images/products/544/900/000/0996/front_en.1035.400.jpg
-10	2026-07-01 19:32:58.504454+08	2026-07-01 19:32:58.50446+08	亨氏番茄酱		瓶	f	t	6	1	https://images.openfoodfacts.org/images/products/871/570/011/0622/front_fr.18.400.jpg
-11	2026-07-01 19:33:01.883422+08	2026-07-01 19:33:01.883429+08	雀巢巧伴伴		盒	f	t	4	1	https://images.openfoodfacts.org/images/products/761/303/462/6844/front_fr.355.400.jpg
-12	2026-07-01 19:33:05.274356+08	2026-07-01 19:33:05.274362+08	妙卡巧克力		块	f	t	4	1	https://images.openfoodfacts.org/images/products/304/514/010/5502/front_fr.625.400.jpg
-7	2026-07-01 19:28:29.361813+08	2026-07-01 20:10:49.148794+08	百事可乐	products/百事可乐_o8g33xU.jpg	瓶	f	t	1	1	
-1	2026-06-30 17:44:06.160456+08	2026-07-01 20:18:55.239678+08	可口可乐(大瓶)	products/可口可乐大瓶.jpg	瓶	f	t	1	1	
-13	2026-07-01 19:33:08.604991+08	2026-07-04 17:40:04.963213+08	零度可乐	products/百事可乐_rqFtmLx.jpg	罐	f	f	1	1	https://images.openfoodfacts.org/images/products/544/900/013/1805/front_en.687.400.jpg
+1	2026-06-30 17:44:06.16+08	2026-07-01 20:18:55.239+08	可口可乐(大瓶)	products/可口可乐大瓶.jpg	瓶	f	t	1	1	
+2	2026-06-30 17:44:06.163+08	2026-06-30 17:44:06.163+08	农夫山泉		瓶	f	t	1	1	
+3	2026-06-30 17:44:06.164+08	2026-06-30 17:44:06.164+08	康师傅方便面		袋	f	t	2	1	
+4	2026-06-30 17:44:06.164+08	2026-06-30 17:44:06.164+08	伊利纯牛奶		盒	f	t	3	1	
+5	2026-06-30 17:44:06.165+08	2026-06-30 17:44:06.165+08	旺旺雪饼		袋	f	t	2	1	
+6	2026-06-30 17:44:06.166+08	2026-06-30 17:44:06.166+08	青岛啤酒		瓶	f	t	1	1	
+7	2026-07-01 19:28:29.361+08	2026-07-01 20:10:49.148+08	百事可乐	products/百事可乐_o8g33xU.jpg	瓶	f	t	1	1	
+8	2026-07-01 19:32:50.619+08	2026-07-01 19:32:50.619+08	农夫山泉		瓶	f	t	1	1	https://images.openfoodfacts.org/images/products/692/116/850/9256/front_en.3.400.jpg
+9	2026-07-01 19:32:55.311+08	2026-07-01 19:32:55.311+08	可口可乐		罐	f	t	1	1	https://images.openfoodfacts.org/images/products/544/900/000/0996/front_en.1035.400.jpg
+10	2026-07-01 19:32:58.504+08	2026-07-01 19:32:58.504+08	亨氏番茄酱		瓶	f	t	6	1	https://images.openfoodfacts.org/images/products/871/570/011/0622/front_fr.18.400.jpg
+11	2026-07-01 19:33:01.883+08	2026-07-01 19:33:01.883+08	雀巢巧伴伴		盒	f	t	4	1	https://images.openfoodfacts.org/images/products/761/303/462/6844/front_fr.355.400.jpg
+13	2026-07-01 19:33:08.604+08	2026-07-06 03:05:29.187727+08	零度可乐	products/百事可乐_rqFtmLx.jpg	罐	f	t	1	1	https://images.openfoodfacts.org/images/products/544/900/013/1805/front_en.687.400.jpg
+12	2026-07-01 19:33:05.274+08	2026-07-06 03:06:04.002457+08	妙卡巧克力		块	f	t	4	1	https://images.openfoodfacts.org/images/products/304/514/010/5502/front_fr.625.400.jpg
 \.
 
 
@@ -1301,18 +1445,18 @@ COPY public.product (id, created_at, updated_at, name, image, unit, is_weighted,
 --
 
 COPY public.product_category (id, created_at, updated_at, name, sort_order, parent_id, tenant_id) FROM stdin;
-1	2026-06-30 17:44:06.155517+08	2026-06-30 17:44:06.155526+08	饮料	0	\N	1
-2	2026-06-30 17:44:06.157752+08	2026-06-30 17:44:06.157757+08	食品	0	\N	1
-3	2026-06-30 17:44:06.158352+08	2026-06-30 17:44:06.158356+08	乳制品	0	\N	1
-4	2026-06-30 20:45:02.964117+08	2026-06-30 20:45:02.964127+08	零食	0	\N	1
-5	2026-06-30 20:45:02.968426+08	2026-06-30 20:45:02.968432+08	酒类	0	\N	1
-6	2026-06-30 20:45:02.969425+08	2026-06-30 20:45:02.969429+08	调味品	0	\N	1
-7	2026-06-30 20:45:02.970293+08	2026-06-30 20:45:02.970297+08	日用品	0	\N	1
-8	2026-06-30 20:45:02.971161+08	2026-06-30 20:45:02.971165+08	冷冻食品	0	\N	1
-9	2026-06-30 20:45:02.972+08	2026-06-30 20:45:02.972004+08	粮油米面	0	\N	1
-10	2026-06-30 20:45:02.972674+08	2026-06-30 20:45:02.972678+08	个人护理	0	\N	1
-11	2026-06-30 20:45:02.9733+08	2026-06-30 20:45:02.973303+08	家居清洁	0	\N	1
-12	2026-06-30 20:45:02.974137+08	2026-06-30 20:45:02.97414+08	文具玩具	0	\N	1
+1	2026-06-30 17:44:06.155+08	2026-06-30 17:44:06.155+08	饮料	0	\N	1
+2	2026-06-30 17:44:06.157+08	2026-06-30 17:44:06.157+08	食品	0	\N	1
+3	2026-06-30 17:44:06.158+08	2026-06-30 17:44:06.158+08	乳制品	0	\N	1
+4	2026-06-30 20:45:02.964+08	2026-06-30 20:45:02.964+08	零食	0	\N	1
+5	2026-06-30 20:45:02.968+08	2026-06-30 20:45:02.968+08	酒类	0	\N	1
+6	2026-06-30 20:45:02.969+08	2026-06-30 20:45:02.969+08	调味品	0	\N	1
+7	2026-06-30 20:45:02.97+08	2026-06-30 20:45:02.97+08	日用品	0	\N	1
+8	2026-06-30 20:45:02.971+08	2026-06-30 20:45:02.971+08	冷冻食品	0	\N	1
+9	2026-06-30 20:45:02.972+08	2026-06-30 20:45:02.972+08	粮油米面	0	\N	1
+10	2026-06-30 20:45:02.972+08	2026-06-30 20:45:02.972+08	个人护理	0	\N	1
+11	2026-06-30 20:45:02.973+08	2026-06-30 20:45:02.973+08	家居清洁	0	\N	1
+12	2026-06-30 20:45:02.974+08	2026-06-30 20:45:02.974+08	文具玩具	0	\N	1
 \.
 
 
@@ -1321,19 +1465,19 @@ COPY public.product_category (id, created_at, updated_at, name, sort_order, pare
 --
 
 COPY public.product_sku (id, created_at, updated_at, barcode, spec_name, spec_attrs, purchase_price, selling_price, stock_quantity, stock_alert, product_id, tenant_id) FROM stdin;
-2	2026-06-30 17:44:06.16374+08	2026-06-30 17:44:06.163743+08	6901234567891	550ml	{}	1.00	2.00	200.000	30.000	2	1
-3	2026-06-30 17:44:06.164511+08	2026-06-30 17:44:06.164514+08	6901234567892	红烧牛肉	{}	3.00	4.50	80.000	10.000	3	1
-4	2026-06-30 17:44:06.165375+08	2026-06-30 17:44:06.165378+08	6901234567893	250ml	{}	4.00	5.50	60.000	10.000	4	1
-5	2026-06-30 17:44:06.166337+08	2026-06-30 17:44:06.16634+08	6901234567894	520g	{}	8.00	12.80	45.000	5.000	5	1
-6	2026-06-30 17:44:06.167252+08	2026-06-30 17:44:06.167256+08	6901234567895	500ml	{}	3.50	6.00	100.000	15.000	6	1
-1	2026-06-30 17:44:06.161724+08	2026-06-30 17:44:06.161727+08	6901234567890	330ml	{}	2.00	3.00	200.000	20.000	1	1
-7	2026-07-01 19:28:29.36273+08	2026-07-01 19:28:29.362733+08	5449000214911	330ml	{}	2.20	3.00	120.000	20.000	7	1
-8	2026-07-01 19:32:50.620283+08	2026-07-01 19:32:50.620287+08	6921168509256	550ml	{}	1.00	2.00	200.000	10.000	8	1
-9	2026-07-01 19:32:55.312496+08	2026-07-01 19:32:55.312501+08	5449000000996	330ml	{}	2.00	3.00	150.000	10.000	9	1
-10	2026-07-01 19:32:58.50529+08	2026-07-01 19:32:58.505295+08	8715700110622	650g	{}	15.00	22.00	30.000	10.000	10	1
-11	2026-07-01 19:33:01.884217+08	2026-07-01 19:33:01.88422+08	7613034626844	430g	{}	18.00	28.00	20.000	10.000	11	1
-12	2026-07-01 19:33:05.27523+08	2026-07-01 19:33:05.275233+08	3045140105502	100g	{}	8.00	12.00	50.000	10.000	12	1
-13	2026-07-01 19:33:08.605819+08	2026-07-01 19:33:08.605822+08	5449000131805	330ml	{}	2.00	3.00	107.000	10.000	13	1
+11	2026-07-01 19:33:01.884+08	2026-07-01 19:33:01.884+08	7613034626844	430g	{}	18.00	28.00	20.000	10.000	11	1
+13	2026-07-01 19:33:08.605+08	2026-07-01 19:33:08.605+08	5449000131805	330ml	{}	2.00	3.00	104.000	10.000	13	1
+12	2026-07-01 19:33:05.275+08	2026-07-01 19:33:05.275+08	3045140105502	100g	{}	8.00	12.00	45.000	10.000	12	1
+9	2026-07-01 19:32:55.312+08	2026-07-01 19:32:55.312+08	5449000000996	330ml	{}	2.00	3.00	149.000	10.000	9	1
+1	2026-06-30 17:44:06.161+08	2026-07-06 03:43:21.769622+08	6901234567890	330ml	{}	2.00	3.50	196.000	20.000	1	1
+5	2026-06-30 17:44:06.166+08	2026-06-30 17:44:06.166+08	6901234567894	520g	{}	8.00	12.80	43.000	5.000	5	1
+10	2026-07-01 19:32:58.505+08	2026-07-01 19:32:58.505+08	8715700110622	650g	{}	15.00	22.00	27.000	10.000	10	1
+6	2026-06-30 17:44:06.167+08	2026-06-30 17:44:06.167+08	6901234567895	500ml	{}	3.50	6.00	99.000	15.000	6	1
+7	2026-07-01 19:28:29.362+08	2026-07-01 19:28:29.362+08	5449000214911	330ml	{}	2.20	3.00	118.000	20.000	7	1
+8	2026-07-01 19:32:50.62+08	2026-07-01 19:32:50.62+08	6921168509256	550ml	{}	1.00	2.00	198.000	10.000	8	1
+2	2026-06-30 17:44:06.163+08	2026-06-30 17:44:06.163+08	6901234567891	550ml	{}	1.00	2.00	191.000	30.000	2	1
+3	2026-06-30 17:44:06.164+08	2026-06-30 17:44:06.164+08	6901234567892	红烧牛肉	{}	3.00	4.50	75.000	10.000	3	1
+4	2026-06-30 17:44:06.165+08	2026-06-30 17:44:06.165+08	6901234567893	250ml	{}	4.00	5.50	56.000	10.000	4	1
 \.
 
 
@@ -1342,8 +1486,8 @@ COPY public.product_sku (id, created_at, updated_at, barcode, spec_name, spec_at
 --
 
 COPY public.stock_check (id, created_at, updated_at, status, remark, created_by_id, tenant_id) FROM stdin;
-1	2026-07-04 17:34:04.118229+08	2026-07-04 17:34:04.11824+08	checking	monthly check	1	1
-2	2026-07-04 17:34:44.313175+08	2026-07-04 17:34:44.313185+08	done	test	1	1
+1	2026-07-04 17:34:04.118+08	2026-07-04 17:34:04.118+08	checking	monthly check	1	1
+2	2026-07-04 17:34:44.313+08	2026-07-04 17:34:44.313+08	done	test	1	1
 \.
 
 
@@ -1352,9 +1496,9 @@ COPY public.stock_check (id, created_at, updated_at, status, remark, created_by_
 --
 
 COPY public.stock_check_item (id, created_at, updated_at, system_quantity, actual_quantity, diff_quantity, remark, sku_id, stock_check_id, tenant_id) FROM stdin;
-2	2026-07-04 17:34:04.120863+08	2026-07-04 17:34:04.120868+08	0.000	52.000	0.000	test2	12	1	1
-1	2026-07-04 17:34:04.11949+08	2026-07-04 17:34:04.119495+08	0.000	98.000	98.000	test	13	1	1
-3	2026-07-04 17:34:44.314055+08	2026-07-04 17:34:44.314062+08	100.000	98.000	-2.000		13	2	1
+1	2026-07-04 17:34:04.119+08	2026-07-04 17:34:04.119+08	0.000	98.000	98.000	test	13	1	1
+2	2026-07-04 17:34:04.12+08	2026-07-04 17:34:04.12+08	0.000	52.000	0.000	test2	12	1	1
+3	2026-07-04 17:34:44.314+08	2026-07-04 17:34:44.314+08	100.000	98.000	-2.000		13	2	1
 \.
 
 
@@ -1363,8 +1507,8 @@ COPY public.stock_check_item (id, created_at, updated_at, system_quantity, actua
 --
 
 COPY public.supplier (id, created_at, updated_at, name, contact, phone, address, remark, tenant_id) FROM stdin;
-1	2026-06-30 17:44:06.169742+08	2026-06-30 17:44:06.169745+08	宏达食品批发	王总	13900002001			1
-2	2026-06-30 17:44:06.171106+08	2026-06-30 17:44:06.17111+08	永利商贸	陈经理	13900002002			1
+1	2026-06-30 17:44:06.169+08	2026-06-30 17:44:06.169+08	宏达食品批发	王总	13900002001			1
+2	2026-06-30 17:44:06.171+08	2026-06-30 17:44:06.171+08	永利商贸	陈经理	13900002002			1
 \.
 
 
@@ -1372,8 +1516,72 @@ COPY public.supplier (id, created_at, updated_at, name, contact, phone, address,
 -- Data for Name: tenant; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-COPY public.tenant (id, name, slug, logo, address, phone, business_hours, is_active, created_at) FROM stdin;
-1	安居生活超市	tpugxdr			010-12345678		t	2026-06-30 17:38:03.30844+08
+COPY public.tenant (id, name, slug, logo, address, phone, business_hours, is_active, created_at, broadcast_active, broadcast_message, broadcast_severity, footer_text, paper_width, print_barcode, print_logo) FROM stdin;
+1	安居生活超市	tpugxdr				08:00-22:00	t	2026-06-30 17:38:03.308+08	f		info		80	t	t
+\.
+
+
+--
+-- Data for Name: token_blacklist_blacklistedtoken; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY public.token_blacklist_blacklistedtoken (id, blacklisted_at, token_id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: token_blacklist_outstandingtoken; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY public.token_blacklist_outstandingtoken (id, token, created_at, expires_at, user_id, jti) FROM stdin;
+1	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4Mzg4Mjc5MSwiaWF0IjoxNzgzMjc3OTkxLCJqdGkiOiIyMDZmMjEyMzU4NjE0ODFjYTM5YThjYjc3NjQyMDg0NyIsInVzZXJfaWQiOiIxIn0.VLgDKV3p6BcpS41oB855z05rmy0KW3Kad2ZpB7EdmpA	2026-07-06 02:59:51.268125+08	2026-07-13 02:59:51+08	1	206f21235861481ca39a8cb776420847
+2	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4Mzg4MjgyOCwiaWF0IjoxNzgzMjc4MDI4LCJqdGkiOiI1ZWYxZmMzMmJmZDk0ZjhkOTYzNmE4MjY2MGEyMDg0NyIsInVzZXJfaWQiOiIxIn0.By5360IFW2BcN8qcfYMZXs_3LFnuVhG1ik0d4KxlUFs	2026-07-06 03:00:28.513448+08	2026-07-13 03:00:28+08	1	5ef1fc32bfd94f8d9636a82660a20847
+3	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4Mzg4Mjg0MCwiaWF0IjoxNzgzMjc4MDQwLCJqdGkiOiJlYzY1MTFkYjg5OGY0OGI3YTVkNWI3YTk1MWE1NjU1NiIsInVzZXJfaWQiOiIxIn0.dTLpgTE5jUxlQi04GSUOGlXngRG8mXxa-aa0RKqoxeA	2026-07-06 03:00:40.429292+08	2026-07-13 03:00:40+08	1	ec6511db898f48b7a5d5b7a951a56556
+4	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4Mzg4Mjg1MSwiaWF0IjoxNzgzMjc4MDUxLCJqdGkiOiJkNDRjNDUxZjkwODk0M2U3OTg1MThlNjYxODkxMzA5MiIsInVzZXJfaWQiOiIxIn0.V0auifycluiTpqTmBt7_i2CQQj9ojWxs8VGCXh-Q0Qw	2026-07-06 03:00:51.471369+08	2026-07-13 03:00:51+08	1	d44c451f908943e798518e6618913092
+5	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4Mzg4Mjg1OSwiaWF0IjoxNzgzMjc4MDU5LCJqdGkiOiI1ZWEzYjg1YmQ5OTc0NDkyYTNiODUzN2M3OTE2OGM0NyIsInVzZXJfaWQiOiIxIn0.JKamQami91SXhKxu2El10ax6FdJQYkio6zyuCCnGjMs	2026-07-06 03:00:59.71508+08	2026-07-13 03:00:59+08	1	5ea3b85bd9974492a3b8537c79168c47
+6	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4Mzg4Mjk4MiwiaWF0IjoxNzgzMjc4MTgyLCJqdGkiOiI0ZjNlYjkzOWVmMDE0MGEyOWM1MmMwMWYyM2VlMzNlZiIsInVzZXJfaWQiOiIxIn0.Emjirfs2_JiWR6u6KXabCQkwcqqfxentdnOBxbkKMWE	2026-07-06 03:03:02.253134+08	2026-07-13 03:03:02+08	1	4f3eb939ef0140a29c52c01f23ee33ef
+7	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4Mzg4MzA3MSwiaWF0IjoxNzgzMjc4MjcxLCJqdGkiOiJhZTg5YzdmZDQyNTM0ODZkYjhiNTIyZTAwMzhhMjdkMCIsInVzZXJfaWQiOiIxIn0.SMJXX1a9iTTTX1FyYRQhiEuaIfu_yWFmnA7pzWrDmnc	2026-07-06 03:04:31.448588+08	2026-07-13 03:04:31+08	1	ae89c7fd4253486db8b522e0038a27d0
+8	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4Mzg4MzExNCwiaWF0IjoxNzgzMjc4MzE0LCJqdGkiOiJlZjQyOWY0M2RiYmE0MGIxYTJjNGQ0N2VhMzFmZmJjMSIsInVzZXJfaWQiOiIxIn0.XOuYcESv1a-VxYDsJIb2odDzLtPEyR8Y21_kE11olIc	2026-07-06 03:05:14.418282+08	2026-07-13 03:05:14+08	1	ef429f43dbba40b1a2c4d47ea31ffbc1
+9	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4Mzg4MzMxNiwiaWF0IjoxNzgzMjc4NTE2LCJqdGkiOiIwNGQ2NDk0NTU4Njk0MWViODYwMjMxYjkzNDM0ZmVlZiIsInVzZXJfaWQiOiIxIn0.pumhpty7d76O8TXSfkYvVVvTzvF6UWjZDpH2_hLtU84	2026-07-06 03:08:36.627135+08	2026-07-13 03:08:36+08	1	04d64945586941eb860231b93434feef
+10	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4Mzg4MzM1MywiaWF0IjoxNzgzMjc4NTUzLCJqdGkiOiIwZWI4NzljZmYwMjE0MGFiYWY1YjhlMDhmOWIxZmZmMSIsInVzZXJfaWQiOiIxIn0.vkYRX43Sr0Dq0iZCzyWbGOWzrI1_WbrVkX-2C9H8yus	2026-07-06 03:09:13.056477+08	2026-07-13 03:09:13+08	1	0eb879cff02140abaf5b8e08f9b1fff1
+11	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4Mzg4MzQxNCwiaWF0IjoxNzgzMjc4NjE0LCJqdGkiOiJmNjMxY2MzZWZhYTQ0MDM2OTU2NGNhNGU1YTNiMzFhMCIsInVzZXJfaWQiOiIxIn0.HC8JEvuJEbzAPFyCxkIDiimojFdV0Pa82fcJCj6tPuw	2026-07-06 03:10:14.528941+08	2026-07-13 03:10:14+08	1	f631cc3efaa440369564ca4e5a3b31a0
+12	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4Mzg4MzQ0NCwiaWF0IjoxNzgzMjc4NjQ0LCJqdGkiOiJlYzk2NTkxNmFiMmE0NGQwODNmZDc1YzZhNTFlZjg0NyIsInVzZXJfaWQiOiIxIn0.DRxtnVcASccNKzXZhhoJDe9He-rNwqEZOOKuWTKn3B8	2026-07-06 03:10:44.856387+08	2026-07-13 03:10:44+08	1	ec965916ab2a44d083fd75c6a51ef847
+13	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4Mzg4MzYwOCwiaWF0IjoxNzgzMjc4ODA4LCJqdGkiOiJmZTMzNjVlM2I3ZjM0NjhjOTk2NWJkZDMyYzgzMDRlMyIsInVzZXJfaWQiOiIxIn0.efsLXgV4J16_kUzDjEvFtv6pEA_XP9Sga7WO7xyQuz4	2026-07-06 03:13:28.131978+08	2026-07-13 03:13:28+08	1	fe3365e3b7f3468c9965bdd32c8304e3
+14	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4Mzg4Mzc2NiwiaWF0IjoxNzgzMjc4OTY2LCJqdGkiOiI4MGI3MzI3NTVmMzg0NTE0OTlmYjg5MDY5YWZiMDRjNyIsInVzZXJfaWQiOiIxIn0.QsR--Mj5GjcI5xNT0MGRm8hQBpPlapvvzM8Lz5bpQ6c	2026-07-06 03:16:06.410775+08	2026-07-13 03:16:06+08	1	80b732755f38451499fb89069afb04c7
+15	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4Mzg4NTQwMSwiaWF0IjoxNzgzMjgwNjAxLCJqdGkiOiI2MmJlNzdiZWJlMWY0Mjk1YWYzNzg1ZWVjN2M5ZjZkMCIsInVzZXJfaWQiOiIxIn0.IyjweuPS_eAI84StnJceDP-0ErJZcbqE6lwTZ-DW-eI	2026-07-06 03:43:21.539712+08	2026-07-13 03:43:21+08	1	62be77bebe1f4295af3785eec7c9f6d0
+16	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4Mzg4NTQ5NiwiaWF0IjoxNzgzMjgwNjk2LCJqdGkiOiI1MDlmYzkwMjkwNDU0MzJiOTViNmM1MGQ0ODQyY2ViMyIsInVzZXJfaWQiOiIxIn0.YlGe8WSgIdFDEFrH_m8zjwaeehvHe1WNQIR-rdSTbb4	2026-07-06 03:44:56.227052+08	2026-07-13 03:44:56+08	1	509fc9029045432b95b6c50d4842ceb3
+17	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4Mzg4NzcwMSwiaWF0IjoxNzgzMjgyOTAxLCJqdGkiOiJmZjYyZDYxZjljNTE0YTYzYTZmMTQ0YjZkM2NkNjgyNSIsInVzZXJfaWQiOiIxIn0.4-s31SL3Yg8XEVsO8ymvFpm0M8-FqIJ1sP0sflsDbns	2026-07-06 04:21:41.363643+08	2026-07-13 04:21:41+08	1	ff62d61f9c514a63a6f144b6d3cd6825
+18	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4Mzg4NzgxMiwiaWF0IjoxNzgzMjgzMDEyLCJqdGkiOiI1YzJmMmU2YTgwYmI0ZjYyYjkwZTExNmFjYWY1ZjU4NiIsInVzZXJfaWQiOiIxIn0.mZ3lmLQ22pvzierRR3n4Qo6YvI8j8YDnDwfwpPMYdjg	2026-07-06 04:23:32.691048+08	2026-07-13 04:23:32+08	1	5c2f2e6a80bb4f62b90e116acaf5f586
+19	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4Mzg4ODAxNSwiaWF0IjoxNzgzMjgzMjE1LCJqdGkiOiI5OWM0YjkxZDJhZTc0YmFhOTk5YjczYWFmMWIwZmI3ZCIsInVzZXJfaWQiOiIxIn0.rNnJzXCg9JEn4pGKSmCOLn-XXnr01gaSSZnchH4UkmE	2026-07-06 04:26:55.806129+08	2026-07-13 04:26:55+08	1	99c4b91d2ae74baa999b73aaf1b0fb7d
+20	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4Mzg4ODE0MCwiaWF0IjoxNzgzMjgzMzQwLCJqdGkiOiI3Njc2MWM3ZjYyNTQ0NmYxOTk3N2MyM2VjNTAxZGU0NSIsInVzZXJfaWQiOiIxIn0.oEd0PldZSzqLf4jb_ek0IhWxvICaSEtmlF_LcKy4E1k	2026-07-06 04:29:00.512099+08	2026-07-13 04:29:00+08	1	76761c7f625446f19977c23ec501de45
+21	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4Mzg4ODE5NCwiaWF0IjoxNzgzMjgzMzk0LCJqdGkiOiI0NzFiYThiMjNlZTE0YjI3YTVmZTFmYjZkMmFkODNkMSIsInVzZXJfaWQiOiIxIn0.2213Eu_45--Aoq9leer_pKT7k_wBVrFmsCkvywceYNI	2026-07-06 04:29:54.421731+08	2026-07-13 04:29:54+08	1	471ba8b23ee14b27a5fe1fb6d2ad83d1
+22	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4MzkyNDY0NiwiaWF0IjoxNzgzMzE5ODQ2LCJqdGkiOiJjZmI1OWNiMDYyNmQ0YTMzOWQxMzg5ZjAzZDNlZjRlOCIsInVzZXJfaWQiOiIxIn0.AjxVKTyMiAle2XLU64NVlnhsDg7dNXGw2ZV7c62q_B8	2026-07-06 14:37:26.002304+08	2026-07-13 14:37:26+08	1	cfb59cb0626d4a339d1389f03d3ef4e8
+23	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4MzkyNjA2NiwiaWF0IjoxNzgzMzIxMjY2LCJqdGkiOiI1MmM3MjA3NmMwYzA0ZGQ0OGRiOWFlN2Q2NDgwYjM2OSIsInVzZXJfaWQiOiIxIn0.9jFvboFl38nvS2yFXkfObFnzkohrOwp_N6dvmvS9-jw	2026-07-06 15:01:06.076422+08	2026-07-13 15:01:06+08	1	52c72076c0c04dd48db9ae7d6480b369
+24	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4MzkyODAwNCwiaWF0IjoxNzgzMzIzMjA0LCJqdGkiOiI1ZDU4YzI5MjE1MzY0Y2QwYmI5NWZmZGE5YzMxOGFhNyIsInVzZXJfaWQiOiIxIn0.rOC8Zh23QqvNkOE0U0mKZFFV7dcAiPUvTftp_4UQtZ4	2026-07-06 15:33:24.740484+08	2026-07-13 15:33:24+08	1	5d58c29215364cd0bb95ffda9c318aa7
+25	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4MzkyODAzNSwiaWF0IjoxNzgzMzIzMjM1LCJqdGkiOiIzY2JhMDM5MWY4NGY0ZTBlYTY5NGI1YjJkNmI1NjRiOCIsInVzZXJfaWQiOiIxIn0.maITKp6Lq-s5VqjDdf1y3mlOTRm3tQBDyHftdOcXDVk	2026-07-06 15:33:55.850467+08	2026-07-13 15:33:55+08	1	3cba0391f84f4e0ea694b5b2d6b564b8
+26	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4MzkyOTUyOSwiaWF0IjoxNzgzMzI0NzI5LCJqdGkiOiJkZWNjZDY4ZWU5NWQ0YjYxOTUzZGIyZDZkZDRiYjA2MyIsInVzZXJfaWQiOiIxIn0.BB3iEOVGSKtQgsn06N7O6vIHjg9XsJkmr-hWDB6ZEHk	2026-07-06 15:58:49.723435+08	2026-07-13 15:58:49+08	1	deccd68ee95d4b61953db2d6dd4bb063
+27	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4MzkzMDk1NywiaWF0IjoxNzgzMzI2MTU3LCJqdGkiOiI3ZTI0M2NhMWEwYmQ0ZjJmYmQzMTAyYTNmMDAxMThhZCIsInVzZXJfaWQiOiIxIn0.FgvzvFF6Vre59zOmVsN3J7XYp9o6ByswHdqdrwWSqlo	2026-07-06 16:22:37.757475+08	2026-07-13 16:22:37+08	1	7e243ca1a0bd4f2fbd3102a3f00118ad
+28	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4MzkzMTc0NSwiaWF0IjoxNzgzMzI2OTQ1LCJqdGkiOiIzOGEwODM2YTY3ZmE0MzgxYTA0MjU5MzhkYzBlOTI3YSIsInVzZXJfaWQiOiIxIn0.erbVhio0HXRRvIPQAjIUVBYwQ7zDVy8VswGXfaucGnc	2026-07-06 16:35:45.742365+08	2026-07-13 16:35:45+08	1	38a0836a67fa4381a0425938dc0e927a
+29	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4MzkzMjU0NywiaWF0IjoxNzgzMzI3NzQ3LCJqdGkiOiI1NjY5YzdlMzM5Yjc0NWYzOTA2ODAxMTRkYTNiYWVhMCIsInVzZXJfaWQiOiIxIn0.H2qi2XM0ohGKrR2_pWiPLSJSJ2QVWIg5Z3k3-mTcH5w	2026-07-06 16:49:07.516366+08	2026-07-13 16:49:07+08	1	5669c7e339b745f390680114da3baea0
+30	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4MzkzMjY2MiwiaWF0IjoxNzgzMzI3ODYyLCJqdGkiOiI5YTg0ZGVmNjlkNzc0OWY4YTk5NWZkYzE2MzRhNjQ2ZCIsInVzZXJfaWQiOiIxIn0.RxdatCIqOvilFYSxLH-iKDWVlAxsREvnS9AbFcK6rfo	2026-07-06 16:51:02.039574+08	2026-07-13 16:51:02+08	1	9a84def69d7749f8a995fdc1634a646d
+31	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4MzkzMjg1NywiaWF0IjoxNzgzMzI4MDU3LCJqdGkiOiI3NDhiYmQ4NDY5NGU0M2M0OWI3ZDljYzM4ZTc2MjAzNCIsInVzZXJfaWQiOiIxIn0.cQiOg5yhzHoZVszrWSsIQ-S3d7vzh2CQLIAmbp3Yq_8	2026-07-06 16:54:17.268297+08	2026-07-13 16:54:17+08	1	748bbd84694e43c49b7d9cc38e762034
+32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4MzkzMzA4NSwiaWF0IjoxNzgzMzI4Mjg1LCJqdGkiOiI0ZTM2MTM4Yzk1M2Q0M2U4YmQ3OGYyZDBhMTIzZWRlNCIsInVzZXJfaWQiOiIxIn0.UB8jDeDvL1j3uQECH9egKLQDNYS5Ev420-s-zRHwlkI	2026-07-06 16:58:05.03979+08	2026-07-13 16:58:05+08	1	4e36138c953d43e8bd78f2d0a123ede4
+33	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4MzkzMzIwNiwiaWF0IjoxNzgzMzI4NDA2LCJqdGkiOiJlYzQ2MGVlY2I2YjE0NTg1YTRjYWE0ZjQ3MTkyYTZhOCIsInVzZXJfaWQiOiIxIn0.wqmXxeKQUXjp3bBb5ypUBp21iHbd0x0kelbXf3dVHdk	2026-07-06 17:00:06.048911+08	2026-07-13 17:00:06+08	1	ec460eecb6b14585a4caa4f47192a6a8
+34	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4MzkzMzMwMywiaWF0IjoxNzgzMzI4NTAzLCJqdGkiOiI5ZDAxZjhhM2U2OTY0NzUzYWQ4YWYyZDQzYWY4M2U5NyIsInVzZXJfaWQiOiIxIn0.R0QXsft-UFmAOC1hncBE_t-mfdBueNxPI_hF5KaBCZg	2026-07-06 17:01:43.078452+08	2026-07-13 17:01:43+08	1	9d01f8a3e6964753ad8af2d43af83e97
+35	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4MzkzMzQyNCwiaWF0IjoxNzgzMzI4NjI0LCJqdGkiOiIxMmZkNGU1NWM4MzU0Yzc4YTEzYTFhNGFkYjA3MzQ3ZSIsInVzZXJfaWQiOiIxIn0.PviXuh0sOSFavbQwARHbfwGNgUn-vW2ocLt-OZquyF0	2026-07-06 17:03:44.386672+08	2026-07-13 17:03:44+08	1	12fd4e55c8354c78a13a1a4adb07347e
+36	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4MzkzMzY3MSwiaWF0IjoxNzgzMzI4ODcxLCJqdGkiOiI1YThjYmVhNzczNDU0MTE3OTdjMWMzYTE1NjY2YjliNCIsInVzZXJfaWQiOiIxIn0.3FiEA0lXR6Uhsi89BNucIkfK7P5WRq3wgpx-ZhAgSTo	2026-07-06 17:07:51.715231+08	2026-07-13 17:07:51+08	1	5a8cbea77345411797c1c3a15666b9b4
+37	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4MzkzNDA1OSwiaWF0IjoxNzgzMzI5MjU5LCJqdGkiOiJkOTY0YmU5ODBmYTg0ZjRjOGQyMjU3YzFjYjIwZmUyOSIsInVzZXJfaWQiOiIxIn0.qPsvpfNSm78hjg75q7JRSTjBJifEHEK5kVCXPLK9yes	2026-07-06 17:14:19.73893+08	2026-07-13 17:14:19+08	1	d964be980fa84f4c8d2257c1cb20fe29
+38	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4MzkzNDM1NiwiaWF0IjoxNzgzMzI5NTU2LCJqdGkiOiIzN2U1YzM0ZWMxMzY0OWM5YWRmZTM5OWQ4YWNmNjEyMCIsInVzZXJfaWQiOiIxIn0.2Lzz1LlctF6byY2UlUUhEi5-zrserjlAQXGNjyyiqKk	2026-07-06 17:19:16.692599+08	2026-07-13 17:19:16+08	1	37e5c34ec13649c9adfe399d8acf6120
+39	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4MzkzNDc5MSwiaWF0IjoxNzgzMzI5OTkxLCJqdGkiOiI4YzIzMmY3YzQxMzg0MWY3OGY0ZjM4ZDY3OGYxNTJhZCIsInVzZXJfaWQiOiIxIn0.ZLv1HdtZP7cl3A13ShhaZJLLjtpGP0g-YwMQjwkIrAs	2026-07-06 17:26:31.364326+08	2026-07-13 17:26:31+08	1	8c232f7c413841f78f4f38d678f152ad
+40	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4MzkzNTA3NCwiaWF0IjoxNzgzMzMwMjc0LCJqdGkiOiJmMzkzZmQ2MjY4NTQ0ODFmODJlNmNmMmVkMTM4YWIyMCIsInVzZXJfaWQiOiIxIn0.g1pf3kiGl4sPm9xpbesffLGdi74ewtgpcHLbCfchPMI	2026-07-06 17:31:14.527641+08	2026-07-13 17:31:14+08	1	f393fd626854481f82e6cf2ed138ab20
+41	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4MzkzNTI2NCwiaWF0IjoxNzgzMzMwNDY0LCJqdGkiOiJlMDc3NjQzYTg5YTk0MjA1OWFhYjVjNzE5MzgxYzNjZSIsInVzZXJfaWQiOiIxIn0.FuPy2tEABSHwbElg_l2_dKcshlRO-xfQvRgQWZ3P-Xg	2026-07-06 17:34:24.558299+08	2026-07-13 17:34:24+08	1	e077643a89a942059aab5c719381c3ce
+42	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4MzkzNTUyOCwiaWF0IjoxNzgzMzMwNzI4LCJqdGkiOiI4ZjBlZTE0MmRiODA0ZGQ5OWRmZGI0YzQ1ZDcxNzEwMSIsInVzZXJfaWQiOiIxIn0.a5tAVQ3O19GmTRiEdDZoPuSAdj8UeIAO6ZVVPdUUFvM	2026-07-06 17:38:48.327245+08	2026-07-13 17:38:48+08	1	8f0ee142db804dd99dfdb4c45d717101
+43	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4MzkzNjUzNiwiaWF0IjoxNzgzMzMxNzM2LCJqdGkiOiI4MTg1NmEzNmEwY2E0NjUyOTEzMGMwYzdmM2YwYmQ5ZiIsInVzZXJfaWQiOiIxIn0.vyAhDxEnX285yGRJvzu0IGkJajlvJpocFFRivWJHslg	2026-07-06 17:55:36.807743+08	2026-07-13 17:55:36+08	1	81856a36a0ca46529130c0c7f3f0bd9f
+44	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4MzkzNjc5MSwiaWF0IjoxNzgzMzMxOTkxLCJqdGkiOiJhMmE1ZjBjZDAyYmI0YzBiYWM2YWQ2OGNjNTg2NzQ5ZCIsInVzZXJfaWQiOiIxIn0.Ija8a9LfuvgIVPPU7wmvw_Yr55VJdVrtpRC-TY6JSic	2026-07-06 17:59:51.242229+08	2026-07-13 17:59:51+08	1	a2a5f0cd02bb4c0bac6ad68cc586749d
+45	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4MzkzNzE2NiwiaWF0IjoxNzgzMzMyMzY2LCJqdGkiOiJkYjI2NzQyNTgzYmE0OTRlYTc1ZmU2MTRjOTg0NGQ2MCIsInVzZXJfaWQiOiIxIn0.x-6G4ogoXXPrXOVXkS3kBlz3MxN8UHRNe6b6r9kSGHA	2026-07-06 18:06:06.272781+08	2026-07-13 18:06:06+08	1	db26742583ba494ea75fe614c9844d60
+46	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4MzkzNzc2MywiaWF0IjoxNzgzMzMyOTYzLCJqdGkiOiJlMjgyNjVjMzQyYTI0YjYwYThlMTAxNzE3OTczZGY3MyIsInVzZXJfaWQiOiIxIn0.2AqO7WGjMmNExBtuBa4igTimsOMd6f55MBFHnYRDIgI	2026-07-06 18:16:03.604383+08	2026-07-13 18:16:03+08	1	e28265c342a24b60a8e101717973df73
+47	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4MzkzNzg0MCwiaWF0IjoxNzgzMzMzMDQwLCJqdGkiOiIyM2VmNmE2NWI3YjE0NDkwYmFiMTY2YjA1MTRlNjE0MCIsInVzZXJfaWQiOiIxIn0.rbnlGUjmLNyLI-3CnJ7x9_H5gTRQYwy_JF4CweZ5yuU	2026-07-06 18:17:20.018003+08	2026-07-13 18:17:20+08	1	23ef6a65b7b14490bab166b0514e6140
+48	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4Mzk0MDE4MCwiaWF0IjoxNzgzMzM1MzgwLCJqdGkiOiI0MDIxYzE0M2E2YjE0MGIxYjQyNzIxYjJkYmQ1YTM4NCIsInVzZXJfaWQiOiIxIn0.4g1OL5-0vpqam0eSbl4Lio7fnBayB-mj_X-DNKHHfII	2026-07-06 18:56:20.305492+08	2026-07-13 18:56:20+08	1	4021c143a6b140b1b42721b2dbd5a384
 \.
 
 
@@ -1382,9 +1590,9 @@ COPY public.tenant (id, name, slug, logo, address, phone, business_hours, is_act
 --
 
 COPY public."user" (id, password, last_login, is_superuser, username, first_name, last_name, email, is_staff, is_active, date_joined, phone, avatar) FROM stdin;
-3	pbkdf2_sha256$1200000$Ri0eB6pCY06POrgQNO6YbQ$wT+OcmF0SHMNCp8Xnscm3MI9j/q/NUnXM/VaIasQWxQ=	\N	t	boss			boss@anju.com	t	t	2026-07-01 18:23:21.476052+08	18888888888	
-1	pbkdf2_sha256$1200000$oAu1WXDPY6PbhjqqWc3UHY$fYrDtjg3u3pSgUh4H+ghY+BazVuwID8Kdmay6NYSayg=	2026-07-04 17:05:27.824369+08	t	admin			admin@anju.com	t	t	2026-06-30 17:30:38.226607+08		
-2	pbkdf2_sha256$1200000$Y7peHjpv1dts8rDkNNUARn$CeBEWGCPkMLV90EA2qWp6/zfrZe9uRrvmSSF7JeboCY=	\N	f	anjuadmin				f	f	2026-06-30 17:38:03.169175+08	13800138000	
+1	pbkdf2_sha256$1200000$oAu1WXDPY6PbhjqqWc3UHY$fYrDtjg3u3pSgUh4H+ghY+BazVuwID8Kdmay6NYSayg=	2026-07-04 17:05:27.824+08	t	admin			admin@anju.com	t	t	2026-06-30 17:30:38.226+08		
+2	pbkdf2_sha256$1200000$Y7peHjpv1dts8rDkNNUARn$CeBEWGCPkMLV90EA2qWp6/zfrZe9uRrvmSSF7JeboCY=	\N	f	anjuadmin				f	f	2026-06-30 17:38:03.169+08	13800138000	
+3	pbkdf2_sha256$1200000$Ri0eB6pCY06POrgQNO6YbQ$wT+OcmF0SHMNCp8Xnscm3MI9j/q/NUnXM/VaIasQWxQ=	\N	t	boss			boss@anju.com	t	t	2026-07-01 18:23:21.476+08	18888888888	
 \.
 
 
@@ -1401,9 +1609,8 @@ COPY public.user_groups (id, user_id, group_id) FROM stdin;
 --
 
 COPY public.user_tenant (id, role, joined_at, tenant_id, user_id) FROM stdin;
-2	manager	2026-06-30 18:09:13.936467+08	1	1
-3	super_admin	2026-07-01 18:23:50.650003+08	1	3
-1	manager	2026-06-30 17:38:03.309761+08	1	2
+2	manager	2026-06-30 18:09:13.936+08	1	1
+3	super_admin	2026-07-01 18:23:50.65+08	1	3
 \.
 
 
@@ -1433,7 +1640,21 @@ SELECT pg_catalog.setval('public.auth_group_permissions_id_seq', 1, false);
 -- Name: auth_permission_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.auth_permission_id_seq', 84, true);
+SELECT pg_catalog.setval('public.auth_permission_id_seq', 100, true);
+
+
+--
+-- Name: coupon_categories_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('public.coupon_categories_id_seq', 1, true);
+
+
+--
+-- Name: coupon_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('public.coupon_id_seq', 6, true);
 
 
 --
@@ -1447,14 +1668,14 @@ SELECT pg_catalog.setval('public.django_admin_log_id_seq', 1, false);
 -- Name: django_content_type_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.django_content_type_id_seq', 21, true);
+SELECT pg_catalog.setval('public.django_content_type_id_seq', 25, true);
 
 
 --
 -- Name: django_migrations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.django_migrations_id_seq', 36, true);
+SELECT pg_catalog.setval('public.django_migrations_id_seq', 57, true);
 
 
 --
@@ -1479,6 +1700,13 @@ SELECT pg_catalog.setval('public.inventory_record_id_seq', 10, true);
 
 
 --
+-- Name: member_coupon_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('public.member_coupon_id_seq', 6, true);
+
+
+--
 -- Name: member_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
@@ -1489,14 +1717,14 @@ SELECT pg_catalog.setval('public.member_id_seq', 5, true);
 -- Name: pos_order_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.pos_order_id_seq', 52, true);
+SELECT pg_catalog.setval('public.pos_order_id_seq', 66, true);
 
 
 --
 -- Name: pos_order_item_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.pos_order_item_id_seq', 105, true);
+SELECT pg_catalog.setval('public.pos_order_item_id_seq', 143, true);
 
 
 --
@@ -1546,6 +1774,20 @@ SELECT pg_catalog.setval('public.supplier_id_seq', 2, true);
 --
 
 SELECT pg_catalog.setval('public.tenant_id_seq', 1, true);
+
+
+--
+-- Name: token_blacklist_blacklistedtoken_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('public.token_blacklist_blacklistedtoken_id_seq', 1, false);
+
+
+--
+-- Name: token_blacklist_outstandingtoken_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('public.token_blacklist_outstandingtoken_id_seq', 48, true);
 
 
 --
@@ -1625,6 +1867,30 @@ ALTER TABLE ONLY public.auth_permission
 
 
 --
+-- Name: coupon_categories coupon_categories_coupon_id_category_id_e75b650c_uniq; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.coupon_categories
+    ADD CONSTRAINT coupon_categories_coupon_id_category_id_e75b650c_uniq UNIQUE (coupon_id, category_id);
+
+
+--
+-- Name: coupon_categories coupon_categories_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.coupon_categories
+    ADD CONSTRAINT coupon_categories_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: coupon coupon_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.coupon
+    ADD CONSTRAINT coupon_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: django_admin_log django_admin_log_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1694,6 +1960,30 @@ ALTER TABLE ONLY public.finance_daily_summary
 
 ALTER TABLE ONLY public.inventory_record
     ADD CONSTRAINT inventory_record_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: member_coupon member_coupon_code_key; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.member_coupon
+    ADD CONSTRAINT member_coupon_code_key UNIQUE (code);
+
+
+--
+-- Name: member_coupon member_coupon_member_id_coupon_id_fa432101_uniq; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.member_coupon
+    ADD CONSTRAINT member_coupon_member_id_coupon_id_fa432101_uniq UNIQUE (member_id, coupon_id);
+
+
+--
+-- Name: member_coupon member_coupon_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.member_coupon
+    ADD CONSTRAINT member_coupon_pkey PRIMARY KEY (id);
 
 
 --
@@ -1801,6 +2091,46 @@ ALTER TABLE ONLY public.tenant
 
 
 --
+-- Name: token_blacklist_blacklistedtoken token_blacklist_blacklistedtoken_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.token_blacklist_blacklistedtoken
+    ADD CONSTRAINT token_blacklist_blacklistedtoken_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: token_blacklist_blacklistedtoken token_blacklist_blacklistedtoken_token_id_key; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.token_blacklist_blacklistedtoken
+    ADD CONSTRAINT token_blacklist_blacklistedtoken_token_id_key UNIQUE (token_id);
+
+
+--
+-- Name: token_blacklist_outstandingtoken token_blacklist_outstandingtoken_jti_hex_d9bdf6f7_uniq; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.token_blacklist_outstandingtoken
+    ADD CONSTRAINT token_blacklist_outstandingtoken_jti_hex_d9bdf6f7_uniq UNIQUE (jti);
+
+
+--
+-- Name: token_blacklist_outstandingtoken token_blacklist_outstandingtoken_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.token_blacklist_outstandingtoken
+    ADD CONSTRAINT token_blacklist_outstandingtoken_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: member uq_member_tenant_phone; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.member
+    ADD CONSTRAINT uq_member_tenant_phone UNIQUE (tenant_id, phone);
+
+
+--
 -- Name: product_sku uq_tenant_barcode; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1901,6 +2231,27 @@ CREATE INDEX auth_permission_content_type_id_2f476e4b ON public.auth_permission 
 
 
 --
+-- Name: coupon_categories_category_id_ae9abdf9; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX coupon_categories_category_id_ae9abdf9 ON public.coupon_categories USING btree (category_id);
+
+
+--
+-- Name: coupon_categories_coupon_id_a00a20df; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX coupon_categories_coupon_id_a00a20df ON public.coupon_categories USING btree (coupon_id);
+
+
+--
+-- Name: coupon_tenant_id_047fd04b; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX coupon_tenant_id_047fd04b ON public.coupon USING btree (tenant_id);
+
+
+--
 -- Name: django_admin_log_content_type_id_c4bce8eb; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1950,6 +2301,62 @@ CREATE INDEX finance_daily_summary_tenant_id_b2e91384 ON public.finance_daily_su
 
 
 --
+-- Name: idx_category_tenant_parent; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_category_tenant_parent ON public.product_category USING btree (tenant_id, parent_id);
+
+
+--
+-- Name: idx_invrec_tenant_sku; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_invrec_tenant_sku ON public.inventory_record USING btree (tenant_id, sku_id, created_at DESC);
+
+
+--
+-- Name: idx_invrec_tenant_type; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_invrec_tenant_type ON public.inventory_record USING btree (tenant_id, type, created_at DESC);
+
+
+--
+-- Name: idx_member_tenant_token; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_member_tenant_token ON public.member USING btree (tenant_id, token);
+
+
+--
+-- Name: idx_order_tenant_member; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_order_tenant_member ON public.pos_order USING btree (tenant_id, member_id);
+
+
+--
+-- Name: idx_order_tenant_paid; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_order_tenant_paid ON public.pos_order USING btree (tenant_id, paid_at DESC);
+
+
+--
+-- Name: idx_order_tenant_pay; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_order_tenant_pay ON public.pos_order USING btree (tenant_id, payment_method);
+
+
+--
+-- Name: idx_orderitem_tenant_sku; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_orderitem_tenant_sku ON public.pos_order_item USING btree (tenant_id, sku_id);
+
+
+--
 -- Name: inventory_record_operator_id_60220831; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1968,6 +2375,34 @@ CREATE INDEX inventory_record_sku_id_046543aa ON public.inventory_record USING b
 --
 
 CREATE INDEX inventory_record_tenant_id_b2250982 ON public.inventory_record USING btree (tenant_id);
+
+
+--
+-- Name: member_coupon_code_7220f4c4_like; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX member_coupon_code_7220f4c4_like ON public.member_coupon USING btree (code varchar_pattern_ops);
+
+
+--
+-- Name: member_coupon_coupon_id_15762633; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX member_coupon_coupon_id_15762633 ON public.member_coupon USING btree (coupon_id);
+
+
+--
+-- Name: member_coupon_member_id_7e42d280; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX member_coupon_member_id_7e42d280 ON public.member_coupon USING btree (member_id);
+
+
+--
+-- Name: member_coupon_tenant_id_78033402; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX member_coupon_tenant_id_78033402 ON public.member_coupon USING btree (tenant_id);
 
 
 --
@@ -2118,6 +2553,20 @@ CREATE INDEX tenant_slug_812ad82d_like ON public.tenant USING btree (slug varcha
 
 
 --
+-- Name: token_blacklist_outstandingtoken_jti_hex_d9bdf6f7_like; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX token_blacklist_outstandingtoken_jti_hex_d9bdf6f7_like ON public.token_blacklist_outstandingtoken USING btree (jti varchar_pattern_ops);
+
+
+--
+-- Name: token_blacklist_outstandingtoken_user_id_83bc629a; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX token_blacklist_outstandingtoken_user_id_83bc629a ON public.token_blacklist_outstandingtoken USING btree (user_id);
+
+
+--
 -- Name: user_groups_group_id_b76f8aba; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2191,6 +2640,30 @@ ALTER TABLE ONLY public.auth_permission
 
 
 --
+-- Name: coupon_categories coupon_categories_category_id_ae9abdf9_fk_product_category_id; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.coupon_categories
+    ADD CONSTRAINT coupon_categories_category_id_ae9abdf9_fk_product_category_id FOREIGN KEY (category_id) REFERENCES public.product_category(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: coupon_categories coupon_categories_coupon_id_a00a20df_fk_coupon_id; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.coupon_categories
+    ADD CONSTRAINT coupon_categories_coupon_id_a00a20df_fk_coupon_id FOREIGN KEY (coupon_id) REFERENCES public.coupon(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: coupon coupon_tenant_id_047fd04b_fk_tenant_id; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.coupon
+    ADD CONSTRAINT coupon_tenant_id_047fd04b_fk_tenant_id FOREIGN KEY (tenant_id) REFERENCES public.tenant(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
 -- Name: django_admin_log django_admin_log_content_type_id_c4bce8eb_fk_django_co; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2252,6 +2725,30 @@ ALTER TABLE ONLY public.inventory_record
 
 ALTER TABLE ONLY public.inventory_record
     ADD CONSTRAINT inventory_record_tenant_id_b2250982_fk_tenant_id FOREIGN KEY (tenant_id) REFERENCES public.tenant(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: member_coupon member_coupon_coupon_id_15762633_fk_coupon_id; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.member_coupon
+    ADD CONSTRAINT member_coupon_coupon_id_15762633_fk_coupon_id FOREIGN KEY (coupon_id) REFERENCES public.coupon(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: member_coupon member_coupon_member_id_7e42d280_fk_member_id; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.member_coupon
+    ADD CONSTRAINT member_coupon_member_id_7e42d280_fk_member_id FOREIGN KEY (member_id) REFERENCES public.member(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: member_coupon member_coupon_tenant_id_78033402_fk_tenant_id; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.member_coupon
+    ADD CONSTRAINT member_coupon_tenant_id_78033402_fk_tenant_id FOREIGN KEY (tenant_id) REFERENCES public.tenant(id) DEFERRABLE INITIALLY DEFERRED;
 
 
 --
@@ -2407,6 +2904,22 @@ ALTER TABLE ONLY public.supplier
 
 
 --
+-- Name: token_blacklist_blacklistedtoken token_blacklist_blacklistedtoken_token_id_3cc7fe56_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.token_blacklist_blacklistedtoken
+    ADD CONSTRAINT token_blacklist_blacklistedtoken_token_id_3cc7fe56_fk FOREIGN KEY (token_id) REFERENCES public.token_blacklist_outstandingtoken(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: token_blacklist_outstandingtoken token_blacklist_outstandingtoken_user_id_83bc629a_fk_user_id; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.token_blacklist_outstandingtoken
+    ADD CONSTRAINT token_blacklist_outstandingtoken_user_id_83bc629a_fk_user_id FOREIGN KEY (user_id) REFERENCES public."user"(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
 -- Name: user_groups user_groups_group_id_b76f8aba_fk_auth_group_id; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2458,5 +2971,5 @@ ALTER TABLE ONLY public.user_user_permissions
 -- PostgreSQL database dump complete
 --
 
-\unrestrict wLtzRVJpWt3JcNOqTrcXWKhY885G1WrBizHAFzY6gH1eDdHB2C60neaaWcHa6zO
+\unrestrict NP9WroZNafCmi55xsNKotlFxvdt28bRl1W4jb1BxZSChq8Occl0oeyLYAkFR4NH
 
