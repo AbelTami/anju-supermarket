@@ -100,8 +100,12 @@ const tabLabel = computed(() => {
         <UIcon name="i-lucide-arrow-left" class="size-5 text-(--ui-text-muted)" />
       </button>
       <div>
-        <h1 class="text-2xl font-bold text-(--ui-text) tracking-tight">我的优惠券</h1>
-        <p class="text-xs text-(--ui-text-muted) mt-0.5">{{ tabLabel }}</p>
+        <h1 class="text-2xl font-bold text-(--ui-text) tracking-tight">
+          我的优惠券
+        </h1>
+        <p class="text-xs text-(--ui-text-muted) mt-0.5">
+          {{ tabLabel }}
+        </p>
       </div>
     </div>
 
@@ -134,9 +138,18 @@ const tabLabel = computed(() => {
       <div class="size-16 rounded-full bg-(--ui-bg-muted) flex items-center justify-center mb-3">
         <UIcon name="i-lucide-wifi-off" class="size-8 text-(--ui-text-muted)/40" />
       </div>
-      <p class="font-semibold text-(--ui-text)">加载失败</p>
-      <p class="text-sm text-(--ui-text-muted) mt-1 mb-4">请检查网络后重试</p>
-      <UButton label="重新加载" icon="i-lucide-refresh-cw" variant="soft" @click="loadCoupons" />
+      <p class="font-semibold text-(--ui-text)">
+        加载失败
+      </p>
+      <p class="text-sm text-(--ui-text-muted) mt-1 mb-4">
+        请检查网络后重试
+      </p>
+      <UButton
+        label="重新加载"
+        icon="i-lucide-refresh-cw"
+        variant="soft"
+        @click="loadCoupons"
+      />
     </div>
 
     <!-- Available -->
@@ -158,16 +171,24 @@ const tabLabel = computed(() => {
             <div class="flex-1 p-3 pl-3 border-l-2 border-dashed border-(--ui-primary)/30">
               <div class="flex items-start justify-between">
                 <div>
-                  <p class="text-sm font-bold text-(--ui-text)">{{ coupon.title }}</p>
+                  <p class="text-sm font-bold text-(--ui-text)">
+                    {{ coupon.title }}
+                  </p>
                   <p class="text-xs mt-0.5" :class="coupon.minAmount > 0 ? 'text-(--ui-text-muted)' : 'text-green-600 font-medium'">
                     {{ coupon.minAmount > 0 ? `满 ¥${coupon.minAmount} 可用` : '无门槛' }}
-  	                  <p v-if="coupon.scopeLabel && coupon.scopeLabel !== '全场通用'" class="text-[10px] text-amber-600 flex items-center gap-1 mt-0.5"><UIcon name="i-lucide-info" class="size-3" />{{ coupon.scopeLabel }}</p>
+                    <span v-if="coupon.scopeLabel && coupon.scopeLabel !== '全场通用'" class="text-[10px] text-amber-600 flex items-center gap-1 mt-0.5"><UIcon name="i-lucide-info" class="size-3" />{{ coupon.scopeLabel }}</span>
                   </p>
                 </div>
                 <div class="text-right shrink-0">
-                  <p class="text-[11px] text-(--ui-text-muted)/70">有效期至</p>
-                  <p class="text-xs text-(--ui-text-muted)">{{ formatDate(coupon.validUntil) }}</p>
-                  <p v-if="daysLeft(coupon.validUntil) <= 3 && daysLeft(coupon.validUntil) > 0" class="text-[10px] text-red-500 font-medium mt-0.5">仅剩 {{ daysLeft(coupon.validUntil) }} 天</p>
+                  <p class="text-[11px] text-(--ui-text-muted)/70">
+                    有效期至
+                  </p>
+                  <p class="text-xs text-(--ui-text-muted)">
+                    {{ formatDate(coupon.validUntil) }}
+                  </p>
+                  <p v-if="daysLeft(coupon.validUntil) <= 3 && daysLeft(coupon.validUntil) > 0" class="text-[10px] text-red-500 font-medium mt-0.5">
+                    仅剩 {{ daysLeft(coupon.validUntil) }} 天
+                  </p>
                 </div>
               </div>
               <!-- Code row -->
@@ -179,7 +200,15 @@ const tabLabel = computed(() => {
                   <UIcon name="i-lucide-copy" class="size-3" />
                   {{ coupon.code }}
                 </button>
-                <UButton size="xs" color="primary" variant="soft" class="rounded-full text-xs" :to="`/${slug}`">立即使用</UButton>
+                <UButton
+                  size="xs"
+                  color="primary"
+                  variant="soft"
+                  class="rounded-full text-xs"
+                  :to="`/${slug}`"
+                >
+                  立即使用
+                </UButton>
               </div>
             </div>
           </div>
@@ -197,12 +226,16 @@ const tabLabel = computed(() => {
         >
           <div class="flex items-center justify-between">
             <div>
-              <p class="text-sm font-medium text-(--ui-text) line-through">{{ coupon.title }}</p>
+              <p class="text-sm font-medium text-(--ui-text) line-through">
+                {{ coupon.title }}
+              </p>
               <p class="text-xs text-(--ui-text-muted) mt-1 flex items-center gap-1.5">
                 <UIcon name="i-lucide-copy" class="size-3" />{{ coupon.code }}
               </p>
             </div>
-            <UBadge color="neutral" variant="soft" size="sm">已使用</UBadge>
+            <UBadge color="neutral" variant="soft" size="sm">
+              已使用
+            </UBadge>
           </div>
         </div>
       </div>
@@ -218,10 +251,16 @@ const tabLabel = computed(() => {
         >
           <div class="flex items-center justify-between">
             <div>
-              <p class="text-sm font-medium text-(--ui-text-muted)">{{ coupon.title }}</p>
-              <p class="text-xs text-(--ui-text-muted)/60 mt-1">已于 {{ formatDate(coupon.validUntil) }} 过期</p>
+              <p class="text-sm font-medium text-(--ui-text-muted)">
+                {{ coupon.title }}
+              </p>
+              <p class="text-xs text-(--ui-text-muted)/60 mt-1">
+                已于 {{ formatDate(coupon.validUntil) }} 过期
+              </p>
             </div>
-            <UBadge color="neutral" variant="soft" size="sm">已过期</UBadge>
+            <UBadge color="neutral" variant="soft" size="sm">
+              已过期
+            </UBadge>
           </div>
         </div>
       </div>
@@ -233,15 +272,26 @@ const tabLabel = computed(() => {
         <div class="size-20 rounded-full bg-(--ui-bg-muted) flex items-center justify-center mb-4">
           <UIcon name="i-lucide-ticket" class="size-10 text-(--ui-text-muted)/25" />
         </div>
-        <p class="text-lg font-semibold text-(--ui-text)">暂无可用优惠券</p>
-        <p class="text-sm text-(--ui-text-muted) mt-1 mb-4">逛逛商城，下单即可获取优惠券</p>
-        <UButton label="去逛逛" icon="i-lucide-shopping-bag" variant="soft" :to="`/${slug}`" />
+        <p class="text-lg font-semibold text-(--ui-text)">
+          暂无可用优惠券
+        </p>
+        <p class="text-sm text-(--ui-text-muted) mt-1 mb-4">
+          逛逛商城，下单即可获取优惠券
+        </p>
+        <UButton
+          label="去逛逛"
+          icon="i-lucide-shopping-bag"
+          variant="soft"
+          :to="`/${slug}`"
+        />
       </div>
       <div v-else-if="activeTab !== 'available' && !isLoading && !loadError" class="flex flex-col items-center justify-center py-16">
         <div class="size-16 rounded-full bg-(--ui-bg-muted) flex items-center justify-center mb-3">
           <UIcon name="i-lucide-ticket" class="size-7 text-(--ui-text-muted)/25" />
         </div>
-        <p class="text-sm font-medium text-(--ui-text)">暂无{{ activeTab === 'used' ? '已使用' : '已过期' }}优惠券</p>
+        <p class="text-sm font-medium text-(--ui-text)">
+          暂无{{ activeTab === 'used' ? '已使用' : '已过期' }}优惠券
+        </p>
       </div>
     </Transition>
   </div>

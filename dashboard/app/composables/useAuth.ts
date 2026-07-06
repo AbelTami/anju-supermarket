@@ -1,17 +1,21 @@
-/** Auth state — shared across the app via VueUse createSharedComposable. */
+/** Auth state — shared across the app via VueUse createSharedComposable.
+
+The JWT lives in an httpOnly cookie set by the BFF login endpoint. The client
+never sees the token value — authenticated calls happen via the BFF, which
+reads the cookie and forwards with an Authorization header. SSE likewise goes
+through `server/api/tenant/[slug]/orders/stream.get.ts`.
+*/
 import { createSharedComposable } from '@vueuse/core'
 import type { TenantInfo, UserInfo } from '~~/app/types'
 
 interface LoginResponse {
   user: UserInfo
   tenants: TenantInfo[]
-  accessToken: string
 }
 
 interface RegisterResponse {
   user: UserInfo
   tenant: TenantInfo
-  accessToken: string
 }
 
 const _useAuth = () => {
@@ -19,7 +23,6 @@ const _useAuth = () => {
   const tenants = ref<TenantInfo[]>([])
   const currentTenant = ref<TenantInfo | null>(null)
   const isLoading = ref(false)
-  const accessToken = ref<string | null>(null)
 
   /** Fetch current user profile from the BFF. */
   async function fetchProfile() {
@@ -52,7 +55,6 @@ const _useAuth = () => {
       if (!result?.user) return false
       user.value = result.user
       tenants.value = result.tenants || []
-      accessToken.value = result.accessToken || null
       if (tenants.value.length > 0) {
         currentTenant.value = tenants.value[0]
       }
@@ -74,7 +76,6 @@ const _useAuth = () => {
       })
       if (!result?.user) return false
       user.value = result.user
-      accessToken.value = result.accessToken || null
       if (result.tenant) {
         tenants.value = [result.tenant]
         currentTenant.value = result.tenant
@@ -92,7 +93,6 @@ const _useAuth = () => {
     user.value = null
     tenants.value = []
     currentTenant.value = null
-    accessToken.value = null
     try {
       await navigateTo('/admin/auth/login')
     } catch { /* navigation failed — ignore */ }
@@ -107,7 +107,6 @@ const _useAuth = () => {
     tenants: readonly(tenants),
     currentTenant: readonly(currentTenant),
     isLoading: readonly(isLoading),
-    accessToken: readonly(accessToken),
     fetchProfile,
     login,
     register,

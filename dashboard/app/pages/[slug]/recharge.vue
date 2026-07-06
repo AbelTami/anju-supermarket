@@ -95,14 +95,20 @@ function handleRecharge() {
         <UIcon name="i-lucide-arrow-left" class="size-5 text-(--ui-text-muted)" />
       </button>
       <div>
-        <h1 class="text-2xl font-bold text-(--ui-text) tracking-tight">充值中心</h1>
-        <p class="text-xs text-(--ui-text-muted) mt-0.5">选择金额快速充值</p>
+        <h1 class="text-2xl font-bold text-(--ui-text) tracking-tight">
+          充值中心
+        </h1>
+        <p class="text-xs text-(--ui-text-muted) mt-0.5">
+          选择金额快速充值
+        </p>
       </div>
     </div>
 
     <!-- Current balance -->
     <div class="shop-card p-5 mb-5 text-center">
-      <p class="text-xs text-(--ui-text-muted) mb-1">当前余额</p>
+      <p class="text-xs text-(--ui-text-muted) mb-1">
+        当前余额
+      </p>
       <p class="text-3xl font-bold text-(--ui-primary) tabular-nums tracking-tight">
         {{ formatPrice(profile?.balance ?? 0) }}
       </p>
@@ -110,7 +116,9 @@ function handleRecharge() {
 
     <!-- Preset amounts -->
     <div class="shop-card p-5 mb-4">
-      <h2 class="text-sm font-semibold text-(--ui-text) mb-4">选择金额</h2>
+      <h2 class="text-sm font-semibold text-(--ui-text) mb-4">
+        选择金额
+      </h2>
       <div class="grid grid-cols-3 gap-3">
         <button
           v-for="amount in presets"
@@ -121,8 +129,12 @@ function handleRecharge() {
             : 'border-(--ui-border) text-(--ui-text) hover:border-(--ui-border-hover)'"
           @click="selectPreset(amount)"
         >
-          <p class="text-lg font-bold tabular-nums">¥{{ amount }}</p>
-          <p v-if="bonuses[amount] > 0" class="text-[10px] mt-0.5 text-(--ui-success) font-medium">送 ¥{{ bonuses[amount] }}</p>
+          <p class="text-lg font-bold tabular-nums">
+            ¥{{ amount }}
+          </p>
+          <p v-if="bonuses[amount] > 0" class="text-[10px] mt-0.5 text-(--ui-success) font-medium">
+            送 ¥{{ bonuses[amount] }}
+          </p>
         </button>
       </div>
 
@@ -151,7 +163,7 @@ function handleRecharge() {
             placeholder="输入金额"
             class="w-full h-11 pl-7 pr-3 rounded-xl border border-(--ui-primary) bg-(--ui-bg) text-lg font-bold text-(--ui-text) tabular-nums outline-none"
             @input="customAmount = customAmount.replace(/\D/g, '')"
-          />
+          >
         </div>
       </div>
     </div>
@@ -187,7 +199,9 @@ function handleRecharge() {
       @click="handleRecharge"
     >
       立即充值 ¥{{ effectiveAmount }}
-      <template v-if="bonusAmount > 0"> (送 ¥{{ bonusAmount }})</template>
+      <template v-if="bonusAmount > 0">
+        (送 ¥{{ bonusAmount }})
+      </template>
     </UButton>
 
     <!-- Footer note -->

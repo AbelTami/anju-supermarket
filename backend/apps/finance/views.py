@@ -2,7 +2,7 @@
 from collections import defaultdict
 from datetime import date, timedelta
 
-from common.permissions import IsSuperAdminOrManager, IsTenantUser
+from common.permissions import IsAccountantOrManager, IsAdminOrManager, IsTenantUser
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
@@ -13,8 +13,11 @@ from .serializers import DailySummarySerializer
 
 
 class DailySummaryViewSet(viewsets.ReadOnlyModelViewSet):
-    permission_classes = [IsAuthenticated, IsTenantUser, IsSuperAdminOrManager]
     serializer_class = DailySummarySerializer
+
+    # ponytail: accountant full access, manager read-only, super_admin full
+    def get_permissions(self):
+        return [IsAuthenticated(), IsTenantUser(), IsAccountantOrManager()]
 
     def get_queryset(self):
         qs = DailySummary.objects.filter(tenant=self.request.tenant)

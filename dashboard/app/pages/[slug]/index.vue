@@ -1,16 +1,18 @@
 <script setup lang="ts">
 import { mediaUrl } from '~/composables/useShopApi'
+import { useShopCart } from '~/composables/useShopCart'
+import { formatPrice, renderStars } from '~/utils/format'
 import type { PaginatedResponse, ProductInfo, CategoryInfo, BannerInfo } from '~/types'
 
 definePageMeta({ layout: 'shop' })
 
 const route = useRoute()
-const router = useRouter()
 const toast = useToast()
 const slug = computed(() => route.params.slug as string)
 const { fetchProducts, fetchCategories } = useShopApi()
 const { onImgError } = useImageFallback()
 const { isFavorited, toggle: toggleFavorite } = useFavorite()
+const { add: addToCart } = useShopCart()
 
 const activeCategory = computed(() => {
   const q = route.query.category
@@ -19,43 +21,48 @@ const activeCategory = computed(() => {
 const searchQuery = computed(() => route.query.q ? String(route.query.q) : undefined)
 const sortBy = ref<string>(route.query.sort as string || 'default')
 
-// Pagination
 const currentPage = ref(1)
 const pageSize = 20
 const totalCount = ref(0)
 const totalPages = computed(() => Math.max(1, Math.ceil(totalCount.value / pageSize)))
 
-// SEO
 useHead(() => ({
   title: searchQuery.value
     ? `搜索: ${searchQuery.value} - ${slug.value}`
     : `${slug.value} - 网上超市`,
 }))
 
-// Fetch products
+// Product list — sortBy is purely client-side, so it stays out of the cache key
+// and the watch list to avoid a wasted refetch on every sort change.
 const { data: productsData, status } = useAsyncData(
-  () => `shop-products-${slug.value}-${activeCategory.value ?? 'all'}-${searchQuery.value ?? ''}-${sortBy.value}-${currentPage.value}`,
+  () => `shop-products-${slug.value}-${activeCategory.value ?? 'all'}-${searchQuery.value ?? ''}-${currentPage.value}`,
   () => fetchProducts(slug.value, {
     category: activeCategory.value,
     search: searchQuery.value,
     page: currentPage.value,
     page_size: pageSize,
   }),
-  { watch: [activeCategory, searchQuery, sortBy, currentPage] }
+  { watch: [activeCategory, searchQuery, currentPage] },
 )
 
+// Pull pagination total out via watch — never inside the computed, which must
+// be pure (no side effects).
 const allProducts = computed<ProductInfo[]>(() => {
   const data = productsData.value
   if (!data) return []
   if (Array.isArray(data)) return data
-  const paginated = data as PaginatedResponse<ProductInfo>
-  totalCount.value = paginated.count ?? 0
-  if (paginated.results) return paginated.results
-  return []
+  return (data as PaginatedResponse<ProductInfo>).results ?? []
 })
 
-// Client-side sorting
-const products = computed(() => {
+watch(productsData, (data) => {
+  if (data && !Array.isArray(data)) {
+    totalCount.value = (data as PaginatedResponse<ProductInfo>).count ?? 0
+  } else {
+    totalCount.value = Array.isArray(data) ? data.length : 0
+  }
+}, { immediate: true })
+
+const products = computed<ProductInfo[]>(() => {
   const list = [...allProducts.value]
   switch (sortBy.value) {
     case 'price-asc':
@@ -63,9 +70,7 @@ const products = computed(() => {
     case 'price-desc':
       return list.sort((a, b) => Number(b.price || 0) - Number(a.price || 0))
     case 'sales':
-      return list.sort((a, b) => (b.monthly_sales || 0) - (a.monthly_sales || 0))
-    case 'rating':
-      return list.sort((a, b) => (b.rating || 0) - (a.rating || 0))
+      return list.sort((a, b) => Number(b.monthly_sales || 0) - Number(a.monthly_sales || 0))
     default:
       return list
   }
@@ -73,12 +78,10 @@ const products = computed(() => {
 
 const isLoading = computed(() => status.value === 'pending')
 
-// Reset page on filter change
 watch([activeCategory, searchQuery], () => {
   currentPage.value = 1
 })
 
-// Fetch categories client-side
 const categoriesList = ref<CategoryInfo[]>([])
 onMounted(async () => {
   try {
@@ -89,56 +92,34 @@ onMounted(async () => {
   } catch { /* ignore */ }
 })
 
-// Mock banners
 const banners = ref<BannerInfo[]>([
-  { id: 1, title: '新鲜果蔬', subtitle: '每日新鲜直达，品质保证', image: '', link: `/${slug.value}?category=1` },
-  { id: 2, title: '夏日特惠', subtitle: '精选商品低至5折', image: '', link: `/${slug.value}` },
-  { id: 3, title: '新用户专享', subtitle: '注册即送10元优惠券', image: '', link: `/${slug.value}` },
+  { id: 1, title: '新鲜果蔬', subtitle: '每日新鲜直达，品质保证', image: 'https://images.unsplash.com/photo-1610832958506-aa56368176cf?w=1200&h=400&fit=crop', link: `/${slug.value}?category=1` },
+  { id: 2, title: '夏日特惠', subtitle: '精选商品低至5折', image: 'https://images.unsplash.com/photo-1608686207856-001b95cf60ca?w=1200&h=400&fit=crop', link: `/${slug.value}` },
+  { id: 3, title: '新用户专享', subtitle: '注册即送10元优惠券', image: 'https://images.unsplash.com/photo-1542838132-92c53300491e?w=1200&h=400&fit=crop', link: `/${slug.value}` },
 ])
 const currentBanner = ref(0)
-let bannerTimer: ReturnType<typeof setInterval> | null = null
 
-onMounted(() => {
-  if (banners.value.length > 1) {
-    bannerTimer = setInterval(() => {
-      currentBanner.value = (currentBanner.value + 1) % banners.value.length
-    }, 4000)
-  }
-})
-onUnmounted(() => {
-  if (bannerTimer) clearInterval(bannerTimer)
-})
-
-// Cart
-interface CartItemState { id: string; productId: number; skuId?: number | null; name: string; specName: string; price: number; quantity: number; image?: string }
-const cart = useState<CartItemState[]>('shop-cart', () => [])
+// antfu: useIntervalFn auto-cleans on unmount, no manual clearInterval.
+const { pause, resume } = useIntervalFn(() => {
+  currentBanner.value = (currentBanner.value + 1) % banners.value.length
+}, 4000)
+onMounted(() => banners.value.length > 1 ? resume() : pause())
 
 const addingProductId = ref<number | null>(null)
 const addedProductIds = ref<Set<number>>(new Set())
 
 function quickAdd(product: ProductInfo) {
+  addToCart(product)
   addingProductId.value = product.id
   setTimeout(() => {
-    const item = {
-      id: crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`,
-      productId: product.id,
-      skuId: null,
-      name: product.name,
-      specName: '',
-      price: Number(product.price || 0),
-      quantity: 1,
-      image: productImage(product) || undefined,
-    }
-    const existing = cart.value.find((i: any) => i.productId === product.id)
-    if (existing) {
-      existing.quantity += 1
-    } else {
-      cart.value.push(item)
-    }
     addingProductId.value = null
-    addedProductIds.value.add(product.id)
+    addedProductIds.value = new Set([...addedProductIds.value, product.id])
     toast.add({ title: '已加入购物车', color: 'success', duration: 1500, ui: { container: 'shop-toast' } })
-    setTimeout(() => { addedProductIds.value.delete(product.id) }, 1500)
+    setTimeout(() => {
+      const next = new Set(addedProductIds.value)
+      next.delete(product.id)
+      addedProductIds.value = next
+    }, 1500)
   }, 200)
 }
 
@@ -155,29 +136,19 @@ function toggleFav(product: ProductInfo, event: MouseEvent) {
   })
 }
 
-function productImage(product: any): string | null {
+function productImage(product: ProductInfo): string | null {
   return product.image_url || mediaUrl(product.image) || null
 }
 
-function formatPrice(price: string | number): string {
-  const n = Number(price)
-  return isNaN(n) ? String(price) : `¥${n.toFixed(2)}`
+function productPrice(product: ProductInfo): string {
+  return product.price ?? '0'
 }
 
-function productPrice(product: any): string { return product.price ?? '0' }
-function productUnit(product: any): string { return product.unit || '' }
-
-function renderStars(rating: number): string[] {
-  const stars: string[] = []
-  for (let i = 1; i <= 5; i++) {
-    if (i <= Math.floor(rating)) stars.push('full')
-    else if (i - rating < 1) stars.push('half')
-    else stars.push('empty')
-  }
-  return stars
+function productUnit(product: ProductInfo): string {
+  return product.unit || ''
 }
 
-function productTag(product: any): { text: string; type: string } | null {
+function productTag(product: ProductInfo): { text: string, type: string } | null {
   if (product.discount && Number(product.discount) > 0) return { text: `-${product.discount}%`, type: 'discount' }
   if (product.is_new) return { text: '新品', type: 'new' }
   if (product.is_hot || (product.monthly_sales || 0) > 1000) return { text: '热卖', type: 'hot' }
@@ -189,14 +160,13 @@ const sortOptions = [
   { value: 'sales', label: '销量优先' },
   { value: 'price-asc', label: '价格从低到高' },
   { value: 'price-desc', label: '价格从高到低' },
-  { value: 'rating', label: '评分优先' },
 ]
 </script>
 
 <template>
   <div class="pb-16 lg:pb-0">
     <!-- Hero Banner Carousel -->
-    <div v-if="!searchQuery && !activeCategory && banners.length > 0" class="relative overflow-hidden">
+    <div v-if="!searchQuery && !activeCategory && banners.length > 0" class="relative overflow-hidden group">
       <div class="relative h-44 sm:h-56 lg:h-64">
         <div
           v-for="(banner, idx) in banners"
@@ -205,17 +175,25 @@ const sortOptions = [
           :class="idx === currentBanner ? 'opacity-100' : 'opacity-0 pointer-events-none'"
         >
           <NuxtLink :to="banner.link || `/${slug}`" class="block h-full">
+            <!-- Background image with overlay -->
             <div
-              class="h-full flex items-center px-6 lg:px-10"
+              class="absolute inset-0 bg-cover bg-center"
               :class="[
-                idx % 3 === 0 ? 'bg-gradient-to-r from-violet-600 via-violet-500 to-fuchsia-500' : '',
-                idx % 3 === 1 ? 'bg-gradient-to-r from-amber-500 via-orange-500 to-red-500' : '',
-                idx % 3 === 2 ? 'bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500' : '',
+                idx % 3 === 0 ? 'bg-gradient-to-r from-violet-600/90 via-violet-500/90 to-fuchsia-500/90' : '',
+                idx % 3 === 1 ? 'bg-gradient-to-r from-amber-500/90 via-orange-500/90 to-red-500/90' : '',
+                idx % 3 === 2 ? 'bg-gradient-to-r from-emerald-500/90 via-teal-500/90 to-cyan-500/90' : '',
               ]"
+              :style="banner.image ? { backgroundImage: `url(${banner.image})` } : {}"
             >
+              <!-- Dark overlay for text readability -->
+              <div class="absolute inset-0 bg-black/20" />
+            </div>
+
+            <!-- Content -->
+            <div class="relative h-full flex items-center px-6 lg:px-10">
               <div class="text-white">
-                <h2 class="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight">{{ banner.title }}</h2>
-                <p class="mt-1.5 text-sm sm:text-base text-white/80 max-w-md">{{ banner.subtitle }}</p>
+                <h2 class="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight drop-shadow-md">{{ banner.title }}</h2>
+                <p class="mt-1.5 text-sm sm:text-base text-white/90 max-w-md drop-shadow-sm">{{ banner.subtitle }}</p>
                 <span class="inline-block mt-3 text-xs font-medium bg-white/20 rounded-full px-3 py-1 backdrop-blur-sm">立即查看 →</span>
               </div>
             </div>
@@ -339,8 +317,12 @@ const sortOptions = [
         <div class="size-20 rounded-full bg-(--ui-bg-muted) flex items-center justify-center mb-4">
           <UIcon :name="searchQuery ? 'i-lucide-search-x' : 'i-lucide-package-open'" class="shop-empty-icon" />
         </div>
-        <p class="shop-empty-text">{{ searchQuery ? '未找到商品' : '暂无商品' }}</p>
-        <p class="shop-empty-desc">{{ searchQuery ? '试试其他关键词吧' : '该分类下还没有商品' }}</p>
+        <p class="shop-empty-text">
+          {{ searchQuery ? '未找到商品' : '暂无商品' }}
+        </p>
+        <p class="shop-empty-desc">
+          {{ searchQuery ? '试试其他关键词吧' : '该分类下还没有商品' }}
+        </p>
         <UButton
           v-if="searchQuery || activeCategory"
           :to="`/${slug}`"
@@ -392,12 +374,12 @@ const sortOptions = [
                 class="h-full w-full object-cover shop-img-zoom"
                 loading="lazy"
                 @error="onImgError($event, product.name)"
-              />
+              >
               <div
                 v-else
-                class="absolute inset-0 flex items-center justify-center"
+                class="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-(--ui-primary)/20 to-(--ui-primary)/5"
               >
-                <span class="text-5xl font-black text-(--ui-primary)/15 select-none">{{ product.name?.charAt(0) }}</span>
+                <span class="text-6xl font-bold text-(--ui-primary)/20 select-none">{{ product.name?.charAt(0) }}</span>
               </div>
 
               <!-- Tag badge -->

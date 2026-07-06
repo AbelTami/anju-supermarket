@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { NavigationMenuItem } from '@nuxt/ui'
-import type { PaginatedResponse, CategoryInfo } from '~/types'
+import type { PaginatedResponse, CategoryInfo, ProductInfo, TenantPublicInfo } from '~/types'
+import { useShopCart } from '~/composables/useShopCart'
 
 const route = useRoute()
 const router = useRouter()
@@ -9,11 +10,9 @@ const slug = computed(() => route.params.slug as string)
 const searchQuery = ref('')
 const showMobileSearch = ref(false)
 const showMobileMenu = ref(false)
-const showBackToTop = ref(false)
 const searchSuggestions = ref<string[]>([])
 const showSuggestions = ref(false)
 
-// Dark mode
 const colorMode = useColorMode()
 const isHydrated = ref(false)
 onMounted(() => { isHydrated.value = true })
@@ -22,20 +21,21 @@ function toggleDark() {
   colorMode.preference = isDark.value ? 'light' : 'dark'
 }
 
-// Toast default position for mobile
-const toast = useToast()
-// Set global toast position — handled via UApp default
+const { count: cartCount } = useShopCart()
 
-// Shared cart state
-interface CartItemState { id: string; productId: number; skuId?: number | null; name: string; specName: string; price: number; quantity: number; image?: string }
-const cart = useState<CartItemState[]>('shop-cart', () => [])
-const cartCount = computed(() => cart.value.reduce((sum, item) => sum + (item.quantity || 0), 0))
-
-// Fetch categories for nav
 const { data: categories } = useFetch(() => `/api/shop/${slug.value}/categories/`, {
   lazy: true,
   server: false,
+  key: computed(() => `shop-categories-${slug.value}`),
 })
+
+const { data: tenantInfo } = useFetch<TenantPublicInfo>(
+  () => `/api/shop/${slug.value}/info/`,
+  {
+    key: computed(() => `tenant-info-${slug.value}`),
+    default: () => null as any,
+  },
+)
 
 const categoryItems = computed<NavigationMenuItem[]>(() => {
   const resp = categories.value as PaginatedResponse<CategoryInfo> | CategoryInfo[] | undefined
@@ -46,27 +46,18 @@ const categoryItems = computed<NavigationMenuItem[]>(() => {
   }))
 })
 
-// Auth state
-const memberToken = useCookie('member-token')
-const isLoggedIn = computed(() => !!memberToken.value)
+const memberAuth = useMemberAuth()
+const isLoggedIn = computed(() => !!memberAuth.token.value)
 
-// Scroll listener for back-to-top
-onMounted(() => {
-  if (typeof window !== 'undefined') {
-    const onScroll = () => {
-      showBackToTop.value = window.scrollY > 400
-    }
-    window.addEventListener('scroll', onScroll, { passive: true })
-  }
-})
+// antfu: VueUse useScroll handles listener cleanup + returns reactive y.
+const { y: scrollY } = useScroll(window, { throttle: 100 })
+const showBackToTop = computed(() => scrollY.value > 400)
 
-function scrollToTop() {
-  if (typeof window !== 'undefined') {
-    window.scrollTo({ top: 0, behavior: 'smooth' })
-  }
+function scrollToTop(): void {
+  window.scrollTo({ top: 0, behavior: 'smooth' })
 }
 
-function handleSearch() {
+function handleSearch(): void {
   if (searchQuery.value.trim()) {
     router.push({ path: `/${slug.value}`, query: { q: searchQuery.value } })
     showMobileSearch.value = false
@@ -75,7 +66,6 @@ function handleSearch() {
   }
 }
 
-// Search suggestions with debounce
 const debouncedSearch = refDebounced(searchQuery, 300)
 watch(debouncedSearch, async (val) => {
   if (!val || val.trim().length < 1) {
@@ -86,8 +76,8 @@ watch(debouncedSearch, async (val) => {
   try {
     const { fetchProducts } = useShopApi()
     const data = await fetchProducts(slug.value, { search: val.trim(), page_size: 5 })
-    const products = Array.isArray(data) ? data : data?.results || []
-    searchSuggestions.value = products.map((p: any) => p.name).filter(Boolean)
+    const products: ProductInfo[] = Array.isArray(data) ? data : (data?.results || [])
+    searchSuggestions.value = products.map(p => p.name).filter(Boolean)
     showSuggestions.value = searchSuggestions.value.length > 0
   } catch {
     searchSuggestions.value = []
@@ -95,15 +85,14 @@ watch(debouncedSearch, async (val) => {
   }
 })
 
-function hideSuggestions() { showSuggestions.value = false }
+function hideSuggestions(): void { showSuggestions.value = false }
 
-function selectSuggestion(text: string) {
+function selectSuggestion(text: string): void {
   searchQuery.value = text
   showSuggestions.value = false
   handleSearch()
 }
 
-// Current active category in header
 const activeCategoryId = computed(() => {
   const q = route.query.category
   return q ? Number(q) : undefined
@@ -111,7 +100,6 @@ const activeCategoryId = computed(() => {
 
 const storeName = computed(() => slug.value)
 
-// Favorite in layout — just need the toggle composable available
 const { isFavorited } = useFavorite()
 </script>
 
@@ -167,7 +155,7 @@ const { isFavorited } = useFavorite()
                 @keyup.enter="handleSearch"
                 @focus="debouncedSearch.length > 0 && (showSuggestions = true)"
                 @blur="setTimeout(hideSuggestions, 200)"
-              />
+              >
             </div>
             <!-- Search suggestions dropdown -->
             <div
@@ -211,22 +199,24 @@ const { isFavorited } = useFavorite()
             <span v-if="cartCount > 0" :key="cartCount" class="shop-cart-badge shop-cart-bounce">{{ cartCount > 99 ? '99+' : cartCount }}</span>
           </button>
 
-          <!-- Member / Login -->
-          <NuxtLink
-            v-if="!isLoggedIn"
-            :to="`/${slug}/login`"
-            class="hidden sm:flex items-center gap-1.5 h-9 px-3 rounded-lg text-sm font-medium text-white/80 hover:text-white hover:bg-white/10 transition"
-          >
-            <UIcon name="i-lucide-user" class="size-4" />
-            <span>登录</span>
-          </NuxtLink>
-          <button
-            v-else
-            class="hidden sm:flex size-9 items-center justify-center rounded-lg hover:bg-white/10 transition"
-            @click="router.push(`/${slug}/member`)"
-          >
-            <UIcon name="i-lucide-user" class="size-5" />
-          </button>
+          <!-- Member / Login — ClientOnly to avoid SSR hydration mismatch -->
+          <ClientOnly>
+            <NuxtLink
+              v-if="!isLoggedIn"
+              :to="`/${slug}/login`"
+              class="hidden sm:flex items-center gap-1.5 h-9 px-3 rounded-lg text-sm font-medium text-white/80 hover:text-white hover:bg-white/10 transition"
+            >
+              <UIcon name="i-lucide-user" class="size-4" />
+              <span>登录</span>
+            </NuxtLink>
+            <button
+              v-else
+              class="hidden sm:flex size-9 items-center justify-center rounded-lg hover:bg-white/10 transition"
+              @click="router.push(`/${slug}/member`)"
+            >
+              <UIcon name="i-lucide-user" class="size-5" />
+            </button>
+          </ClientOnly>
         </div>
       </div>
 
@@ -242,7 +232,7 @@ const { isFavorited } = useFavorite()
             placeholder="搜索商品…"
             class="w-full h-10 rounded-lg bg-white/15 border border-white/10 pl-9 pr-3 text-sm text-white placeholder:text-white/40 outline-none focus:bg-white/20 focus:border-white/30 transition"
             @keyup.enter="handleSearch"
-          />
+          >
         </div>
         <!-- Mobile search suggestions -->
         <div
@@ -305,22 +295,24 @@ const { isFavorited } = useFavorite()
           >
             💰 充值中心
           </NuxtLink>
-          <NuxtLink
-            v-if="!isLoggedIn"
-            :to="`/${slug}/login`"
-            class="block px-3 py-2 rounded-lg text-sm text-white/80 hover:text-white hover:bg-white/10 transition"
-            @click="showMobileMenu = false"
-          >
-            👤 会员登录
-          </NuxtLink>
-          <NuxtLink
-            v-else
-            :to="`/${slug}/member`"
-            class="block px-3 py-2 rounded-lg text-sm text-white/80 hover:text-white hover:bg-white/10 transition"
-            @click="showMobileMenu = false"
-          >
-            👤 会员中心
-          </NuxtLink>
+          <ClientOnly>
+            <NuxtLink
+              v-if="!isLoggedIn"
+              :to="`/${slug}/login`"
+              class="block px-3 py-2 rounded-lg text-sm text-white/80 hover:text-white hover:bg-white/10 transition"
+              @click="showMobileMenu = false"
+            >
+              👤 会员登录
+            </NuxtLink>
+            <NuxtLink
+              v-else
+              :to="`/${slug}/member`"
+              class="block px-3 py-2 rounded-lg text-sm text-white/80 hover:text-white hover:bg-white/10 transition"
+              @click="showMobileMenu = false"
+            >
+              👤 会员中心
+            </NuxtLink>
+          </ClientOnly>
         </div>
       </div>
     </header>
@@ -341,6 +333,9 @@ const { isFavorited } = useFavorite()
       </NuxtLink>
     </div>
 
+    <!-- Operational broadcast banner (admin-controlled) -->
+    <BroadcastBanner />
+
     <!-- Main content -->
     <main class="flex-1">
       <slot />
@@ -358,12 +353,16 @@ const { isFavorited } = useFavorite()
               </div>
               <span class="font-bold text-(--ui-text)">{{ storeName }}</span>
             </div>
-            <p class="text-xs text-(--ui-text-muted)/70 leading-relaxed">在线选购商品，到店取货，便捷省心。</p>
+            <p class="text-xs text-(--ui-text-muted)/70 leading-relaxed">
+              在线选购商品，到店取货，便捷省心。
+            </p>
           </div>
 
           <!-- Quick links -->
           <div>
-            <p class="text-xs font-semibold text-(--ui-text) uppercase tracking-wider mb-3">快速链接</p>
+            <p class="text-xs font-semibold text-(--ui-text) uppercase tracking-wider mb-3">
+              快速链接
+            </p>
             <div class="space-y-2">
               <NuxtLink :to="`/${slug}`" class="block text-xs text-(--ui-text-muted) hover:text-(--ui-primary) transition">首页</NuxtLink>
               <NuxtLink :to="`/${slug}/orders`" class="block text-xs text-(--ui-text-muted) hover:text-(--ui-primary) transition">我的订单</NuxtLink>
@@ -377,15 +376,24 @@ const { isFavorited } = useFavorite()
 
           <!-- Contact -->
           <div>
-            <p class="text-xs font-semibold text-(--ui-text) uppercase tracking-wider mb-3">联系我们</p>
+            <p class="text-xs font-semibold text-(--ui-text) uppercase tracking-wider mb-3">
+              联系我们
+            </p>
             <div class="space-y-2 text-xs text-(--ui-text-muted)">
-              <p class="flex items-center gap-1.5">
+              <p v-if="tenantInfo?.address" class="flex items-center gap-1.5">
+                <span>地址:</span>
                 <UIcon name="i-lucide-map-pin" class="size-3.5 shrink-0" />
-                店内咨询
+                <span>{{ tenantInfo.address }}</span>
               </p>
-              <p class="flex items-center gap-1.5">
+              <p v-if="tenantInfo?.phone" class="flex items-center gap-1.5">
+                <span>电话:</span>
+                <UIcon name="i-lucide-phone" class="size-3.5 shrink-0" />
+                <span>{{ tenantInfo.phone }}</span>
+              </p>
+              <p v-if="tenantInfo?.business_hours" class="flex items-center gap-1.5">
+                <span>营业时间:</span>
                 <UIcon name="i-lucide-clock" class="size-3.5 shrink-0" />
-                营业时间: 08:00 - 22:00
+                <span>{{ tenantInfo.business_hours }}</span>
               </p>
             </div>
           </div>

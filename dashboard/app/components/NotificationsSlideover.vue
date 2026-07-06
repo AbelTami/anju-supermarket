@@ -29,12 +29,12 @@ const apiOrders = computed(() => {
 })
 
 const notifications = computed(() =>
-  recentOrders.value.map((o) => ({
+  recentOrders.value.map(o => ({
     id: o.id,
     body: `#${o.order_no} — ¥${o.total_amount} [${o.payment_method === 'cash' ? '现金' : o.payment_method === 'wechat' ? '微信' : o.payment_method === 'alipay' ? '支付宝' : '会员卡'}]`,
     date: o.paid_at,
     sender: { name: o.cashier_name, avatar: undefined },
-  }))
+  })),
 )
 
 // Merge API orders with SSE real-time orders, dedup by id
@@ -69,7 +69,9 @@ watch(latestOrder, (order) => {
           {{ connected ? '实时连接中' : '未连接' }}
         </UBadge>
       </div>
-      <div v-if="allNotifications.length === 0" class="text-center text-dimmed py-8">暂无交易记录</div>
+      <div v-if="allNotifications.length === 0" class="text-center text-dimmed py-8">
+        暂无交易记录
+      </div>
       <NuxtLink
         v-for="n in allNotifications"
         :key="n.id"

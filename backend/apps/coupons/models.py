@@ -19,6 +19,7 @@ class Coupon(TenantAwareModel):
     valid_from = models.DateTimeField(null=True, blank=True, verbose_name='生效')
     valid_until = models.DateTimeField(null=True, blank=True, verbose_name='过期')
     is_active = models.BooleanField(default=True, verbose_name='启用')
+    first_order_only = models.BooleanField(default=False, verbose_name='仅限首单', help_text='勾选后只有无任何订单历史的会员能用')
     categories = models.ManyToManyField('products.Category', blank=True, verbose_name='适用品类', help_text='不选则全场通用')
 
     class Meta:

@@ -13,6 +13,9 @@ class Category(TenantAwareModel):
     class Meta:
         db_table = 'product_category'
         verbose_name = '商品分类'
+        indexes = [
+            models.Index(fields=['tenant', 'parent_id'], name='idx_category_tenant_parent'),
+        ]
 
     def __str__(self):
         return self.name
@@ -56,6 +59,10 @@ class ProductSKU(TenantAwareModel):
         ordering = ['product', 'spec_name']
         constraints = [
             models.UniqueConstraint(fields=['tenant', 'barcode'], name='uq_tenant_barcode'),
+            models.CheckConstraint(condition=models.Q(purchase_price__gte=0), name='chk_sku_purchase_nonneg'),
+            models.CheckConstraint(condition=models.Q(selling_price__gte=0), name='chk_sku_selling_nonneg'),
+            models.CheckConstraint(condition=models.Q(stock_quantity__gte=0), name='chk_sku_stock_nonneg'),
+            models.CheckConstraint(condition=models.Q(stock_alert__gte=0), name='chk_sku_alert_nonneg'),
         ]
 
     def __str__(self):

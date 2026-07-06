@@ -2,16 +2,16 @@
 const colorMode = useColorMode()
 const toast = useToast()
 
-// Global API error handler
-if (typeof window !== 'undefined') {
-  window.addEventListener('api-error', ((e: CustomEvent) => {
-    toast.add({
-      title: e.detail.title,
-      description: e.detail.description,
-      color: 'error'
-    })
-  }) as EventListener)
-}
+// antfu: VueUse useEventListener auto-cleans on unmount — no manual
+// removeEventListener needed, no leak across HMR / route changes.
+useEventListener(window, 'api-error', (event: Event) => {
+  const e = event as CustomEvent<{ title: string, description: string }>
+  toast.add({
+    title: e.detail.title,
+    description: e.detail.description,
+    color: 'error',
+  })
+})
 
 const color = computed(() => colorMode.value === 'dark' ? '#1b1718' : 'white')
 
@@ -19,14 +19,14 @@ useHead({
   meta: [
     { charset: 'utf-8' },
     { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-    { key: 'theme-color', name: 'theme-color', content: color }
+    { key: 'theme-color', name: 'theme-color', content: color },
   ],
   link: [
-    { rel: 'icon', href: '/favicon.ico' }
+    { rel: 'icon', href: '/favicon.ico' },
   ],
   htmlAttrs: {
-    lang: 'zh-CN'
-  }
+    lang: 'zh-CN',
+  },
 })
 
 const title = '安居超市管理系统'
@@ -38,7 +38,7 @@ useSeoMeta({
   ogTitle: title,
   ogDescription: description,
   ogImage: 'https://ui.nuxt.com/assets/templates/nuxt/dashboard-light.png',
-  twitterCard: 'summary_large_image'
+  twitterCard: 'summary_large_image',
 })
 </script>
 

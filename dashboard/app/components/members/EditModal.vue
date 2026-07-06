@@ -43,10 +43,20 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 
 <template>
   <UModal v-model:open="open" title="编辑会员" :ui="{ body: 'flex flex-col items-center gap-4', content: '!max-w-sm' }">
-    <UButton icon="i-lucide-pencil" size="xs" color="neutral" variant="ghost" />
+    <UButton
+      icon="i-lucide-pencil"
+      size="xs"
+      color="neutral"
+      variant="ghost"
+    />
 
     <template #body>
-      <UForm :schema="schema" :state="state" class="space-y-4 w-56" @submit="onSubmit">
+      <UForm
+        :schema="schema"
+        :state="state"
+        class="space-y-4 w-56"
+        @submit="onSubmit"
+      >
         <UFormField label="姓名" name="name">
           <UInput v-model="state.name" placeholder="会员姓名" />
         </UFormField>
@@ -60,7 +70,12 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
           <UInput v-model="state.remark" placeholder="选填" />
         </UFormField>
         <div class="flex justify-center gap-2 pt-2">
-          <UButton label="取消" color="neutral" variant="ghost" @click="open = false" />
+          <UButton
+            label="取消"
+            color="neutral"
+            variant="ghost"
+            @click="open = false"
+          />
           <UButton label="保存" color="primary" type="submit" />
         </div>
       </UForm>

@@ -1,13 +1,16 @@
 <script setup lang="ts">
 /** 系统设置 → 优惠券管理 */
-import { useAuth } from '~/composables/useAuth'
+import { useCurrentTenantSlug } from '~/composables/useCurrentTenant'
 
-const auth = useAuth()
+const tenantSlug = useCurrentTenantSlug()
 const toast = useToast()
-const tenantSlug = computed(() => (auth.currentTenant.value as any)?.slug || '')
 const apiUrl = computed(() => tenantSlug.value ? `/api/tenant/${tenantSlug.value}/coupons` : undefined)
 
-const { data, status, refresh } = useFetch(apiUrl, { lazy: true, server: false, watch: [tenantSlug] })
+const { data, status, refresh } = useFetch(apiUrl, {
+  lazy: true,
+  server: false,
+  key: computed(() => `coupons-${tenantSlug.value}`),
+})
 
 const coupons = computed(() => (data.value as any)?.results || [])
 const activeCount = computed(() => coupons.value.filter((c: any) => c.is_active).length)
@@ -63,12 +66,12 @@ const assignFilteredMembers = computed(() => {
   if (!assignSearch.value) return assignMembersList.value
   const q = assignSearch.value.toLowerCase()
   return assignMembersList.value.filter((m: any) =>
-    m.name?.toLowerCase().includes(q) || m.phone?.includes(q) || String(m.id).includes(q)
+    m.name?.toLowerCase().includes(q) || m.phone?.includes(q) || String(m.id).includes(q),
   )
 })
 
 const showDropdown = computed(() =>
-  assignSearch.value.length > 0 && assignFilteredMembers.value.length > 0 && assignDropdownOpen.value
+  assignSearch.value.length > 0 && assignFilteredMembers.value.length > 0 && assignDropdownOpen.value,
 )
 
 function onSearchFocus() { assignDropdownOpen.value = true }
@@ -151,7 +154,6 @@ const isExpired = (until: string) => until ? new Date(until) < new Date() : fals
 <template>
   <ClientOnly>
     <div class="space-y-6">
-
       <!-- ═══ 页头 ═══ -->
       <UPageCard
         title="优惠券管理"
@@ -159,7 +161,13 @@ const isExpired = (until: string) => until ? new Date(until) < new Date() : fals
         variant="naked"
         orientation="horizontal"
       >
-        <UButton label="创建优惠券" icon="i-lucide-plus" size="sm" variant="outline" @click="createOpen = true" />
+        <UButton
+          label="创建优惠券"
+          icon="i-lucide-plus"
+          size="sm"
+          variant="outline"
+          @click="createOpen = true"
+        />
       </UPageCard>
 
       <!-- ═══ 统计卡片 ═══ -->
@@ -168,42 +176,60 @@ const isExpired = (until: string) => until ? new Date(until) < new Date() : fals
         <div class="group relative rounded-xl border border-(--ui-border)/50 bg-(--ui-bg) p-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-(--ui-primary)/25 hover:shadow-sm">
           <div class="flex items-start justify-between">
             <div>
-              <p class="text-xs font-medium text-(--ui-text-muted) mb-1.5 tracking-wide uppercase">总计</p>
-              <p class="text-2xl font-bold tabular-nums text-(--ui-text-highlighted)">{{ coupons.length }}</p>
+              <p class="text-xs font-medium text-(--ui-text-muted) mb-1.5 tracking-wide uppercase">
+                总计
+              </p>
+              <p class="text-2xl font-bold tabular-nums text-(--ui-text-highlighted)">
+                {{ coupons.length }}
+              </p>
             </div>
             <div class="size-10 rounded-lg bg-(--ui-primary)/10 flex items-center justify-center transition-colors duration-300 group-hover:bg-(--ui-primary)/15">
               <UIcon name="i-lucide-ticket" class="size-5 text-(--ui-primary)" />
             </div>
           </div>
-          <p class="text-xs text-(--ui-text-muted) mt-3">全部优惠券</p>
+          <p class="text-xs text-(--ui-text-muted) mt-3">
+            全部优惠券
+          </p>
         </div>
 
         <!-- 启用中 -->
         <div class="group relative rounded-xl border border-(--ui-border)/50 bg-(--ui-bg) p-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-(--ui-success)/25 hover:shadow-sm">
           <div class="flex items-start justify-between">
             <div>
-              <p class="text-xs font-medium text-(--ui-text-muted) mb-1.5 tracking-wide uppercase">启用中</p>
-              <p class="text-2xl font-bold tabular-nums text-(--ui-text-highlighted)">{{ activeCount }}</p>
+              <p class="text-xs font-medium text-(--ui-text-muted) mb-1.5 tracking-wide uppercase">
+                启用中
+              </p>
+              <p class="text-2xl font-bold tabular-nums text-(--ui-text-highlighted)">
+                {{ activeCount }}
+              </p>
             </div>
             <div class="size-10 rounded-lg bg-(--ui-success)/10 flex items-center justify-center transition-colors duration-300 group-hover:bg-(--ui-success)/15">
               <UIcon name="i-lucide-check-circle-2" class="size-5 text-(--ui-success)" />
             </div>
           </div>
-          <p class="text-xs text-(--ui-text-muted) mt-3">当前有效的优惠券</p>
+          <p class="text-xs text-(--ui-text-muted) mt-3">
+            当前有效的优惠券
+          </p>
         </div>
 
         <!-- 已领取 -->
         <div class="group relative rounded-xl border border-(--ui-border)/50 bg-(--ui-bg) p-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-(--ui-warning)/25 hover:shadow-sm">
           <div class="flex items-start justify-between">
             <div>
-              <p class="text-xs font-medium text-(--ui-text-muted) mb-1.5 tracking-wide uppercase">已领取</p>
-              <p class="text-2xl font-bold tabular-nums text-(--ui-text-highlighted)">{{ totalClaimed }}</p>
+              <p class="text-xs font-medium text-(--ui-text-muted) mb-1.5 tracking-wide uppercase">
+                已领取
+              </p>
+              <p class="text-2xl font-bold tabular-nums text-(--ui-text-highlighted)">
+                {{ totalClaimed }}
+              </p>
             </div>
             <div class="size-10 rounded-lg bg-(--ui-warning)/10 flex items-center justify-center transition-colors duration-300 group-hover:bg-(--ui-warning)/15">
               <UIcon name="i-lucide-users" class="size-5 text-(--ui-warning)" />
             </div>
           </div>
-          <p class="text-xs text-(--ui-text-muted) mt-3">累计领取次数</p>
+          <p class="text-xs text-(--ui-text-muted) mt-3">
+            累计领取次数
+          </p>
         </div>
       </div>
 
@@ -212,7 +238,9 @@ const isExpired = (until: string) => until ? new Date(until) < new Date() : fals
         <!-- 加载 -->
         <div v-if="status === 'pending'" class="flex flex-col items-center justify-center py-20 gap-4">
           <UIcon name="i-lucide-loader-circle" class="size-8 text-(--ui-primary) animate-spin" />
-          <p class="text-sm text-(--ui-text-muted)">加载优惠券中…</p>
+          <p class="text-sm text-(--ui-text-muted)">
+            加载优惠券中…
+          </p>
         </div>
 
         <!-- 空状态 -->
@@ -225,13 +253,27 @@ const isExpired = (until: string) => until ? new Date(until) < new Date() : fals
               <UIcon name="i-lucide-plus" class="size-4 text-(--ui-text-muted)/40" />
             </div>
           </div>
-          <p class="text-lg font-semibold text-(--ui-text)">还没有优惠券</p>
-          <p class="text-sm text-(--ui-text-muted) mt-1.5 mb-5">创建第一张优惠券，吸引顾客消费</p>
-          <UButton label="创建优惠券" icon="i-lucide-plus" color="primary" @click="createOpen = true" />
+          <p class="text-lg font-semibold text-(--ui-text)">
+            还没有优惠券
+          </p>
+          <p class="text-sm text-(--ui-text-muted) mt-1.5 mb-5">
+            创建第一张优惠券，吸引顾客消费
+          </p>
+          <UButton
+            label="创建优惠券"
+            icon="i-lucide-plus"
+            color="primary"
+            @click="createOpen = true"
+          />
         </div>
 
         <!-- 列表 -->
-        <TransitionGroup v-else name="coupon-list" tag="div" class="divide-y divide-(--ui-border)/40">
+        <TransitionGroup
+          v-else
+          name="coupon-list"
+          tag="div"
+          class="divide-y divide-(--ui-border)/40"
+        >
           <div
             v-for="c in coupons"
             :key="c.id"
@@ -303,15 +345,36 @@ const isExpired = (until: string) => until ? new Date(until) < new Date() : fals
             <!-- 右侧操作按钮：hover 显示，分隔线隔开 -->
             <div class="flex items-center gap-0 shrink-0 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
               <UTooltip :text="c.is_active ? '停用' : '启用'">
-                <UButton size="xs" variant="ghost" square :color="c.is_active ? 'neutral' : 'success'" :icon="c.is_active ? 'i-lucide-pause' : 'i-lucide-play'" @click="toggleActive(c)" />
+                <UButton
+                  size="xs"
+                  variant="ghost"
+                  square
+                  :color="c.is_active ? 'neutral' : 'success'"
+                  :icon="c.is_active ? 'i-lucide-pause' : 'i-lucide-play'"
+                  @click="toggleActive(c)"
+                />
               </UTooltip>
               <div class="border-l border-(--ui-border)/40 h-5 mx-1.5" />
               <UTooltip text="分配会员">
-                <UButton size="xs" variant="ghost" square color="primary" icon="i-lucide-user-plus" @click="openAssign(c.id)" />
+                <UButton
+                  size="xs"
+                  variant="ghost"
+                  square
+                  color="primary"
+                  icon="i-lucide-user-plus"
+                  @click="openAssign(c.id)"
+                />
               </UTooltip>
               <div class="border-l border-(--ui-border)/40 h-5 mx-1.5" />
               <UTooltip text="删除优惠券">
-                <UButton size="xs" variant="ghost" square color="error" icon="i-lucide-trash-2" @click="openDeleteConfirm(c)" />
+                <UButton
+                  size="xs"
+                  variant="ghost"
+                  square
+                  color="error"
+                  icon="i-lucide-trash-2"
+                  @click="openDeleteConfirm(c)"
+                />
               </UTooltip>
             </div>
           </div>
@@ -362,8 +425,18 @@ const isExpired = (until: string) => until ? new Date(until) < new Date() : fals
         </template>
         <template #footer>
           <div class="flex justify-end gap-2.5 pt-1">
-            <UButton label="取消" color="neutral" variant="subtle" @click="createOpen = false" />
-            <UButton label="确认创建" color="primary" icon="i-lucide-sparkles" @click="createCoupon" />
+            <UButton
+              label="取消"
+              color="neutral"
+              variant="subtle"
+              @click="createOpen = false"
+            />
+            <UButton
+              label="确认创建"
+              color="primary"
+              icon="i-lucide-sparkles"
+              @click="createCoupon"
+            />
           </div>
         </template>
       </UModal>
@@ -426,7 +499,9 @@ const isExpired = (until: string) => until ? new Date(until) < new Date() : fals
                           <span class="text-sm font-semibold text-(--ui-text-highlighted) truncate">{{ m.name }}</span>
                           <span class="text-xs text-(--ui-text-muted)/50 tabular-nums shrink-0">#{{ m.id }}</span>
                         </div>
-                        <p v-if="m.phone" class="text-xs text-(--ui-text-muted) mt-0.5">{{ m.phone }}</p>
+                        <p v-if="m.phone" class="text-xs text-(--ui-text-muted) mt-0.5">
+                          {{ m.phone }}
+                        </p>
                       </div>
                       <UIcon v-if="assignMemberIds.includes(m.id)" name="i-lucide-check-circle" class="size-5 text-(--ui-primary)/40 shrink-0" />
                       <UIcon v-else name="i-lucide-plus-circle" class="size-5 text-(--ui-text-muted)/20 group-hover:text-(--ui-primary)/60 shrink-0 transition-colors" />
@@ -481,8 +556,12 @@ const isExpired = (until: string) => until ? new Date(until) < new Date() : fals
                   <UIcon name="i-lucide-arrow-up" class="size-3.5 text-(--ui-warning)/60" />
                 </div>
               </div>
-              <p class="text-sm font-medium">还没有选择会员</p>
-              <p class="text-xs mt-1 opacity-50">在上方搜索框中输入姓名、手机号或 ID 来查找会员</p>
+              <p class="text-sm font-medium">
+                还没有选择会员
+              </p>
+              <p class="text-xs mt-1 opacity-50">
+                在上方搜索框中输入姓名、手机号或 ID 来查找会员
+              </p>
             </div>
           </div>
         </template>
@@ -493,8 +572,19 @@ const isExpired = (until: string) => until ? new Date(until) < new Date() : fals
             </p>
             <span v-else />
             <div class="flex gap-2.5">
-              <UButton label="取消" color="neutral" variant="subtle" @click="assignOpen = false" />
-              <UButton label="确认分配" color="primary" icon="i-lucide-send" :disabled="assignMemberIds.length === 0" @click="doAssign" />
+              <UButton
+                label="取消"
+                color="neutral"
+                variant="subtle"
+                @click="assignOpen = false"
+              />
+              <UButton
+                label="确认分配"
+                color="primary"
+                icon="i-lucide-send"
+                :disabled="assignMemberIds.length === 0"
+                @click="doAssign"
+              />
             </div>
           </div>
         </template>
@@ -521,12 +611,21 @@ const isExpired = (until: string) => until ? new Date(until) < new Date() : fals
         </template>
         <template #footer>
           <div class="flex justify-end gap-2.5 pt-1">
-            <UButton label="取消" color="neutral" variant="subtle" @click="confirmDeleteOpen = false" />
-            <UButton label="确认删除" color="error" icon="i-lucide-trash-2" @click="confirmDelete" />
+            <UButton
+              label="取消"
+              color="neutral"
+              variant="subtle"
+              @click="confirmDeleteOpen = false"
+            />
+            <UButton
+              label="确认删除"
+              color="error"
+              icon="i-lucide-trash-2"
+              @click="confirmDelete"
+            />
           </div>
         </template>
       </UModal>
-
     </div>
   </ClientOnly>
 </template>

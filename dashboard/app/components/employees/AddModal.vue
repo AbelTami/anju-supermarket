@@ -57,8 +57,18 @@ async function submit() {
           <USelect v-model="role" :items="roleOptions" />
         </UFormField>
         <div class="flex justify-end gap-2">
-          <UButton label="取消" color="neutral" variant="subtle" @click="open = false" />
-          <UButton label="添加" color="primary" :loading="loading" @click="submit" />
+          <UButton
+            label="取消"
+            color="neutral"
+            variant="subtle"
+            @click="open = false"
+          />
+          <UButton
+            label="添加"
+            color="primary"
+            :loading="loading"
+            @click="submit"
+          />
         </div>
       </div>
     </template>

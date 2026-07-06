@@ -1,9 +1,20 @@
-/** Shared member auth state — survives page navigation + refresh. */
-import { createSharedComposable, useLocalStorage } from '@vueuse/core'
+/** Shared member auth state.
+
+Why cookie-only (not localStorage + cookie): useLocalStorage is not available
+during SSR, which causes hydration mismatches and means the server-rendered
+HTML thinks the user is logged out. useCookie is SSR-safe — Nuxt serializes
+the cookie on the server and hydrates identically on the client.
+*/
+import { createSharedComposable } from '@vueuse/core'
+import type { MemberInfo } from '~/types'
 
 export const useMemberAuth = createSharedComposable(() => {
-  const token = useLocalStorage<string | null>('member-token', null)
-  const member = ref<any>(null)
+  const token = useCookie<string | null>('member-token', {
+    sameSite: 'lax',
+    path: '/',
+    maxAge: 60 * 60 * 24 * 30, // 30 days, matches backend token lifetime
+  })
+  const member = ref<MemberInfo | null>(null)
 
   async function fetchProfile(slug: string) {
     if (!token.value) return null
@@ -13,7 +24,6 @@ export const useMemberAuth = createSharedComposable(() => {
       member.value = profile
       return profile
     } catch {
-      // Token invalid or expired — clear it so user gets redirected to login
       token.value = null
       member.value = null
       return null

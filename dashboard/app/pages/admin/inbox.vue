@@ -1,20 +1,33 @@
 <script setup lang="ts">
 /** 消息通知 — Recent orders + alerts */
 import { formatTimeAgo } from '@vueuse/core'
-import { useAuth } from '~/composables/useAuth'
+import { useCurrentTenantSlug } from '~/composables/useCurrentTenant'
 
-const auth = useAuth()
-const tenantSlug = computed(() => (auth.currentTenant.value as any)?.slug || '')
-const ordersUrl = computed(() => `/api/tenant/${tenantSlug.value}/orders?ordering=-paid_at&page_size=30`)
+const tenantSlug = useCurrentTenantSlug()
+const ordersUrl = computed(() =>
+  tenantSlug.value
+    ? `/api/tenant/${tenantSlug.value}/orders?ordering=-paid_at&page_size=30`
+    : undefined,
+)
 
-const { data: ordersData, refresh } = useFetch(ordersUrl, { lazy: true, server: false, immediate: true, watch: [tenantSlug] })
+const { data: ordersData, refresh } = useFetch(ordersUrl, {
+  lazy: true,
+  server: false,
+  key: computed(() => `inbox-orders-${tenantSlug.value}`),
+})
+
+interface OrderRow { id: number, order_no: string, cashier_name: string, payment_method: string, total_amount: string, paid_at: string, items_count: number }
+
+const paymentLabels: Record<string, string> = {
+  cash: '现金', wechat: '微信', alipay: '支付宝', member_card: '会员卡',
+}
 
 const items = computed(() => {
-  const orders = (ordersData.value as any)?.results || []
-  return orders.map((o: any) => ({
+  const orders = (ordersData.value as { results?: OrderRow[] } | undefined)?.results ?? []
+  return orders.map(o => ({
     id: o.id,
     title: `订单 #${o.order_no}`,
-    subtitle: `${o.cashier_name} · ${o.payment_method === 'cash' ? '现金' : o.payment_method === 'wechat' ? '微信' : o.payment_method === 'alipay' ? '支付宝' : '会员卡'}`,
+    subtitle: `${o.cashier_name} · ${paymentLabels[o.payment_method] ?? o.payment_method}`,
     amount: `¥${o.total_amount}`,
     time: formatTimeAgo(new Date(o.paid_at)),
     date: o.paid_at,
@@ -24,46 +37,44 @@ const items = computed(() => {
 </script>
 
 <template>
-  
-    <UDashboardPanel>
-      <template #header>
-        <UDashboardNavbar title="消息通知">
-          <template #leading>
-            <UDashboardSidebarCollapse />
-          </template>
-          <template #trailing>
-            <UBadge :label="items.length" variant="subtle" />
-          </template>
-        </UDashboardNavbar>
-      </template>
+  <UDashboardPanel>
+    <template #header>
+      <UDashboardNavbar title="消息通知">
+        <template #leading>
+          <UDashboardSidebarCollapse />
+        </template>
+        <template #trailing>
+          <UBadge :label="items.length" variant="subtle" />
+        </template>
+      </UDashboardNavbar>
+    </template>
 
-      <template #body>
-        <div v-if="items.length === 0" class="flex flex-col items-center justify-center py-16 text-dimmed">
-          <UIcon name="i-lucide-inbox" class="size-16 mb-4" />
-          <p>暂无交易记录</p>
-        </div>
-        <div v-else class="divide-y divide-default">
-          <div
-            v-for="item in items"
-            :key="item.id"
-            class="flex items-center gap-4 px-4 py-3 hover:bg-elevated/50 transition-colors"
-          >
-            <div class="size-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-              <UIcon name="i-lucide-receipt" class="size-5 text-primary" />
+    <template #body>
+      <div v-if="items.length === 0" class="flex flex-col items-center justify-center py-16 text-dimmed">
+        <UIcon name="i-lucide-inbox" class="size-16 mb-4" />
+        <p>暂无交易记录</p>
+      </div>
+      <div v-else class="divide-y divide-default">
+        <div
+          v-for="item in items"
+          :key="item.id"
+          class="flex items-center gap-4 px-4 py-3 hover:bg-elevated/50 transition-colors"
+        >
+          <div class="size-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+            <UIcon name="i-lucide-receipt" class="size-5 text-primary" />
+          </div>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center justify-between">
+              <span class="font-medium text-sm truncate">{{ item.title }}</span>
+              <span class="text-xs text-muted ml-2 shrink-0">{{ item.time }}</span>
             </div>
-            <div class="flex-1 min-w-0">
-              <div class="flex items-center justify-between">
-                <span class="font-medium text-sm truncate">{{ item.title }}</span>
-                <span class="text-xs text-muted ml-2 shrink-0">{{ item.time }}</span>
-              </div>
-              <div class="flex items-center justify-between mt-0.5">
-                <span class="text-xs text-dimmed">{{ item.subtitle }} · {{ item.items_count }}件商品</span>
-                <span class="text-sm font-semibold ml-2">{{ item.amount }}</span>
-              </div>
+            <div class="flex items-center justify-between mt-0.5">
+              <span class="text-xs text-dimmed">{{ item.subtitle }} · {{ item.items_count }}件商品</span>
+              <span class="text-sm font-semibold ml-2">{{ item.amount }}</span>
             </div>
           </div>
         </div>
-      </template>
-    </UDashboardPanel>
-  
+      </div>
+    </template>
+  </UDashboardPanel>
 </template>

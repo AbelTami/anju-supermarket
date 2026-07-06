@@ -85,9 +85,15 @@ function renderStars(rating: number): string[] {
         <UIcon name="i-lucide-arrow-left" class="size-5 text-(--ui-text-muted)" />
       </button>
       <div>
-        <h1 class="text-2xl font-bold text-(--ui-text) tracking-tight">我的收藏</h1>
+        <h1 class="text-2xl font-bold text-(--ui-text) tracking-tight">
+          我的收藏
+        </h1>
         <p class="text-xs text-(--ui-text-muted) mt-0.5">
-          共 <ClientOnly><span class="font-medium">{{ count }}</span><template #fallback><span class="font-medium">0</span></template></ClientOnly> 件收藏商品
+          共 <ClientOnly>
+            <span class="font-medium">{{ count }}</span><template #fallback>
+              <span class="font-medium">0</span>
+            </template>
+          </ClientOnly> 件收藏商品
         </p>
       </div>
     </div>
@@ -111,8 +117,12 @@ function renderStars(rating: number): string[] {
       <div class="size-20 rounded-full bg-(--ui-bg-muted) flex items-center justify-center mb-4">
         <UIcon name="i-lucide-heart" class="shop-empty-icon" />
       </div>
-      <p class="shop-empty-text">还没有收藏商品</p>
-      <p class="shop-empty-desc">浏览商品时点击❤️即可收藏</p>
+      <p class="shop-empty-text">
+        还没有收藏商品
+      </p>
+      <p class="shop-empty-desc">
+        浏览商品时点击❤️即可收藏
+      </p>
       <UButton
         :to="`/${slug}`"
         variant="soft"
@@ -147,7 +157,7 @@ function renderStars(rating: number): string[] {
             class="h-full w-full object-cover shop-img-zoom"
             loading="lazy"
             @error="onImgError($event, product.name)"
-          />
+          >
           <div v-else class="absolute inset-0 flex items-center justify-center">
             <span class="text-4xl font-black text-(--ui-primary)/15">{{ product.name?.charAt(0) }}</span>
           </div>

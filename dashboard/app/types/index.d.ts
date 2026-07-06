@@ -1,5 +1,7 @@
 export type Period = 'daily' | 'weekly' | 'monthly'
 
+export type Role = 'super_admin' | 'manager' | 'cashier' | 'warehouse' | 'accountant'
+
 export interface Range {
   start: Date
   end: Date
@@ -15,10 +17,58 @@ export interface Stat {
 
 // API response types
 
+/**
+ * Admin tenant info — 租户管理端返回的完整租户信息
+ *
+ * 使用场景:
+ * - `/api/auth/profile` - 返回当前用户可访问的租户列表
+ * - `/api/tenant/{slug}/` - 返回指定租户的详细信息（管理端）
+ *
+ * @property id - 租户唯一标识符
+ * @property name - 超市名称
+ * @property slug - URL友好的唯一标识符
+ * @property broadcast_active - 是否启用运营广播
+ * @property broadcast_message - 运营广播消息内容（最多200字）
+ * @property broadcast_severity - 广告级别（info=通知, warning=注意, error=紧急）
+ * @property role - 用户在该租户中的角色
+ */
 export interface TenantInfo {
   id: number
   name: string
   slug: string
+  broadcast_active: boolean
+  broadcast_message: string
+  broadcast_severity: 'info' | 'warning' | 'error'
+  role: Role
+}
+
+/**
+ * Public tenant info — 顾客前台返回的公开租户信息
+ *
+ * 使用场景:
+ * - `/api/shop/{slug}/info/` - 返回指定租户的公开信息（顾客端）
+ *
+ * @property name - 超市名称
+ * @property slug - URL友好的唯一标识符
+ * @property phone - 联系电话
+ * @property address - 超市地址
+ * @property business_hours - 营业时间
+ * @property broadcast_active - 是否启用运营广播
+ * @property broadcast_message - 运营广播消息内容
+ * @property broadcast_severity - 广告级别（info=通知, warning=注意, error=紧急）
+ */
+export interface TenantPublicInfo {
+  name: string
+  slug: string
+  phone: string
+  address: string
+  business_hours: string
+  broadcast_active: boolean
+  broadcast_message: string
+  broadcast_severity: 'info' | 'warning' | 'error'
+  paper_width: string
+  print_barcode: boolean
+  footer_text: string
 }
 
 export interface UserInfo {

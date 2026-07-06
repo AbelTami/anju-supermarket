@@ -13,7 +13,7 @@ const tenantItems = computed<DropdownMenuItem[][]>(() => {
     label: t.name,
     onSelect() {
       auth.switchTenant(t)
-    }
+    },
   }))
 
   return [
@@ -21,8 +21,8 @@ const tenantItems = computed<DropdownMenuItem[][]>(() => {
     [{
       label: '注册新超市',
       icon: 'i-lucide-circle-plus',
-      to: '/admin/auth/register'
-    }]
+      to: '/admin/auth/register',
+    }],
   ]
 })
 
@@ -36,25 +36,25 @@ const currentLabel = computed(() => {
 
 <template>
   <ClientOnly>
-  <UDropdownMenu
-    :items="tenantItems"
-    :content="{ align: 'center', collisionPadding: 12 }"
-    :ui="{ content: collapsed ? 'w-40' : 'w-(--reka-dropdown-menu-trigger-width)' }"
-  >
-    <UButton
-      :label="collapsed ? undefined : currentLabel"
-      :icon="'i-lucide-store'"
-      :trailing-icon="collapsed ? undefined : 'i-lucide-chevrons-up-down'"
-      color="neutral"
-      variant="ghost"
-      block
-      :square="collapsed"
-      class="data-[state=open]:bg-elevated"
-      :class="[!collapsed && 'py-2']"
-      :ui="{
-        trailingIcon: 'text-dimmed'
-      }"
-    />
-  </UDropdownMenu>
+    <UDropdownMenu
+      :items="tenantItems"
+      :content="{ align: 'center', collisionPadding: 12 }"
+      :ui="{ content: collapsed ? 'w-40' : 'w-(--reka-dropdown-menu-trigger-width)' }"
+    >
+      <UButton
+        :label="collapsed ? undefined : currentLabel"
+        :icon="'i-lucide-store'"
+        :trailing-icon="collapsed ? undefined : 'i-lucide-chevrons-up-down'"
+        color="neutral"
+        variant="ghost"
+        block
+        :square="collapsed"
+        class="data-[state=open]:bg-elevated"
+        :class="[!collapsed && 'py-2']"
+        :ui="{
+          trailingIcon: 'text-dimmed',
+        }"
+      />
+    </UDropdownMenu>
   </ClientOnly>
 </template>

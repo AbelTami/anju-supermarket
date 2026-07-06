@@ -24,15 +24,24 @@ class CouponSerializer(serializers.ModelSerializer):
 
 
 class MemberCouponSerializer(serializers.ModelSerializer):
+    """Member's owned coupon — exposes everything the checkout page needs to
+    pre-validate eligibility without another round-trip."""
+    coupon_id = serializers.IntegerField(source='coupon.id', read_only=True)
     coupon_title = serializers.CharField(source='coupon.title', read_only=True)
     discount_type = serializers.CharField(source='coupon.discount_type', read_only=True)
     discount_value = serializers.CharField(source='coupon.discount_value', read_only=True)
     min_amount = serializers.CharField(source='coupon.min_amount', read_only=True)
     valid_until = serializers.DateTimeField(source='coupon.valid_until', read_only=True)
     scope_label = serializers.CharField(source='coupon.scope_label', read_only=True)
+    category_ids = serializers.SerializerMethodField()
+    first_order_only = serializers.BooleanField(source='coupon.first_order_only', read_only=True)
 
     class Meta:
         model = MemberCoupon
-        fields = ['id', 'code', 'used', 'used_at', 'coupon_title', 'discount_type',
-                  'discount_value', 'min_amount', 'valid_until', 'scope_label', 'created_at']
+        fields = ['id', 'coupon_id', 'code', 'used', 'used_at', 'coupon_title', 'discount_type',
+                  'discount_value', 'min_amount', 'valid_until', 'scope_label',
+                  'category_ids', 'first_order_only', 'created_at']
         read_only_fields = ['id', 'created_at']
+
+    def get_category_ids(self, obj):
+        return [c.id for c in obj.coupon.categories.all()]

@@ -43,13 +43,75 @@ class HasMemberToken(permissions.BasePermission):
         return get_member_from_request(request) is not None
 
 
-class IsSuperAdminOrManager(permissions.BasePermission):
-    """Allow access only for users with super_admin or manager role in the current tenant."""
+# ponytail: role-based permissions — simple inheritance, reusable base class.
+class RolePermission(permissions.BasePermission):
+    """Base class for role-based permissions. Subclasses define ALLOWED_ROLES."""
+
+    # Subclasses override this
+    ALLOWED_ROLES: set[str] = set()
+
+    def _get_user_role(self, request) -> str | None:
+        """Get user's role in current tenant."""
+        if not request.user.is_authenticated or not request.tenant:
+            return None
+        return (
+            UserTenant.objects
+            .filter(user=request.user, tenant=request.tenant)
+            .values_list('role', flat=True)
+            .first()
+        )
 
     def has_permission(self, request, view):
-        if not request.user.is_authenticated:
-            return False
-        if not request.tenant:
+        role = self._get_user_role(request)
+        return role in self.ALLOWED_ROLES
+
+
+class IsSuperAdmin(RolePermission):
+    """Only super_admin can access."""
+    ALLOWED_ROLES = {'super_admin'}
+
+
+class IsAdminOrManager(RolePermission):
+    """super_admin or manager can access."""
+    ALLOWED_ROLES = {'super_admin', 'manager'}
+
+
+class IsCashier(RolePermission):
+    """cashier (and above) can access."""
+    ALLOWED_ROLES = {'cashier', 'manager', 'super_admin'}
+
+
+class IsWarehouse(RolePermission):
+    """warehouse staff (and above) can access."""
+    ALLOWED_ROLES = {'warehouse', 'manager', 'super_admin'}
+
+
+class IsAccountant(RolePermission):
+    """accountant (and above) can access."""
+    ALLOWED_ROLES = {'accountant', 'manager', 'super_admin'}
+
+
+class IsAccountantOrManager(RolePermission):
+    """accountant or manager can access."""
+    ALLOWED_ROLES = {'accountant', 'manager', 'super_admin'}
+
+
+class IsWarehouseOrAdmin(RolePermission):
+    """warehouse staff, manager, or super_admin can access."""
+    ALLOWED_ROLES = {'warehouse', 'manager', 'super_admin'}
+
+
+class IsAuthenticatedCashierOrMember(permissions.BasePermission):
+    """Allow access if authenticated as cashier/staff OR has valid member token."""
+
+    def has_permission(self, request, view):
+        # Check for member token first
+        auth = request.headers.get('Authorization', '')
+        if auth.startswith('Token '):
+            return get_member_from_request(request) is not None
+
+        # Check for authenticated cashier/staff
+        if not request.user.is_authenticated or not request.tenant:
             return False
         role = (
             UserTenant.objects
@@ -57,4 +119,10 @@ class IsSuperAdminOrManager(permissions.BasePermission):
             .values_list('role', flat=True)
             .first()
         )
-        return role in ('super_admin', 'manager')
+        return role in {'cashier', 'manager', 'super_admin'}
+
+
+# Legacy alias — kept for backward compatibility
+class IsSuperAdminOrManager(IsAdminOrManager):
+    """Deprecated: use IsAdminOrManager instead."""
+    pass

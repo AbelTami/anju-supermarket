@@ -8,6 +8,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 from dotenv import load_dotenv
 load_dotenv(BASE_DIR / '.env')
 
+# Fail fast if required environment variables are missing.
+_REQUIRED_ENV_VARS = ('DB_NAME', 'DB_USER', 'DJANGO_SECRET_KEY')
+for _var in _REQUIRED_ENV_VARS:
+    if not os.environ.get(_var):
+        raise RuntimeError(f'Environment variable {_var} is required but not set.')
+
 SECRET_KEY = os.environ['DJANGO_SECRET_KEY']
 DEBUG = os.environ.get('DJANGO_DEBUG', 'False') == 'True'
 ALLOWED_HOSTS = [host.strip() for host in os.environ.get('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')]
@@ -22,6 +28,7 @@ INSTALLED_APPS = [
     # Third party
     'rest_framework',
     'rest_framework_simplejwt',
+    'rest_framework_simplejwt.token_blacklist',
     'corsheaders',
     'django_filters',
     # Local apps
@@ -74,11 +81,16 @@ AUTH_USER_MODEL = 'accounts.User'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('DB_NAME', 'anju_db'),
-        'USER': os.environ.get('DB_USER', 'postgres'),
+        'NAME': os.environ['DB_NAME'],
+        'USER': os.environ['DB_USER'],
         'PASSWORD': os.environ['DB_PASSWORD'],
         'HOST': os.environ.get('DB_HOST', 'localhost'),
         'PORT': os.environ.get('DB_PORT', '5432'),
+        'CONN_MAX_AGE': 600,  # ponytail: persistent conn per worker — beats pool lib for our scale
+        'OPTIONS': {
+            # Fail fast on runaway queries instead of letting them pile up.
+            'options': '-c statement_timeout=30000',
+        },
     }
 }
 
@@ -115,11 +127,14 @@ REST_FRAMEWORK = {
     'DEFAULT_THROTTLE_CLASSES': [
         'rest_framework.throttling.AnonRateThrottle',
         'rest_framework.throttling.UserRateThrottle',
+        'rest_framework.throttling.ScopedRateThrottle',
     ],
     'DEFAULT_THROTTLE_RATES': {
-        'anon': '30/minute',
+        'anon': '120/minute',
         'user': '100/minute',
         'login': '5/minute',
+        'recharge': '10/minute',
+        'deduct_balance': '20/minute',
     },
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 20,
@@ -130,6 +145,7 @@ SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(hours=2),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
     'ROTATE_REFRESH_TOKENS': True,
+    'BLACKLIST_AFTER_ROTATION': True,
     'AUTH_HEADER_TYPES': ('Bearer',),
     'AUTH_COOKIE': 'access_token',
     'AUTH_COOKIE_REFRESH': 'refresh_token',
@@ -138,7 +154,17 @@ SIMPLE_JWT = {
     'AUTH_COOKIE_SAMESITE': 'Strict',
 }
 
+# External APIs
+OPEN_FOOD_FACTS_URL = os.environ.get(
+    'OPEN_FOOD_FACTS_URL',
+    'https://world.openfoodfacts.org/api/v2/product/',
+)
+
 # CORS
 CORS_ALLOW_ALL_ORIGINS = False
-CORS_ALLOWED_ORIGINS = ['http://localhost:3000']
+CORS_ALLOWED_ORIGINS = [
+    origin.strip()
+    for origin in os.environ.get('CORS_ALLOWED_ORIGINS', 'http://localhost:3000').split(',')
+    if origin.strip()
+]
 CORS_ALLOW_CREDENTIALS = True

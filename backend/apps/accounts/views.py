@@ -61,15 +61,15 @@ class ProfileView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
+        from .serializers import TenantBriefSerializer
         return Response({
             'id': request.user.id,
             'username': request.user.username,
             'phone': request.user.phone,
             'email': request.user.email,
-            'tenants': [
-                {'id': t.id, 'name': t.name, 'slug': t.slug}
-                for t in request.user.tenants.filter(is_active=True)
-            ],
+            'tenants': TenantBriefSerializer(
+                request.user.tenants.filter(is_active=True), many=True, context={'user': request.user}
+            ).data,
         })
 
 

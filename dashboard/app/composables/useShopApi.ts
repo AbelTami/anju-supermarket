@@ -89,6 +89,6 @@ export function useShopApi() {
     placeOrder,
     fetchOrders,
     memberLogin,
-    fetchMemberProfile
+    fetchMemberProfile,
   }
 }

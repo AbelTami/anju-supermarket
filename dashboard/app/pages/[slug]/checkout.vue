@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import { mediaUrl } from '~/composables/useShopApi'
+import { useShopCart } from '~/composables/useShopCart'
+import { openReceiptPrint } from '~/composables/useReceiptPrint'
+import type { TenantPublicInfo } from '~/types'
 
 definePageMeta({ layout: 'shop' })
 
@@ -9,187 +11,213 @@ const toast = useToast()
 const slug = computed(() => route.params.slug as string)
 const { placeOrder } = useShopApi()
 const { onImgError } = useImageFallback()
+const { items: cart, clear: clearCart } = useShopCart()
 
-const cart = useState<any[]>('shop-cart', () => [])
+// Redirect on empty cart — run after hydration to avoid SSR mismatch.
+onMounted(() => {
+  if (cart.value.length === 0) {
+    router.replace(`/${slug.value}/cart`)
+  }
+})
 
-// Redirect to cart if empty
-if (cart.value.length === 0 && import.meta.client) {
-  router.replace(`/${slug.value}/cart`)
-}
-
-// Selection state — use all cart items or pass from cart
 const selectedItems = computed(() => cart.value)
 
 const totalAmount = computed(() =>
-  selectedItems.value.reduce((sum, item) => sum + (item.price || 0) * (item.quantity || 0), 0)
+  selectedItems.value.reduce((sum, item) => sum + item.price * item.quantity, 0),
 )
 
 const itemCount = computed(() =>
-  selectedItems.value.reduce((sum, item) => sum + (item.quantity || 0), 0)
+  selectedItems.value.reduce((sum, item) => sum + item.quantity, 0),
 )
 
-// Step indicator
-const currentStep = computed(() => {
-  // Step 1: 确认商品 — 默认
-  // Step 2: 填写信息 — 填了联系信息或选了支付方式或选了优惠券
-  // Step 3: 提交订单 — 所有选项都用过了
-  const hasContactInfo = customerName.value.length > 0 || customerPhone.value.length > 0 || pickupNote.value.length > 0
-  const hasPaymentSelection = paymentMethod.value !== 'cash' || useBalanceMixed.value
-  const hasCouponSelection = selectedCoupon.value !== null
-
-  if (hasPaymentSelection || hasCouponSelection) return 3
-  if (hasContactInfo) return 2
-  return 1
-})
-const steps = [
-  { id: 1, label: '确认商品' },
-  { id: 2, label: '填写信息' },
-  { id: 3, label: '提交订单' }
-]
-
-// Contact form
 const customerName = ref('')
 const customerPhone = ref('')
 const pickupNote = ref('')
 
-// Payment method
 const paymentMethod = ref<string>('cash')
-const paymentMethods = ref([
+const paymentMethods = [
   { value: 'cash', label: '到店支付', icon: 'i-lucide-store', desc: '取货时在店内付款' },
   { value: 'wechat', label: '微信支付', icon: 'i-lucide-smartphone', desc: '在线微信支付' },
   { value: 'alipay', label: '支付宝', icon: 'i-lucide-smartphone', desc: '在线支付宝支付' },
-])
+]
 
-// Member balance info (if logged in)
 const memberAuth = useMemberAuth()
 const memberBalance = ref(0)
 const useBalanceMixed = ref(false)
 
 onMounted(async () => {
-  if (memberAuth.token.value) {
-    try {
-      const profile = await memberAuth.fetchProfile(slug.value)
-      memberBalance.value = Number(profile.balance) || 0
-    } catch { /* guest checkout — ignore */ }
-  }
+  if (!memberAuth.token.value) return
+  try {
+    const profile = await memberAuth.fetchProfile(slug.value)
+    memberBalance.value = Number(profile?.balance ?? 0)
+  } catch { /* guest checkout */ }
 })
 
-// Remaining amount to pay after balance deduction
-const balanceDeduction = computed(() =>
-  Math.min(memberBalance.value, paidAmount.value),
-)
-const remainingAmount = computed(() =>
-  Math.max(0, paidAmount.value - balanceDeduction.value),
-)
-const finalPaymentMethod = computed(() =>
-  useBalanceMixed.value && remainingAmount.value > 0
-    ? `${paymentMethod.value}_after_balance`
-    : paymentMethod.value,
-)
+interface MemberCoupon {
+  id: number
+  couponId: number
+  title: string
+  minAmount: number
+  discount: number
+  code: string
+  discount_type: string
+  discount_value: string
+  min_amount: string
+  coupon_title: string
+  category_ids: number[]
+  first_order_only: boolean
+  used: boolean
+}
 
-// Coupon — fetch member's real coupons from API
-interface MemberCoupon { id: number; title: string; minAmount: number; discount: number; code: string; discount_type: string; discount_value: string; min_amount: string; coupon_title: string }
 const availableCoupons = ref<MemberCoupon[]>([])
+const isNewMember = ref(false)
 const selectedCoupon = ref<number | null>(null)
 
-async function loadCoupons() {
+async function loadCoupons(): Promise<void> {
   const token = memberAuth.token.value
   if (!token) return
   try {
-    const resp = await $fetch<{ results: any[] }>(`/api/shop/${slug.value}/members/coupons/`, {
-      headers: { Authorization: `Token ${token}` },
-    })
-    availableCoupons.value = (resp.results || []).map((c: any) => ({
-      id: c.id,
-      title: c.coupon_title,
-      minAmount: Number(c.min_amount),
-      discount: Number(c.discount_value),
-      code: c.code,
-      discount_type: c.discount_type,
-      discount_value: c.discount_value,
-      coupon_title: c.coupon_title,
-      min_amount: c.min_amount,
+    const resp = await $fetch<{ results: Array<Record<string, unknown>>, is_new_member?: boolean }>(
+      `/api/shop/${slug.value}/members/coupons/`,
+      { headers: { Authorization: `Token ${token}` } },
+    )
+    isNewMember.value = !!resp.is_new_member
+    availableCoupons.value = (resp.results || []).map(c => ({
+      id: Number(c.id),
+      couponId: Number(c.coupon_id),
+      title: String(c.coupon_title ?? ''),
+      minAmount: Number(c.min_amount ?? 0),
+      discount: Number(c.discount_value ?? 0),
+      code: String(c.code ?? ''),
+      discount_type: String(c.discount_type ?? 'fixed'),
+      discount_value: String(c.discount_value ?? '0'),
+      min_amount: String(c.min_amount ?? '0'),
+      coupon_title: String(c.coupon_title ?? ''),
+      category_ids: Array.isArray(c.category_ids) ? c.category_ids.map(Number) : [],
+      first_order_only: !!c.first_order_only,
+      used: !!c.used,
     }))
   } catch { /* keep empty */ }
 }
 
 onMounted(() => loadCoupons())
 
+// Cart category set — used to check category-restricted coupons.
+const cartCategoryIds = computed(() => {
+  const set = new Set<number>()
+  for (const item of cart.value) {
+    if (item.categoryId) set.add(item.categoryId)
+  }
+  return set
+})
+
+interface CouponEligibility {
+  allowed: boolean
+  reason: string
+}
+
+function couponEligibility(c: MemberCoupon): CouponEligibility {
+  if (c.used) return { allowed: false, reason: '已使用' }
+  if (c.first_order_only && !isNewMember.value) {
+    return { allowed: false, reason: '仅限首单' }
+  }
+  if (c.category_ids.length > 0) {
+    const hasMatch = c.category_ids.some(id => cartCategoryIds.value.has(id))
+    if (!hasMatch) return { allowed: false, reason: '购物车无适用商品' }
+  }
+  if (totalAmount.value < c.minAmount) {
+    return { allowed: false, reason: `未满 ¥${c.minAmount}` }
+  }
+  return { allowed: true, reason: '' }
+}
+
+const eligibleCoupons = computed(() =>
+  availableCoupons.value.map(c => ({ coupon: c, eligibility: couponEligibility(c) })),
+)
+
 const discountAmount = computed(() => {
   if (selectedCoupon.value === null) return 0
-  const coupon = availableCoupons.value.find(c => c.id === selectedCoupon.value)
-  if (!coupon) return 0
-  if (totalAmount.value >= coupon.minAmount) return coupon.discount
-  return 0
+  const c = availableCoupons.value.find(x => x.id === selectedCoupon.value)
+  if (!c) return 0
+  const elig = couponEligibility(c)
+  if (!elig.allowed) return 0
+  if (c.discount_type === 'percent') {
+    // Compute eligible subtotal for the percent basis.
+    const basis = c.category_ids.length === 0
+      ? totalAmount.value
+      : cart.value
+          .filter(item => item.categoryId && c.category_ids.includes(item.categoryId))
+          .reduce((s, i) => s + i.price * i.quantity, 0)
+    return Math.round(basis * Number(c.discount_value)) / 100
+  }
+  return c.discount
 })
-const paidAmount = computed(() => Math.max(0, totalAmount.value - discountAmount.value))
 
-// Pre-fill from login token if available — already declared above
 const isSubmitting = ref(false)
 const errorMessage = ref('')
+const orderResult = ref<Record<string, any> | null>(null)
 
-async function handlePlaceOrder() {
+// Tenant info for receipt printing
+const { data: tenantInfo } = useFetch<TenantPublicInfo>(
+  () => `/api/shop/${slug.value}/info/`,
+  { lazy: true, server: false },
+)
+
+function printReceipt() {
+  if (!orderResult.value) return
+  const t = tenantInfo.value as Record<string, any> | null
+  const ok = openReceiptPrint(orderResult.value, {
+    name: t?.name ?? '',
+    address: t?.address ?? '',
+    phone: t?.phone ?? '',
+    business_hours: t?.business_hours ?? '',
+    paper_width: t?.paper_width ?? '58',
+    print_logo: false,
+    print_barcode: t?.print_barcode ?? true,
+    footer_text: t?.footer_text ?? '',
+  })
+  if (!ok) toast.add({ title: '打印窗口被拦截，请允许弹窗后重试', color: 'warning', duration: 3000 })
+}
+
+function resetCheckout() {
+  orderResult.value = null
+}
+
+async function handlePlaceOrder(): Promise<void> {
   errorMessage.value = ''
-
   isSubmitting.value = true
   try {
-    const items = cart.value.map((item: any) => ({
-      sku: item.skuId ?? item.productId,
-      product_name: item.name,
-      spec_name: item.specName || '',
-      quantity: item.quantity,
-      price: Number(item.price || 0),
-      subtotal: Number(item.price || 0) * item.quantity
-    }))
-
-    // Mixed payment: calculate deducted amount + remaining
-    let deductedAmount = 0
-    if (useBalanceMixed.value && memberBalance.value > 0) {
-      deductedAmount = balanceDeduction.value
-    }
-
+    // Server computes all amounts from SKU prices — we only send sku + quantity.
     const orderData = {
-      total_amount: Number(totalAmount.value.toFixed(2)),
-      discount_amount: Number(discountAmount.value.toFixed(2)),
-      paid_amount: Number(paidAmount.value.toFixed(2)),
-      payment_method: finalPaymentMethod.value,
+      payment_method: useBalanceMixed.value ? 'member_card' : paymentMethod.value,
       member: null,
-      customerName: customerName.value || '',
-      customerPhone: customerPhone.value || '',
-      pickupNote: pickupNote.value || '',
       coupon_id: selectedCoupon.value,
-      items
+      items: cart.value.map(item => ({
+        sku: item.skuId ?? item.productId,
+        quantity: item.quantity,
+      })),
     }
 
     const token = memberAuth.token.value || undefined
-    await placeOrder(slug.value, orderData, token)
+    const result = await placeOrder(slug.value, orderData, token)
 
-    // Deduct balance (full or partial)
-    if (deductedAmount > 0 && token) {
-      try {
-        await $fetch(`/api/shop/${slug.value}/members/deduct-balance/`, {
-          method: 'POST',
-          headers: { Authorization: `Token ${token}` },
-          body: { amount: deductedAmount }
-        })
-      } catch { /* offline handling */ }
-    }
-
-    cart.value = []
-    // step will auto-advance via computed
-    toast.add({ title: '下单成功！可到店取货', color: 'success', duration: 3000, ui: { container: 'shop-toast' } })
-    router.push(`/${slug.value}/orders`)
-  } catch (err: any) {
-    errorMessage.value = err?.data?.detail || err?.data?.message || '下单失败，请稍后再试'
+    clearCart()
+    orderResult.value = result as Record<string, any>
+    toast.add({ title: '下单成功！', color: 'success', duration: 3000, ui: { container: 'shop-toast' } })
+  } catch (err: unknown) {
+    const e = err as { data?: { detail?: string, message?: string } }
+    errorMessage.value = e?.data?.detail || e?.data?.message || '下单失败，请稍后再试'
   } finally {
     isSubmitting.value = false
   }
 }
+
+const balanceDeduction = computed(() => Math.min(memberBalance.value, totalAmount.value))
+const remainingAmount = computed(() => Math.max(0, totalAmount.value - balanceDeduction.value))
 </script>
 
 <template>
   <div class="py-6 px-4 lg:px-6 max-w-3xl mx-auto pb-32 lg:pb-6">
-    <!-- Header -->
     <div class="flex items-center gap-3 mb-6">
       <button
         class="size-9 flex items-center justify-center rounded-lg hover:bg-(--ui-bg-muted) transition"
@@ -207,47 +235,74 @@ async function handlePlaceOrder() {
       </div>
     </div>
 
-    <!-- Step indicator -->
-    <div class="flex items-center justify-center mb-8">
-      <template v-for="(step, idx) in steps" :key="step.id">
-        <div class="shop-step-item" :class="currentStep >= step.id ? 'shop-step-active' : 'shop-step-pending'">
-          <div
-            class="size-7 rounded-full flex items-center justify-center text-xs font-bold"
-            :class="currentStep > step.id
-              ? 'bg-(--ui-success) text-white'
-              : currentStep === step.id
-                ? 'bg-(--ui-primary) text-white'
-                : 'bg-(--ui-bg-muted) text-(--ui-text-muted)'"
-          >
-            <UIcon v-if="currentStep > step.id" name="i-lucide-check" class="size-3.5" />
-            <span v-else>{{ step.id }}</span>
-          </div>
-          <span class="text-xs hidden sm:inline">{{ step.label }}</span>
+    <!-- Success state -->
+    <div v-if="orderResult" class="py-8">
+      <div class="shop-card p-8 text-center">
+        <div class="flex size-16 mx-auto items-center justify-center rounded-2xl bg-(--ui-success)/10">
+          <UIcon name="i-lucide-circle-check" class="size-8 text-(--ui-success)" />
         </div>
-        <div
-          v-if="idx < steps.length - 1"
-          class="shop-step-line"
-          :class="currentStep > step.id ? 'shop-step-line-active' : ''"
-        />
-      </template>
+        <h2 class="mt-4 text-xl font-bold text-(--ui-text-highlighted)">
+          下单成功！
+        </h2>
+        <p class="mt-1 text-sm text-(--ui-text-muted)">
+          可到店取货或等待配送
+        </p>
+
+        <div class="mt-6 rounded-xl bg-(--ui-bg-elevated)/50 p-4 text-left space-y-2">
+          <div class="flex justify-between text-sm">
+            <span class="text-(--ui-text-muted)">订单号</span>
+            <span class="font-mono font-semibold text-(--ui-text-highlighted)">{{ orderResult.order_no }}</span>
+          </div>
+          <div class="flex justify-between text-sm">
+            <span class="text-(--ui-text-muted)">支付方式</span>
+            <span class="font-medium text-(--ui-text)">{{ ({ cash: '现金', wechat: '微信', alipay: '支付宝', member_card: '会员卡' } as Record<string, string>)[orderResult.payment_method] || orderResult.payment_method }}</span>
+          </div>
+          <div class="flex justify-between text-sm">
+            <span class="text-(--ui-text-muted)">件数</span>
+            <span class="font-medium text-(--ui-text)">{{ orderResult.items?.length ?? 0 }} 件</span>
+          </div>
+          <div class="border-t border-(--ui-border)/40 pt-2 flex justify-between">
+            <span class="text-sm font-semibold text-(--ui-text)">实付</span>
+            <span class="text-lg font-bold text-(--ui-primary) tabular-nums">¥{{ Number(orderResult.paid_amount).toFixed(2) }}</span>
+          </div>
+        </div>
+
+        <div class="mt-6 flex gap-3 justify-center">
+          <UButton
+            variant="outline"
+            color="neutral"
+            icon="i-lucide-printer"
+            @click="printReceipt"
+          >
+            打印小票
+          </UButton>
+          <UButton
+            icon="i-lucide-list"
+            @click="router.push(`/${slug}/orders`)"
+          >
+            查看订单
+          </UButton>
+        </div>
+      </div>
     </div>
 
     <!-- Error message -->
     <div
-      v-if="errorMessage"
+      v-if="errorMessage && !orderResult"
       class="p-3 rounded-xl bg-(--ui-error)/10 text-(--ui-error) text-sm mb-4 flex items-center gap-2"
     >
       <UIcon name="i-lucide-alert-circle" class="size-4 shrink-0" />
       {{ errorMessage }}
     </div>
 
-    <!-- Order items summary -->
-    <div class="shop-card p-4 mb-5 overflow-hidden">
+    <div v-if="!orderResult" class="shop-card p-4 mb-5 overflow-hidden">
       <div class="flex items-center gap-2 mb-3">
         <div class="size-7 rounded-lg bg-(--ui-primary)/10 flex items-center justify-center">
           <UIcon name="i-lucide-package" class="size-3.5 text-(--ui-primary)" />
         </div>
-        <h2 class="font-semibold text-sm text-(--ui-text)">订单商品</h2>
+        <h2 class="font-semibold text-sm text-(--ui-text)">
+          订单商品
+        </h2>
         <span class="text-xs text-(--ui-text-muted) ml-auto">{{ itemCount }} 件</span>
       </div>
 
@@ -274,7 +329,9 @@ async function handlePlaceOrder() {
             <p class="text-sm font-medium text-(--ui-text) line-clamp-2 leading-snug">
               {{ item.name }}
             </p>
-            <p v-if="item.specName" class="text-xs text-(--ui-text-muted) mt-0.5">{{ item.specName }}</p>
+            <p v-if="item.specName" class="text-xs text-(--ui-text-muted) mt-0.5">
+              {{ item.specName }}
+            </p>
             <div class="flex justify-between items-baseline mt-1">
               <span class="text-xs text-(--ui-text-muted)">x{{ item.quantity }}</span>
               <span class="text-sm font-bold text-(--ui-text) tabular-nums">
@@ -286,64 +343,49 @@ async function handlePlaceOrder() {
       </div>
     </div>
 
-    <!-- Contact info -->
-    <div class="shop-card p-4 mb-5 overflow-hidden">
+    <div v-if="!orderResult" class="shop-card p-4 mb-5 overflow-hidden">
       <div class="flex items-center gap-2 mb-4">
         <div class="size-7 rounded-lg bg-(--ui-primary)/10 flex items-center justify-center">
           <UIcon name="i-lucide-contact" class="size-3.5 text-(--ui-primary)" />
         </div>
-        <h2 class="font-semibold text-sm text-(--ui-text)">联系信息</h2>
-        <span class="text-[10px] text-(--ui-text-muted)/50 ml-auto">取货时联系用</span>
+        <h2 class="font-semibold text-sm text-(--ui-text)">
+          联系信息
+        </h2>
       </div>
 
-      <!-- Name + Phone row -->
       <div class="grid grid-cols-2 gap-3 mb-3">
-        <div class="relative">
-          <div class="absolute left-3 top-1/2 -translate-y-1/2 size-4 flex items-center justify-center">
-            <UIcon name="i-lucide-user" class="size-3.5 text-(--ui-text-muted)/40" />
-          </div>
-          <input
-            v-model="customerName"
-            placeholder="联系人姓名"
-            class="w-full h-11 pl-9 pr-3 rounded-xl border border-(--ui-border) bg-(--ui-bg) text-sm text-(--ui-text) placeholder:text-(--ui-text-muted)/40 outline-none transition focus:border-(--ui-primary) focus:ring-1 focus:ring-(--ui-primary)/20"
-            maxlength="20"
-          />
-        </div>
-        <div class="relative">
-          <div class="absolute left-3 top-1/2 -translate-y-1/2 size-4 flex items-center justify-center">
-            <UIcon name="i-lucide-phone" class="size-3.5 text-(--ui-text-muted)/40" />
-          </div>
-          <input
-            v-model="customerPhone"
-            placeholder="手机号"
-            class="w-full h-11 pl-9 pr-3 rounded-xl border border-(--ui-border) bg-(--ui-bg) text-sm text-(--ui-text) placeholder:text-(--ui-text-muted)/40 outline-none transition focus:border-(--ui-primary) focus:ring-1 focus:ring-(--ui-primary)/20"
-            maxlength="11"
-            @input="customerPhone = customerPhone.replace(/\D/g, '')"
-          />
-        </div>
-      </div>
-
-      <!-- Note -->
-      <div class="relative">
-        <div class="absolute left-3 top-3.5 size-4 flex items-center justify-center">
-          <UIcon name="i-lucide-edit" class="size-3.5 text-(--ui-text-muted)/40" />
-        </div>
-        <textarea
-          v-model="pickupNote"
-          placeholder="取货备注（选填）· 如：请放门口、加冰袋等"
-          class="w-full min-h-[44px] pl-9 pr-3 py-2.5 rounded-xl border border-(--ui-border) bg-(--ui-bg) text-sm text-(--ui-text) placeholder:text-(--ui-text-muted)/40 outline-none transition resize-none focus:border-(--ui-primary) focus:ring-1 focus:ring-(--ui-primary)/20"
-          rows="2"
+        <UInput
+          v-model="customerName"
+          icon="i-lucide-user"
+          placeholder="联系人姓名"
+          class="h-11"
+          maxlength="20"
+        />
+        <UInput
+          v-model="customerPhone"
+          icon="i-lucide-phone"
+          placeholder="手机号"
+          class="h-11"
+          maxlength="11"
         />
       </div>
+
+      <UTextarea
+        v-model="pickupNote"
+        icon="i-lucide-edit"
+        placeholder="取货备注（选填）· 如：请放门口、加冰袋等"
+        :rows="2"
+      />
     </div>
 
-    <!-- Payment method -->
-    <div v-if="memberBalance > 0" class="shop-card p-4 mb-5 overflow-hidden">
+    <div v-if="!orderResult && memberBalance > 0" class="shop-card p-4 mb-5 overflow-hidden">
       <div class="flex items-center gap-2 mb-3">
-        <div class="size-7 rounded-lg bg(--ui-primary)/10 flex items-center justify-center">
+        <div class="size-7 rounded-lg bg-(--ui-primary)/10 flex items-center justify-center">
           <UIcon name="i-lucide-wallet" class="size-3.5 text-(--ui-primary)" />
         </div>
-        <h2 class="font-semibold text-sm text-(--ui-text)">储值余额抵扣</h2>
+        <h2 class="font-semibold text-sm text-(--ui-text)">
+          储值余额抵扣
+        </h2>
       </div>
 
       <label
@@ -357,38 +399,34 @@ async function handlePlaceOrder() {
           </p>
           <p v-if="useBalanceMixed && remainingAmount > 0" class="text-xs text-(--ui-text-muted) mt-0.5">
             余额扣 <span class="font-medium text-(--ui-primary)">¥{{ balanceDeduction.toFixed(2) }}</span>，
-            剩 <span class="font-medium">¥{{ remainingAmount.toFixed(2) }}</span> 用下方方式付
+            剩 <span class="font-medium">¥{{ remainingAmount.toFixed(2) }}</span>
           </p>
           <p v-else-if="useBalanceMixed && remainingAmount === 0" class="text-xs text-(--ui-success) mt-0.5 flex items-center gap-1">
             <UIcon name="i-lucide-check-circle" class="size-3.5" />
             余额充足，全额抵扣
           </p>
-          <p v-else class="text-xs text-(--ui-text-muted) mt-0.5">开启后先用余额付，不足的选下方方式补齐</p>
+          <p v-else class="text-xs text-(--ui-text-muted) mt-0.5">开启后用余额支付</p>
         </div>
-        <USwitch v-model="useBalanceMixed" color="primary" />
+        <USwitch v-model="useBalanceMixed" />
       </label>
     </div>
 
-    <!-- Payment method -->
-    <div class="shop-card p-4 mb-5 overflow-hidden">
+    <div v-if="!orderResult && !(useBalanceMixed && remainingAmount === 0)" class="shop-card p-4 mb-5 overflow-hidden">
       <div class="flex items-center gap-2 mb-4">
         <div class="size-7 rounded-lg bg-(--ui-primary)/10 flex items-center justify-center">
           <UIcon name="i-lucide-credit-card" class="size-3.5 text-(--ui-primary)" />
         </div>
-        <h2 class="font-semibold text-sm text-(--ui-text)">支付方式</h2>
-        <span v-if="useBalanceMixed && remainingAmount > 0" class="text-xs text-(--ui-text-muted) ml-auto">
-          付剩余 <span class="font-medium text-(--ui-primary) tabular-nums">¥{{ remainingAmount.toFixed(2) }}</span>
-        </span>
-        <span v-else-if="useBalanceMixed && remainingAmount === 0" class="text-xs text-(--ui-success) ml-auto flex items-center gap-1">
-          <UIcon name="i-lucide-check" class="size-3" /> 无需额外支付
-        </span>
+        <h2 class="font-semibold text-sm text-(--ui-text)">
+          支付方式
+        </h2>
       </div>
 
       <div class="space-y-2">
-        <div
+        <button
           v-for="pm in paymentMethods"
           :key="pm.value"
-          class="shop-payment-card"
+          type="button"
+          class="shop-payment-card w-full"
           :class="paymentMethod === pm.value ? 'shop-payment-active' : 'shop-payment-inactive'"
           @click="paymentMethod = pm.value"
         >
@@ -398,7 +436,7 @@ async function handlePlaceOrder() {
           >
             <UIcon :name="pm.icon" class="size-5" :class="paymentMethod === pm.value ? 'text-(--ui-primary)' : 'text-(--ui-text-muted)'" />
           </div>
-          <div class="flex-1">
+          <div class="flex-1 text-left">
             <p class="text-sm font-medium" :class="paymentMethod === pm.value ? 'text-(--ui-primary)' : 'text-(--ui-text)'">
               {{ pm.label }}
             </p>
@@ -406,53 +444,52 @@ async function handlePlaceOrder() {
               {{ pm.desc }}
             </p>
           </div>
-          <div
-            class="size-5 rounded-full border-2 flex items-center justify-center shrink-0"
-            :class="paymentMethod === pm.value ? 'border-(--ui-primary)' : 'border-(--ui-border)'"
-          >
-            <div v-if="paymentMethod === pm.value" class="size-2.5 rounded-full bg-(--ui-primary)" />
-          </div>
-        </div>
+        </button>
       </div>
     </div>
 
-    <!-- Coupon -->
-    <div class="shop-card p-4 mb-5 overflow-hidden">
+    <div v-if="!orderResult" class="shop-card p-4 mb-4 overflow-hidden">
       <div class="flex items-center gap-2 mb-4">
         <div class="size-7 rounded-lg bg-(--ui-primary)/10 flex items-center justify-center">
           <UIcon name="i-lucide-ticket" class="size-3.5 text-(--ui-primary)" />
         </div>
-        <h2 class="font-semibold text-sm text-(--ui-text)">优惠券</h2>
+        <h2 class="font-semibold text-sm text-(--ui-text)">
+          优惠券
+        </h2>
       </div>
 
-      <div v-if="availableCoupons.length > 0" class="space-y-2">
-        <div
-          v-for="coupon in availableCoupons"
+      <div v-if="eligibleCoupons.length > 0" class="space-y-2">
+        <button
+          v-for="{ coupon, eligibility } in eligibleCoupons"
           :key="coupon.id"
-          class="cursor-pointer relative overflow-hidden"
-          @click="totalAmount >= coupon.minAmount ? selectedCoupon = selectedCoupon === coupon.id ? null : coupon.id : null"
+          type="button"
+          class="block w-full text-left cursor-pointer relative overflow-hidden rounded-xl"
+          :disabled="!eligibility.allowed"
+          @click="eligibility.allowed && (selectedCoupon = selectedCoupon === coupon.id ? null : coupon.id)"
         >
           <div
             class="rounded-xl p-3 transition-all duration-150"
-            :class="totalAmount >= coupon.minAmount
+            :class="eligibility.allowed
               ? selectedCoupon === coupon.id
                 ? 'bg-(--ui-primary)/10 ring-1 ring-(--ui-primary)/30'
                 : 'bg-(--ui-bg-accented) hover:bg-(--ui-bg-muted)'
-              : 'bg-(--ui-bg-muted)/50 opacity-40'"
+              : 'bg-(--ui-bg-muted)/50 opacity-60 cursor-not-allowed'"
           >
-            <!-- Coupon left stripe -->
             <div
               v-if="selectedCoupon === coupon.id"
               class="absolute left-0 top-0 bottom-0 w-1 bg-(--ui-primary) rounded-l-xl"
             />
             <div class="flex items-center justify-between">
-              <div>
-                <p class="text-sm font-bold" :class="selectedCoupon === coupon.id ? 'text-(--ui-primary)' : 'text-(--ui-text)'">
+              <div class="min-w-0">
+                <p class="text-sm font-bold flex items-center gap-1.5" :class="selectedCoupon === coupon.id ? 'text-(--ui-primary)' : 'text-(--ui-text)'">
                   {{ coupon.title }}
-                  <span v-if="selectedCoupon === coupon.id" class="text-xs font-normal ml-1.5 px-1.5 py-0.5 rounded-full bg-(--ui-primary)/20 text-(--ui-primary)">已使用</span>
+                  <span v-if="coupon.first_order_only" class="text-[10px] font-normal px-1.5 py-0.5 rounded-full bg-amber-500/15 text-amber-600">新人</span>
+                  <span v-if="coupon.category_ids.length > 0" class="text-[10px] font-normal px-1.5 py-0.5 rounded-full bg-blue-500/15 text-blue-600">限品类</span>
+                  <span v-if="selectedCoupon === coupon.id" class="text-xs font-normal ml-1 px-1.5 py-0.5 rounded-full bg-(--ui-primary)/20 text-(--ui-primary)">已使用</span>
                 </p>
-                <p class="text-xs text-(--ui-text-muted) mt-0.5">
+                <p class="text-xs mt-0.5" :class="eligibility.allowed ? 'text-(--ui-text-muted)' : 'text-(--ui-error)'">
                   满 ¥{{ coupon.minAmount }} 可用 · 码: <span class="font-mono">{{ coupon.code }}</span>
+                  <span v-if="!eligibility.allowed"> · {{ eligibility.reason }}</span>
                 </p>
               </div>
               <div
@@ -462,25 +499,22 @@ async function handlePlaceOrder() {
                 <div v-if="selectedCoupon === coupon.id" class="size-2.5 rounded-full bg-(--ui-primary)" />
               </div>
             </div>
-            <div v-if="totalAmount < coupon.minAmount" class="mt-2 text-xs text-(--ui-text-muted)/60 flex items-center gap-1">
-              <UIcon name="i-lucide-alert-circle" class="size-3" />
-              还差 ¥{{ (coupon.minAmount - totalAmount).toFixed(2) }} 即可使用
-            </div>
           </div>
-        </div>
+        </button>
       </div>
       <p v-else class="text-xs text-(--ui-text-muted)">
         暂无可用优惠券
       </p>
     </div>
 
-    <!-- Price summary -->
-    <div class="shop-card p-4 mb-4 overflow-hidden">
+    <div v-if="!orderResult" class="shop-card p-4 mb-4 overflow-hidden">
       <div class="flex items-center gap-2 mb-4">
         <div class="size-7 rounded-lg bg-(--ui-primary)/10 flex items-center justify-center">
           <UIcon name="i-lucide-calculator" class="size-3.5 text-(--ui-primary)" />
         </div>
-        <h2 class="font-semibold text-sm text-(--ui-text)">费用明细</h2>
+        <h2 class="font-semibold text-sm text-(--ui-text)">
+          费用明细
+        </h2>
       </div>
       <div class="space-y-2.5 text-sm">
         <div class="flex justify-between text-(--ui-text-muted)">
@@ -494,43 +528,24 @@ async function handlePlaceOrder() {
           </span>
           <span class="tabular-nums">-¥{{ discountAmount.toFixed(2) }}</span>
         </div>
-        <div v-if="useBalanceMixed && balanceDeduction > 0" class="flex justify-between text-(--ui-primary)">
-          <span class="flex items-center gap-1">
-            <UIcon name="i-lucide-wallet" class="size-3.5" />
-            储值余额抵扣
-          </span>
-          <span class="tabular-nums">-¥{{ balanceDeduction.toFixed(2) }}</span>
-        </div>
-        <div v-if="useBalanceMixed && remainingAmount > 0" class="flex justify-between">
-          <span>还需支付</span>
-          <span class="tabular-nums font-semibold text-(--ui-text)">¥{{ remainingAmount.toFixed(2) }}</span>
-        </div>
         <div class="border-t border-(--ui-border)/40 pt-3 flex justify-between font-bold">
-          <span class="text-sm">{{ useBalanceMixed && balanceDeduction > 0 ? '应付总额' : '实付金额' }}</span>
-          <span class="tabular-nums text-xl tracking-tight text-(--ui-primary)">¥{{ paidAmount.toFixed(2) }}</span>
+          <span class="text-sm">实付金额</span>
+          <span class="tabular-nums text-xl tracking-tight text-(--ui-primary)">
+            ¥{{ Math.max(0, totalAmount - discountAmount).toFixed(2) }}
+          </span>
         </div>
       </div>
     </div>
 
-    <!-- Submit -->
-    <div class="shop-sticky-bottom -mx-4 lg:-mx-6">
+    <div v-if="!orderResult" class="shop-sticky-bottom -mx-4 lg:-mx-6">
       <div class="max-w-3xl mx-auto">
         <div class="flex items-center justify-between gap-3">
           <div class="flex-1 min-w-0">
             <p class="text-xs text-(--ui-text-muted) truncate">
               共 {{ itemCount }} 件商品
             </p>
-            <p class="text-xl font-bold tabular-nums tracking-tight" :class="useBalanceMixed && remainingAmount > 0 ? 'text-(--ui-text)' : 'text-(--ui-primary)'">
-              <template v-if="useBalanceMixed && balanceDeduction > 0">
-                <span class="text-sm font-normal text-(--ui-text-muted)">余额 </span>
-                <span class="text-(--ui-primary)">-¥{{ balanceDeduction.toFixed(2) }}</span>
-                <span v-if="remainingAmount > 0" class="text-sm font-normal text-(--ui-text-muted)"> + </span>
-                <span v-if="remainingAmount > 0" class="text-(--ui-primary)">¥{{ remainingAmount.toFixed(2) }}</span>
-                <span v-else class="text-sm font-normal text-(--ui-success) ml-1">√ 已抵扣</span>
-              </template>
-              <template v-else>
-                ¥{{ paidAmount.toFixed(2) }}
-              </template>
+            <p class="text-xl font-bold tabular-nums tracking-tight text-(--ui-primary)">
+              ¥{{ Math.max(0, totalAmount - discountAmount).toFixed(2) }}
             </p>
           </div>
           <UButton
@@ -540,37 +555,26 @@ async function handlePlaceOrder() {
             :disabled="selectedItems.length === 0 || isSubmitting"
             @click="handlePlaceOrder"
           >
-            <template v-if="isSubmitting">
-              <UIcon name="i-lucide-loader-circle" class="size-4 animate-spin" />
-              提交中…
-            </template>
-            <template v-else>
-              <UIcon name="i-lucide-check-circle" class="size-4" />
-              <template v-if="useBalanceMixed && balanceDeduction > 0 && remainingAmount > 0">
-                余额+付款
-              </template>
-              <template v-else-if="useBalanceMixed && balanceDeduction > 0 && remainingAmount === 0">
-                全额余额抵扣
-              </template>
-              <template v-else>
-                提交订单
-              </template>
-            </template>
+            <UIcon name="i-lucide-check-circle" class="size-4" />
+            提交订单
           </UButton>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Submitting overlay -->
   <div
     v-if="isSubmitting"
     class="fixed inset-0 z-[100] bg-black/20 backdrop-blur-sm flex items-center justify-center"
   >
     <div class="bg-white dark:bg-zinc-900 rounded-2xl p-8 shadow-2xl flex flex-col items-center gap-3">
       <UIcon name="i-lucide-loader-circle" class="size-10 animate-spin text-(--ui-primary)" />
-      <p class="text-sm font-medium text-(--ui-text)">正在提交订单…</p>
-      <p class="text-xs text-(--ui-text-muted)">请勿关闭页面</p>
+      <p class="text-sm font-medium text-(--ui-text)">
+        正在提交订单…
+      </p>
+      <p class="text-xs text-(--ui-text-muted)">
+        请勿关闭页面
+      </p>
     </div>
   </div>
 </template>

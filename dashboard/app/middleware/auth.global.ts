@@ -7,16 +7,35 @@ export default defineNuxtRouteMiddleware(async (to) => {
   if (to.path.startsWith('/admin/auth/')) return
 
   const auth = useAuth()
+  const permissions = usePermissions()
+
   // Skip profile fetch if already authenticated (e.g. just logged in)
   if (auth.user.value) return
   try {
     await auth.fetchProfile()
-    if (!auth.user.value) throw new Error('Not authenticated')
-  } catch (err: any) {
-    // Only redirect to login on auth errors (401/403), not on network errors
-    if (err?.statusCode === 401 || err?.statusCode === 403 || err?.response?.status === 401 || err?.response?.status === 403) {
-      return navigateTo('/admin/auth/login')
+  } catch {
+    // fetchProfile swallows errors internally — we handle the result below
+  }
+  // If still not authenticated after fetch, redirect to login
+  if (!auth.user.value) {
+    return navigateTo('/admin/auth/login')
+  }
+
+  // Route-based permission check
+  const routePermissions: Record<string, string[]> = {
+    '/admin/products': ['products'],
+    '/admin/inventory': ['inventory'],
+    '/admin/pos': ['pos'],
+    '/admin/customers': ['members'],
+    '/admin/employees': ['employees'],
+    '/admin/finance': ['finance'],
+  }
+
+  for (const [route, requiredPerms] of Object.entries(routePermissions)) {
+    if (to.path.startsWith(route)) {
+      if (!permissions.hasAnyPermission(requiredPerms as any)) {
+        return navigateTo('/admin')
+      }
     }
-    return
   }
 })

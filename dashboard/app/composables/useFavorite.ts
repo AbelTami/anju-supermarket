@@ -1,10 +1,15 @@
-/** Product wishlist — persisted in localStorage via useLocalStorage */
+/** Product wishlist — persisted in cookie via useCookie (SSR-safe) */
 import type { ProductInfo } from '~~/app/types'
 
 const FAVORITE_STORAGE_KEY = 'shop-favorites'
+const MAX_AGE_DAYS = 365
 
 export function useFavorite() {
-  const favoriteIds = useLocalStorage<number[]>(FAVORITE_STORAGE_KEY, [])
+  const favoriteIds = useCookie<number[]>(FAVORITE_STORAGE_KEY, {
+    default: () => [],
+    maxAge: MAX_AGE_DAYS * 24 * 60 * 60,
+    sameSite: 'lax',
+  })
 
   function isFavorited(productId: number): boolean {
     return favoriteIds.value.includes(productId)

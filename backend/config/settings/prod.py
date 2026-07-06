@@ -5,6 +5,8 @@ from .base import *  # noqa: F403
 
 DEBUG = False
 ALLOWED_HOSTS = [host.strip() for host in os.environ.get('ALLOWED_HOSTS', '').split(',') if host.strip()]
+if not ALLOWED_HOSTS:
+    raise RuntimeError('ALLOWED_HOSTS environment variable is required in production.')
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 if not SECRET_KEY:
     raise RuntimeError('DJANGO_SECRET_KEY environment variable is required and must not be empty')

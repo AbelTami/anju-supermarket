@@ -11,8 +11,19 @@ class Member(TenantAwareModel):
 
     name = models.CharField(max_length=100, verbose_name='姓名')
     phone = models.CharField(max_length=20, verbose_name='手机号')
-    password = models.CharField(max_length=128, default='', verbose_name='密码')
-    token = models.CharField(max_length=128, blank=True, default='', verbose_name='登录令牌')
+    password = models.CharField(
+        max_length=128,
+        default='',
+        verbose_name='密码',
+        help_text='哈希密码，禁止在 API 响应中暴露',
+    )
+    token = models.CharField(
+        max_length=128,
+        blank=True,
+        default='',
+        verbose_name='登录令牌',
+        help_text='哈希令牌，禁止在 API 响应中暴露',
+    )
     token_created_at = models.DateTimeField(null=True, blank=True, verbose_name='令牌创建时间')
     card_no = models.CharField(max_length=50, blank=True, default='', verbose_name='会员卡号')
     points = models.IntegerField(default=0, verbose_name='积分')
@@ -24,6 +35,12 @@ class Member(TenantAwareModel):
         db_table = 'member'
         verbose_name = '会员'
         ordering = ['-created_at']
+        constraints = [
+            models.UniqueConstraint(fields=['tenant', 'phone'], name='uq_member_tenant_phone'),
+        ]
+        indexes = [
+            models.Index(fields=['tenant', 'token'], name='idx_member_tenant_token'),
+        ]
 
     def __str__(self):
         return f'{self.name} ({self.phone})'

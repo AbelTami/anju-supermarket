@@ -38,7 +38,12 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
     <UButton label="新增会员" icon="i-lucide-user-plus" color="primary" />
 
     <template #body>
-      <UForm :schema="schema" :state="state" class="space-y-4 w-56" @submit="onSubmit">
+      <UForm
+        :schema="schema"
+        :state="state"
+        class="space-y-4 w-56"
+        @submit="onSubmit"
+      >
         <UFormField label="姓名" name="name">
           <UInput v-model="state.name" placeholder="会员姓名" />
         </UFormField>
@@ -52,7 +57,12 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
           <UInput v-model="state.remark" placeholder="选填" />
         </UFormField>
         <div class="flex justify-center gap-2 pt-2">
-          <UButton label="取消" color="neutral" variant="ghost" @click="open = false" />
+          <UButton
+            label="取消"
+            color="neutral"
+            variant="ghost"
+            @click="open = false"
+          />
           <UButton label="创建" color="primary" type="submit" />
         </div>
       </UForm>

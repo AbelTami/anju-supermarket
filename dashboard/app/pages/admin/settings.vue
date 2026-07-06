@@ -5,23 +5,23 @@ const links = [[{
   label: '超市信息',
   icon: 'i-lucide-store',
   to: '/admin/settings',
-  exact: true
+  exact: true,
 }, {
   label: '员工账号',
   icon: 'i-lucide-users',
-  to: '/admin/settings/members'
+  to: '/admin/settings/members',
 }, {
   label: '角色权限',
   icon: 'i-lucide-shield',
-  to: '/admin/settings/notifications'
+  to: '/admin/settings/roles',
 }, {
   label: '优惠券管理',
   icon: 'i-lucide-ticket',
-  to: '/admin/settings/coupons'
+  to: '/admin/settings/coupons',
 }, {
   label: '打印模板',
   icon: 'i-lucide-printer',
-  to: '/admin/settings/security'
+  to: '/admin/settings/printer',
 }]] satisfies NavigationMenuItem[][]
 </script>
 

@@ -23,7 +23,7 @@ const data = ref<DataRecord[]>([])
 
 async function fetchChart() {
   const slug = (auth.currentTenant.value as any)?.slug
-  if (!slug) return
+  if (!slug || !auth.user.value) return
   const days = Math.ceil((props.range.end.getTime() - props.range.start.getTime()) / 86400000) || 30
   try {
     const d = await $fetch(`/api/tenant/${slug}/daily-summaries/overview/?days=${days}&period=${props.period}`)
@@ -45,7 +45,7 @@ const formatDate = (date: Date): string => {
   return ({
     daily: format(date, 'd MMM'),
     weekly: format(date, 'd MMM'),
-    monthly: format(date, 'MMM yyyy')
+    monthly: format(date, 'MMM yyyy'),
   })[props.period]
 }
 

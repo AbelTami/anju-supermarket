@@ -1,94 +1,118 @@
 <script setup lang="ts">
 import type { NavigationMenuItem } from '@nuxt/ui'
 
-const route = useRoute()
 const toast = useToast()
 const { unreadCount } = useRealtimeOrders()
+const permissions = usePermissions()
 
 const open = ref(false)
 
-// 安居超市管理系统导航
-const links = computed(() => [[{
+const allLinks = [{
   label: '首页仪表盘',
   icon: 'i-lucide-house',
   to: '/admin',
   exact: true,
-  onSelect: () => { open.value = false }
+  permission: '*' as const,
 }, {
   label: '收银/POS',
   icon: 'i-lucide-shopping-cart',
   to: '/admin/pos',
-  onSelect: () => { open.value = false }
+  permission: 'pos' as const,
 }, {
   label: '商品管理',
   icon: 'i-lucide-package',
   to: '/admin/products',
-  onSelect: () => { open.value = false }
+  permission: 'products' as const,
 }, {
   label: '库存管理',
   icon: 'i-lucide-warehouse',
   to: '/admin/inventory',
-  onSelect: () => { open.value = false }
+  permission: 'inventory' as const,
 }, {
   label: '会员管理',
   icon: 'i-lucide-users',
   to: '/admin/customers',
-  onSelect: () => { open.value = false }
+  permission: 'members' as const,
 }, {
   label: '供应商管理',
   icon: 'i-lucide-truck',
   to: '/admin/suppliers',
-  onSelect: () => { open.value = false }
+  permission: 'products' as const,
 }, {
   label: '员工管理',
   icon: 'i-lucide-user-round-check',
   to: '/admin/employees',
-  onSelect: () => { open.value = false }
+  permission: 'employees' as const,
 }, {
   label: '财务/报表',
   icon: 'i-lucide-chart-pie',
   to: '/admin/finance',
-  onSelect: () => { open.value = false }
+  permission: 'finance' as const,
 }, {
   label: '订单记录',
   icon: 'i-lucide-bell',
   to: '/admin/inbox',
   badge: String(unreadCount.value),
-  onSelect: () => { open.value = false }
-}], [{
-  label: '系统设置',
-  icon: 'i-lucide-settings',
+  permission: '*' as const,
+}]
+
+const settingsLinks = [{
+  label: '超市信息',
   to: '/admin/settings',
-  defaultOpen: false,
-  type: 'trigger',
-  children: [{
-    label: '超市信息',
-    to: '/admin/settings',
-    exact: true,
-    onSelect: () => { open.value = false }
-  }, {
-    label: '员工账号',
-    to: '/admin/settings/members',
-    onSelect: () => { open.value = false }
-  }, {
-    label: '角色权限',
-    to: '/admin/settings/notifications',
-    onSelect: () => { open.value = false }
-  }, {
-    label: '优惠券管理',
-    to: '/admin/settings/coupons',
-    onSelect: () => { open.value = false }
-  }, {
-    label: '打印模板',
-    to: '/admin/settings/security',
-    onSelect: () => { open.value = false }
-  }]
-}]]) as NavigationMenuItem[][]
+  exact: true,
+  permission: '*' as const,
+}, {
+  label: '角色权限',
+  to: '/admin/settings/roles',
+  permission: '*' as const,
+}, {
+  label: '员工账号',
+  to: '/admin/settings/members',
+  permission: 'employees' as const,
+}, {
+  label: '优惠券管理',
+  to: '/admin/settings/coupons',
+  permission: 'products' as const,
+}, {
+  label: '打印模板',
+  to: '/admin/settings/printer',
+  permission: '*' as const,
+}]
+
+// 安居超市管理系统导航
+const links = computed(() => {
+  const filtered = allLinks.filter(link =>
+    link.permission === '*' || permissions.hasPermission(link.permission),
+  ).map(link => ({
+    ...link,
+    onSelect: () => { open.value = false },
+  }))
+
+  const filteredSettings = settingsLinks.filter(link =>
+    link.permission === '*' || permissions.hasPermission(link.permission),
+  ).map(link => ({
+    ...link,
+    onSelect: () => {
+      navigateTo(link.to)
+    },
+  }))
+
+  return [[
+    ...filtered,
+  ], [{
+    label: '系统设置',
+    icon: 'i-lucide-settings',
+    defaultOpen: false,
+    type: 'trigger',
+    permission: '*' as const,
+    children: filteredSettings,
+  }]] as NavigationMenuItem[][]
+})
 
 const groups = computed(() => [{
   id: 'links',
   label: '页面导航',
-  items: links.value.flat()
+  items: links.value.flat(),
 }])
 
 onMounted(async () => {
@@ -107,15 +131,15 @@ onMounted(async () => {
       variant: 'outline',
       onClick: () => {
         cookie.value = 'accepted'
-      }
+      },
     }, {
       label: 'Opt out',
       color: 'neutral',
       variant: 'ghost',
       onClick: () => {
         cookie.value = 'opted-out'
-      }
-    }]
+      },
+    }],
   })
 })
 </script>

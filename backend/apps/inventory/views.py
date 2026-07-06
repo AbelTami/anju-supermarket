@@ -1,5 +1,5 @@
 """Inventory views — stock mutation, stock check, low-stock alert."""
-from common.permissions import IsTenantUser
+from common.permissions import IsAdminOrManager, IsTenantUser, IsWarehouse
 from django.db import transaction
 from rest_framework import serializers, status, viewsets
 from rest_framework.decorators import action
@@ -25,11 +25,16 @@ class InventoryRecordWriteSerializer(serializers.ModelSerializer):
 
 
 class InventoryRecordViewSet(viewsets.ModelViewSet):
-    permission_classes = [IsAuthenticated, IsTenantUser]
     filter_backends = [SearchFilter, OrderingFilter]
     search_fields = ['sku__product__name', 'sku__barcode']
     ordering_fields = ['created_at', 'quantity']
     filterset_fields = ['type']
+
+    # ponytail: warehouse full access, manager read-only, super_admin full
+    def get_permissions(self):
+        if self.action in ('list', 'retrieve', 'low_stock'):
+            return [IsAuthenticated(), IsTenantUser(), (IsAdminOrManager() | IsWarehouse())()]
+        return [IsAuthenticated(), IsTenantUser(), (IsAdminOrManager() | IsWarehouse())]
 
     def get_queryset(self):
         return InventoryRecord.objects.filter(
@@ -87,8 +92,12 @@ class InventoryRecordViewSet(viewsets.ModelViewSet):
         })
 
 class StockCheckViewSet(viewsets.ModelViewSet):
-    permission_classes = [IsAuthenticated, IsTenantUser]
     ordering_fields = ['created_at', 'status']
+
+    def get_permissions(self):
+        if self.action in ('list', 'retrieve'):
+            return [IsAuthenticated(), IsTenantUser(), (IsAdminOrManager() | IsWarehouse())()]
+        return [IsAuthenticated(), IsTenantUser(), (IsAdminOrManager() | IsWarehouse())]
 
     def get_queryset(self):
         return StockCheck.objects.filter(

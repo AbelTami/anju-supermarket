@@ -2,18 +2,23 @@
 /** 供应商管理 */
 import type { TableColumn } from '@nuxt/ui'
 import { getPaginationRowModel } from '@tanstack/table-core'
-import { useAuth } from '~/composables/useAuth'
+import { useCurrentTenantSlug } from '~/composables/useCurrentTenant'
 
 const UButton = resolveComponent('UButton')
 const UDropdownMenu = resolveComponent('UDropdownMenu')
-const auth = useAuth()
+const tenantSlug = useCurrentTenantSlug()
 const toast = useToast()
 
 const search = ref('')
-const tenantSlug = computed(() => (auth.currentTenant.value as any)?.slug || '')
-const apiUrl = () => tenantSlug.value ? `/api/tenant/${tenantSlug.value}/suppliers` : undefined
+const apiUrl = computed(() => tenantSlug.value ? `/api/tenant/${tenantSlug.value}/suppliers` : undefined)
 
-const { data, status, refresh } = useFetch(apiUrl, { lazy: true, server: false, watch: [tenantSlug] })
+const { data, status, refresh } = useFetch(apiUrl, {
+  lazy: true,
+  server: false,
+  key: computed(() => `suppliers-${tenantSlug.value}`),
+})
+
+interface Supplier { id: number, name: string, contact: string, phone: string, address: string, remark: string }
 
 async function deleteSupplier(id: number, name: string) {
   try {
@@ -25,7 +30,7 @@ async function deleteSupplier(id: number, name: string) {
   }
 }
 
-const columns: TableColumn<any>[] = [
+const columns: TableColumn<Supplier>[] = [
   { accessorKey: 'name', header: '供应商名称' },
   { accessorKey: 'contact', header: '联系人' },
   { accessorKey: 'phone', header: '联系电话' },
@@ -33,7 +38,7 @@ const columns: TableColumn<any>[] = [
   { accessorKey: 'remark', header: '备注' },
   {
     accessorKey: 'actions', header: '',
-    cell: ({ row }: any) => h(UDropdownMenu, {
+    cell: ({ row }) => h(UDropdownMenu, {
       items: [[{ label: '删除', icon: 'i-lucide-trash', color: 'error', onSelect: () => deleteSupplier(row.original.id, row.original.name) }]],
     }, () => h(UButton, { icon: 'i-lucide-ellipsis-vertical', color: 'neutral', variant: 'ghost', size: 'xs' })),
   },
@@ -41,31 +46,38 @@ const columns: TableColumn<any>[] = [
 </script>
 
 <template>
-  
-    <UDashboardPanel>
-      <template #header>
-        <UDashboardNavbar title="供应商管理">
-          <template #right>
-            <SuppliersAddModal @created="refresh()" />
-          </template>
-        </UDashboardNavbar>
-      </template>
+  <UDashboardPanel>
+    <template #header>
+      <UDashboardNavbar title="供应商管理">
+        <template #right>
+          <SuppliersAddModal @created="refresh()" />
+        </template>
+      </UDashboardNavbar>
+    </template>
 
-      <template #body>
-        <div class="p-4">
-          <UInput v-model="search" icon="i-lucide-search" placeholder="搜索供应商..." class="flex-1 mb-4" />
-          <UTable
-            v-if="data?.results"
-            :data="data.results"
-            :columns="columns"
-            :pagination="{ pageSize: 15 }"
-            :get-pagination-row-model="getPaginationRowModel()"
-            sticky-top
-          />
-          <div v-else-if="status === 'pending'" class="text-center py-12 text-dimmed">加载中...</div>
-          <div v-else class="text-center py-12 text-dimmed">暂无供应商</div>
+    <template #body>
+      <div class="p-4">
+        <UInput
+          v-model="search"
+          icon="i-lucide-search"
+          placeholder="搜索供应商..."
+          class="flex-1 mb-4"
+        />
+        <UTable
+          v-if="data?.results"
+          :data="data.results"
+          :columns="columns"
+          :pagination="{ pageSize: 15 }"
+          :get-pagination-row-model="getPaginationRowModel()"
+          sticky-top
+        />
+        <div v-else-if="status === 'pending'" class="text-center py-12 text-dimmed">
+          加载中...
         </div>
-      </template>
-    </UDashboardPanel>
-  
+        <div v-else class="text-center py-12 text-dimmed">
+          暂无供应商
+        </div>
+      </div>
+    </template>
+  </UDashboardPanel>
 </template>

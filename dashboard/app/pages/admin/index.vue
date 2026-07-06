@@ -9,16 +9,16 @@ const { unreadCount } = useRealtimeOrders()
 const items = [[{
   label: '新增商品',
   icon: 'i-lucide-package',
-  to: '/admin/products'
+  to: '/admin/products',
 }, {
   label: '新增会员',
   icon: 'i-lucide-user-plus',
-  to: '/admin/customers'
+  to: '/admin/customers',
 }]] satisfies DropdownMenuItem[][]
 
 const range = shallowRef<Range>({
   start: sub(new Date(), { days: 14 }),
-  end: new Date()
+  end: new Date(),
 })
 const period = ref<Period>('daily')
 </script>

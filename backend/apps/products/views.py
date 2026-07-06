@@ -1,11 +1,19 @@
 """Product views — list, detail, create/update/delete."""
 import html
 import re
+from datetime import timedelta
 from urllib.parse import urlparse
 
 import requests
+from django.conf import settings
+from django.db.models import Q, Sum
+from django.utils import timezone
 
-from common.permissions import IsTenantUser
+from common.permissions import (
+    IsTenantUser,
+    IsAdminOrManager,
+    IsSuperAdmin,
+)
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
@@ -13,16 +21,15 @@ from rest_framework.filters import OrderingFilter, SearchFilter
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
-from .models import Category, Product
+from .models import Category, Product, ProductSKU
 from .serializers import (
     CategorySerializer,
     CategoryTreeSerializer,
     ProductDetailSerializer,
     ProductListSerializer,
+    ProductSKUSerializer,
     ProductWriteSerializer,
 )
-
-OPEN_FOOD_FACTS_URL = 'https://world.openfoodfacts.org/api/v2/product/'
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
@@ -31,7 +38,7 @@ class CategoryViewSet(viewsets.ModelViewSet):
     def get_permissions(self):
         if self.action in ('list', 'retrieve'):
             return [IsTenantUser()]
-        return [IsAuthenticated(), IsTenantUser()]
+        return [IsAuthenticated(), IsTenantUser(), IsAdminOrManager()]
 
     def get_serializer_class(self):
         if self.action == 'list':
@@ -55,10 +62,36 @@ class ProductViewSet(viewsets.ModelViewSet):
     def get_permissions(self):
         if self.action in ('list', 'retrieve'):
             return [IsTenantUser()]
-        return [IsAuthenticated(), IsTenantUser()]
+        elif self.action in ('create', 'update', 'partial_update'):
+            return [IsAuthenticated(), IsTenantUser(), IsAdminOrManager()]
+        elif self.action == 'destroy':
+            return [IsAuthenticated(), IsTenantUser(), IsSuperAdmin()]
+        return super().get_permissions()
 
     def get_queryset(self):
-        return Product.objects.filter(tenant=self.request.tenant).prefetch_related('skus')
+        # ponytail: 30-day sales annotation powers the storefront's
+        # "销量优先" sort. Single query with JOIN through SKU → OrderItem →
+        # Order; if it ever shows up slow in pg_stat_statements, denormalize
+        # to a Product.monthly_sales field refreshed by a cron task.
+        recent = timezone.now() - timedelta(days=30)
+        qs = (
+            Product.objects
+            .filter(tenant=self.request.tenant)
+            .prefetch_related('skus')
+            .annotate(
+                monthly_sales=Sum(
+                    'skus__orderitem__quantity',
+                    filter=Q(skus__orderitem__order__paid_at__gte=recent),
+                ),
+            )
+        )
+        # ponytail: customers never see off-shelf products. Admin BFF sends
+        # `Authorization: Bearer <jwt>`; storefront BFF sends Token or nothing.
+        # One guard at the data layer covers list / retrieve / search.
+        auth = self.request.headers.get('Authorization', '')
+        if not auth.startswith('Bearer '):
+            qs = qs.filter(is_active=True)
+        return qs
 
     def get_serializer_class(self):
         if self.action == 'list' and self.request.query_params.get('skus') == '1':
@@ -79,8 +112,11 @@ class ProductViewSet(viewsets.ModelViewSet):
             return Response({'error': '无效条码'}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
-            resp = requests.get(f'{OPEN_FOOD_FACTS_URL}{barcode}.json', timeout=5,
-                                headers={'User-Agent': 'AnjuSupermarket/1.0'})
+            resp = requests.get(
+                f'{settings.OPEN_FOOD_FACTS_URL}{barcode}.json',
+                timeout=5,
+                headers={'User-Agent': 'AnjuSupermarket/1.0'},
+            )
             resp.raise_for_status()
             data = resp.json()
         except requests.RequestException:
@@ -106,3 +142,19 @@ class ProductViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(tenant=self.request.tenant)
+
+
+class ProductSKUViewSet(viewsets.ModelViewSet):
+    """CRUD for product SKUs — used by the admin product edit modal to change
+    prices / stock without recreating the parent product.
+
+    Only update matters in practice; list/retrieve are auto-exposed by the
+    router. Create goes through the nested ProductWriteSerializer, delete is
+    intentionally absent to keep SKU lifecycle tied to its product.
+    """
+    serializer_class = ProductSKUSerializer
+    permission_classes = [IsAuthenticated, IsTenantUser, IsAdminOrManager]
+    queryset = ProductSKU.objects.all()
+
+    def get_queryset(self):
+        return ProductSKU.objects.filter(tenant=self.request.tenant)

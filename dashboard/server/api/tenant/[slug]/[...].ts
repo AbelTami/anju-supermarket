@@ -47,7 +47,7 @@ export default defineEventHandler(async (event) => {
 
   try {
     const headers: Record<string, string> = {
-      'Authorization': `Bearer ${accessToken}`,
+      Authorization: `Bearer ${accessToken}`,
     }
     if (isMultipart) {
       headers['Content-Type'] = contentType
@@ -62,14 +62,14 @@ export default defineEventHandler(async (event) => {
       query: getQuery(event),
     })
     return resp
-  } catch (err: any) {
-    const statusCode = err.statusCode || 500
-    // Forward Django validation errors to the frontend
-    const errBody = err.data || err.message
+  } catch (err: unknown) {
+    const e = err as { statusCode?: number, data?: unknown, message?: string }
+    // Forward Django's status + body verbatim — the frontend needs the
+    // original validation messages ("该用户名已存在", {field: [...]}, etc).
     throw createError({
-      statusCode,
-      statusMessage: '请求处理失败',
-      message: '请求处理失败',
+      statusCode: e.statusCode || 500,
+      message: e.message || '请求处理失败',
+      data: e.data,
     })
   }
 })

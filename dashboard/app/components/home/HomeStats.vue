@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import type { Period, Range, Stat } from '~/types'
 
+import { useAuth } from '~/composables/useAuth'
+
 const props = defineProps<{
   period: Period
   range: Range
 }>()
-
-import { useAuth } from '~/composables/useAuth'
 const auth = useAuth()
 
 const stats = ref<Stat[]>([
@@ -18,7 +18,7 @@ const stats = ref<Stat[]>([
 
 async function fetchStats() {
   const slug = (auth.currentTenant.value as any)?.slug
-  if (!slug) return
+  if (!slug || !auth.user.value) return
   const days = Math.ceil((props.range.end.getTime() - props.range.start.getTime()) / 86400000) || 2
   try {
     const d = await $fetch(`/api/tenant/${slug}/daily-summaries/overview/?days=${days}&period=${props.period}`)
@@ -55,7 +55,7 @@ watch([() => (auth.currentTenant.value as any)?.slug, () => props.period, () => 
         container: 'gap-y-1.5',
         wrapper: 'items-start',
         leading: 'p-2.5 rounded-full bg-primary/10 ring ring-inset ring-primary/25 flex-col',
-        title: 'font-normal text-muted text-xs uppercase'
+        title: 'font-normal text-muted text-xs uppercase',
       }"
       class="lg:rounded-none first:rounded-l-lg last:rounded-r-lg hover:z-1"
     >

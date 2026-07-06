@@ -59,6 +59,10 @@ class StockCheckWriteSerializer(serializers.ModelSerializer):
         stock_check = StockCheck.objects.create(status='checking', **validated_data)
         for item in items_data:
             sku = item['sku']
+            request = self.context.get('request')
+            if request is not None and getattr(request, 'tenant', None) is not None:
+                if sku.tenant_id != request.tenant.id:
+                    raise serializers.ValidationError({'items': f'SKU {sku.barcode} 不属于当前超市'})
             StockCheckItem.objects.create(
                 stock_check=stock_check,
                 tenant=stock_check.tenant,

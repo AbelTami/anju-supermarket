@@ -25,8 +25,10 @@ class TenantMiddleware:
         request.tenant = None
         path = request.path
 
-        # Public auth routes — skip tenant resolution
-        if path.startswith('/auth/') or '/auth/' in path:
+        # Public auth routes — skip tenant resolution.
+        # Match exactly /auth/... or /api/auth/... (admin JWT endpoints). Anywhere
+        # else, the {slug} segment must resolve to a real tenant.
+        if path.startswith('/auth/') or path.startswith('/api/auth/'):
             return self.get_response(request)
 
         if path.startswith('/api/'):

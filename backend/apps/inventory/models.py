@@ -25,6 +25,10 @@ class InventoryRecord(TenantAwareModel):
     class Meta:
         db_table = 'inventory_record'
         verbose_name = '库存流水'
+        indexes = [
+            models.Index(fields=['tenant', 'sku_id', '-created_at'], name='idx_invrec_tenant_sku'),
+            models.Index(fields=['tenant', 'type', '-created_at'], name='idx_invrec_tenant_type'),
+        ]
 
 
 class StockCheck(TenantAwareModel):

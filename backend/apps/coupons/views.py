@@ -2,6 +2,7 @@
 import uuid
 
 from common.permissions import HasMemberToken, IsTenantUser
+from django.db import transaction
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
@@ -31,19 +32,25 @@ class CouponViewSet(viewsets.ModelViewSet):
             return Response({'detail': '请提供会员ID列表'}, status=status.HTTP_400_BAD_REQUEST)
 
         count = 0
-        for mid in member_ids:
-            if MemberCoupon.objects.filter(coupon=coupon, member_id=mid).exists():
-                continue
-            MemberCoupon.objects.create(
-                tenant=coupon.tenant,
-                coupon=coupon,
-                member_id=mid,
-                code=f'COUPON-{uuid.uuid4().hex[:8].upper()}',
-            )
-            count += 1
+        with transaction.atomic():
+            coupon = Coupon.objects.select_for_update().get(pk=coupon.pk)
+            current_count = MemberCoupon.objects.filter(coupon=coupon).count()
+            for mid in member_ids:
+                if current_count >= coupon.total_count:
+                    return Response({'detail': '优惠券已领完'}, status=status.HTTP_400_BAD_REQUEST)
+                if MemberCoupon.objects.filter(coupon=coupon, member_id=mid).exists():
+                    continue
+                MemberCoupon.objects.create(
+                    tenant=coupon.tenant,
+                    coupon=coupon,
+                    member_id=mid,
+                    code=f'COUPON-{uuid.uuid4().hex[:8].upper()}',
+                )
+                count += 1
+                current_count += 1
 
-        coupon.used_count = MemberCoupon.objects.filter(coupon=coupon).count()
-        coupon.save(update_fields=['used_count'])
+            coupon.used_count = current_count
+            coupon.save(update_fields=['used_count'])
 
         return Response({'assigned': count})
 

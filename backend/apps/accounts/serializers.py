@@ -1,4 +1,5 @@
 """Auth & user serializers."""
+from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
@@ -14,7 +15,7 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         user = self.user
         data['user'] = UserBriefSerializer(user).data
         data['tenants'] = TenantBriefSerializer(
-            user.tenants.filter(is_active=True), many=True
+            user.tenants.filter(is_active=True), many=True, context={'user': user}
         ).data
         return data
 
@@ -26,9 +27,19 @@ class UserBriefSerializer(serializers.ModelSerializer):
 
 
 class TenantBriefSerializer(serializers.ModelSerializer):
+    role = serializers.SerializerMethodField()
+
     class Meta:
         model = Tenant
-        fields = ['id', 'name', 'slug']
+        fields = ['id', 'name', 'slug', 'broadcast_active', 'broadcast_message', 'broadcast_severity', 'role']
+
+    def get_role(self, obj):
+        # ponytail: context.user set by CustomTokenObtainPairSerializer
+        user = self.context.get('user')
+        if user:
+            ut = UserTenant.objects.filter(user=user, tenant=obj).first()
+            return ut.role if ut else None
+        return None
 
 
 class RegisterSerializer(serializers.Serializer):
@@ -36,8 +47,12 @@ class RegisterSerializer(serializers.Serializer):
 
     tenant_name = serializers.CharField(max_length=200, label='超市名称')
     username = serializers.CharField(max_length=150)
-    password = serializers.CharField(min_length=6, write_only=True)
+    password = serializers.CharField(min_length=8, write_only=True)
     phone = serializers.CharField(max_length=20, required=False, allow_blank=True)
+
+    def validate_password(self, value):
+        validate_password(value)
+        return value
 
     def create(self, validated_data):
         tenant_name = validated_data['tenant_name']

@@ -18,7 +18,7 @@ const searchQuery = ref('')
 const searchUrl = computed(() =>
   searchQuery.value
     ? `/api/tenant/${tenantSlug.value}/products?search=${encodeURIComponent(searchQuery.value)}`
-    : undefined
+    : undefined,
 )
 const { data: searchData } = useFetch(searchUrl, { lazy: true, watch: [searchUrl], debounce: 300 })
 
@@ -28,7 +28,7 @@ const skuOptions = computed(() => {
     (p.skus || []).map((s: any) => ({
       label: `${p.name} - ${s.spec_name} (库存: ${s.stock_quantity})`,
       value: s.id,
-    }))
+    })),
   )
 })
 
@@ -82,7 +82,9 @@ async function submit() {
         <UFormField v-if="skuOptions.length" label="选择SKU">
           <USelect v-model="skuId" :items="skuOptions" placeholder="请选择具体规格" />
         </UFormField>
-        <p v-else-if="searchQuery && searchData" class="text-xs text-dimmed">未找到匹配商品</p>
+        <p v-else-if="searchQuery && searchData" class="text-xs text-dimmed">
+          未找到匹配商品
+        </p>
 
         <UFormField label="数量">
           <UInput v-model.number="quantity" type="number" placeholder="变动数量（正数）" />
@@ -93,7 +95,12 @@ async function submit() {
         </UFormField>
 
         <div class="flex justify-end gap-2">
-          <UButton label="取消" color="neutral" variant="subtle" @click="open = false" />
+          <UButton
+            label="取消"
+            color="neutral"
+            variant="subtle"
+            @click="open = false"
+          />
           <UButton label="确认" color="primary" @click="submit" />
         </div>
       </div>

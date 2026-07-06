@@ -88,4 +88,25 @@ CREATE POLICY tenant_isolation ON finance_daily_summary
   USING (tenant_id = current_setting('app.tenant_id')::bigint)
   WITH CHECK (tenant_id = current_setting('app.tenant_id')::bigint);
 
+-- 14. coupon
+ALTER TABLE coupon ENABLE ROW LEVEL SECURITY;
+ALTER TABLE coupon FORCE ROW LEVEL SECURITY;
+CREATE POLICY tenant_isolation ON coupon
+  USING (tenant_id = current_setting('app.tenant_id')::bigint)
+  WITH CHECK (tenant_id = current_setting('app.tenant_id')::bigint);
+
+-- 15. member_coupon
+ALTER TABLE member_coupon ENABLE ROW LEVEL SECURITY;
+ALTER TABLE member_coupon FORCE ROW LEVEL SECURITY;
+CREATE POLICY tenant_isolation ON member_coupon
+  USING (tenant_id = current_setting('app.tenant_id')::bigint)
+  WITH CHECK (tenant_id = current_setting('app.tenant_id')::bigint);
+
+-- 16. stock_check_item
+ALTER TABLE stock_check_item ENABLE ROW LEVEL SECURITY;
+ALTER TABLE stock_check_item FORCE ROW LEVEL SECURITY;
+CREATE POLICY tenant_isolation ON stock_check_item
+  USING (tenant_id = current_setting('app.tenant_id')::bigint)
+  WITH CHECK (tenant_id = current_setting('app.tenant_id')::bigint);
+
 COMMIT;

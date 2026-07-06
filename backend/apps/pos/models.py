@@ -26,6 +26,16 @@ class Order(TenantAwareModel):
         db_table = 'pos_order'
         verbose_name = '收银订单'
         ordering = ['-paid_at']
+        constraints = [
+            models.CheckConstraint(condition=models.Q(total_amount__gte=0), name='chk_order_total_nonneg'),
+            models.CheckConstraint(condition=models.Q(paid_amount__gte=0), name='chk_order_paid_nonneg'),
+            models.CheckConstraint(condition=models.Q(discount_amount__gte=0), name='chk_order_discount_nonneg'),
+        ]
+        indexes = [
+            models.Index(fields=['tenant', '-paid_at'], name='idx_order_tenant_paid'),
+            models.Index(fields=['tenant', 'payment_method'], name='idx_order_tenant_pay'),
+            models.Index(fields=['tenant', 'member_id'], name='idx_order_tenant_member'),
+        ]
 
 
 class OrderItem(TenantAwareModel):
@@ -42,3 +52,6 @@ class OrderItem(TenantAwareModel):
     class Meta:
         db_table = 'pos_order_item'
         verbose_name = '订单明细'
+        indexes = [
+            models.Index(fields=['tenant', 'sku_id'], name='idx_orderitem_tenant_sku'),
+        ]

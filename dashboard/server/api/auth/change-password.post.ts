@@ -7,6 +7,6 @@ export default defineEventHandler(async (event) => {
   return $fetch(`${config.apiBase}/api/auth/change-password/`, {
     method: 'POST',
     body,
-    headers: { Authorization: `Bearer ${accessToken}`, 'Content-Type': 'application/json' },
+    headers: { 'Authorization': `Bearer ${accessToken}`, 'Content-Type': 'application/json' },
   })
 })
